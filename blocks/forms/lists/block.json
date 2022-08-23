@@ -1,0 +1,64 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"name": "mailster/lists",
+	"version": "0.1.0",
+	"title": "Lists Field",
+	"category": "mailster-form-fields",
+	"keywords": ["container", "wrapper", "row", "section"],
+	"parent": ["mailster/form-wrapper", "core/column", "core/group"],
+	"description": "Adds a List block to your Mailster Block Form",
+	"example": {},
+	"supports": {
+		"html": false,
+		"reusable": false,
+		"multiple": false,
+		"inserter": false,
+		"color": true
+	},
+	"attributes": {
+		"lock": {
+			"type": "object",
+			"default": {
+				"remove": true
+			}
+		},
+		"dropdown": {
+			"type": "boolean",
+			"default": false
+		},
+		"vertical": {
+			"type": "boolean"
+		},
+		"id": {
+			"type": "string"
+		},
+		"lists": {
+			"type": "array",
+			"source": "query",
+			"selector": "input",
+			"default": [],
+			"query": {
+				"id": {
+					"type": "string",
+					"source": "attribute",
+					"attribute": "value"
+				},
+				"name": {
+					"type": "string",
+					"source": "attribute",
+					"attribute": "aria-label"
+				},
+				"checked": {
+					"type": "string",
+					"source": "attribute",
+					"attribute": "checked"
+				}
+			}
+		}
+	},
+	"textdomain": "mailster",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
+}

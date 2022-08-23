@@ -1,0 +1,32 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"name": "mailster/form",
+	"version": "0.1.0",
+	"title": "Mailster Form",
+	"category": "widgets",
+	"icon": "email",
+	"description": "Use a Mailster Block Form on your page",
+	"supports": {
+		"html": false,
+		"anchor": true,
+		"align": true,
+		"spacing": {
+			"margin": true,
+			"padding": true
+		}
+	},
+	"attributes": {
+		"id": {
+			"type": "integer"
+		},
+		"height": {
+			"type": "integer"
+		}
+	},
+	"textdomain": "mailster",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"viewScript": "file:./view.js"
+}

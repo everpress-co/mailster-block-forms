@@ -1,0 +1,49 @@
+html {
+	scroll-behavior: unset !important;
+}
+.wp-block-mailster-form-outside-wrapper-placeholder *,
+.wp-block-mailster-form-outside-wrapper-placeholder *::before,
+.wp-block-mailster-form-outside-wrapper-placeholder *::after {
+	pointer-events: none !important;
+}
+.wp-block-mailster-form-outside-wrapper-placeholder.active {
+	display: flex;
+}
+.wp-block-mailster-form-outside-wrapper-placeholder .mailster-block-form-close {
+	display: none;
+}
+.wp-block-mailster-form-outside-wrapper-placeholder.has-error {
+	box-shadow: inset 0 0 0 1px #cc1818;
+	color: #cc1818;
+}
+.wp-block-mailster-form-outside-wrapper-placeholder input,
+.wp-block-mailster-form-outside-wrapper-placeholder select,
+.wp-block-mailster-form-outside-wrapper-placeholder .submit-button,
+.wp-block-mailster-form-outside-wrapper-placeholder label,
+.wp-block-mailster-form-outside-wrapper-placeholder .mailster-label,
+.wp-block-mailster-form-outside-wrapper-placeholder
+	.mailster-block-form-inner
+	*:not(.mailster-wrapper) {
+	background: none;
+	animation: mailster-placeholder 1s linear infinite reverse !important;
+	background-image: linear-gradient(
+		90deg,
+		#e0e0e0 0px,
+		#fafafa 40px,
+		#e0e0e0 80px
+	) !important;
+	background-size: 800px !important;
+	box-shadow: rgba(0, 0, 0, 0.02) 0px 6px 24px 0px,
+		rgba(0, 0, 0, 0.05) 0px 0px 0px 1px !important;
+	border-color: transparent !important;
+	color: transparent !important;
+}
+.wp-block-mailster-form-outside-wrapper-placeholder .mailster-label::after {
+	display: none !important;
+}
+
+@keyframes mailster-placeholder {
+	0% {
+		background-position: 800px 0;
+	}
+}

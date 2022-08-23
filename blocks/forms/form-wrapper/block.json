@@ -1,0 +1,68 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"name": "mailster/form-wrapper",
+	"version": "0.1.0",
+	"title": "Mailster Form",
+	"icon": "email",
+	"category": "widgets",
+	"description": "Define the look of your form here.",
+	"parent": ["core/post-content"],
+	"example": {},
+	"supports": {
+		"html": false,
+		"inserter": false,
+		"reusable": false,
+		"multiple": false,
+		"color": {
+			"gradients": true,
+			"background": true,
+			"text": true
+		},
+		"spacing": {
+			"margin": true,
+			"padding": true
+		}
+	},
+	"attributes": {
+		"lock": {
+			"type": "object",
+			"default": {
+				"remove": true,
+				"move": true
+			}
+		},
+		"background": {
+			"type": "object",
+			"default": {
+				"opacity": 100,
+				"fixed": false,
+				"repeat": false,
+				"size": "cover",
+				"image": "",
+				"position": {
+					"x": 0.5,
+					"y": 0.5
+				}
+			}
+		},
+		"borderRadius": {
+			"type": "string"
+		},
+		"css": {
+			"type": "object",
+			"default": {
+				"general": "",
+				"tablet": "",
+				"mobile": ""
+			}
+		},
+		"basiccss": {
+			"type": "boolean"
+		}
+	},
+	"textdomain": "mailster",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:../../form/style-index.css"
+}

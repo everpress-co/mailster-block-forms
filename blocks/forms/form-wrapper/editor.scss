@@ -1,0 +1,252 @@
+/**
+ * The following styles get applied inside the editor only.
+ *
+ * Replace them with your own styles or remove the file completely.
+ */
+
+body::before {
+	_content: 'EDITOR STYLE LOADED';
+	font-size: 10px;
+	position: fixed;
+	top: 10px;
+	z-index: 100000;
+	background: red;
+	color: #fff;
+}
+.form-pattern-card {
+	display: flex;
+	flex-flow: column;
+	align-self: center;
+	.form-pattern-title {
+		justify-content: center;
+	}
+}
+.block-editor-inner-blocks {
+	width: 100%;
+}
+.mailster-inline-styles-handler {
+	display: none;
+}
+.block-editor-block-list__layout {
+	position: relative;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-end;
+	justify-content: space-between;
+
+	> * {
+		width: 100%;
+	}
+	> div {
+		position: relative;
+	}
+}
+.editor-styles-wrapper.block-editor-writing-flow {
+	padding-bottom: 0 !important;
+}
+.rtl .block-editor-block-list__layout {
+	flex-direction: row-reverse;
+}
+
+.editor-styles-wrapper .mailster-block-form .wp-block {
+	margin-left: 0;
+	margin-right: 0;
+	margin-top: 0;
+	margin-bottom: 0;
+}
+.editor-styles-wrapper .mailster-block-form .mailster-wrapper {
+	margin-left: 0;
+	margin-right: 0;
+	margin-top: 0;
+	margin-bottom: 0.5rem;
+	width: 100%;
+}
+.CodeMirror pre.CodeMirror-placeholder {
+	color: #ccc;
+}
+.CodeMirror {
+	border: 1px solid #e0e0e0;
+}
+
+.editor-styles-wrapper .mailster-block-form .mailster-block-form-info {
+	max-width: 100%;
+}
+.mailster-block-form.wp-block-mailster-form-wrapper
+	.mailster-block-form-inner
+	.wp-block-mailster-messages.mailster-wrapper.is-selected {
+	display: block;
+}
+.mailster-block-form.wp-block-mailster-form-wrapper
+	.mailster-block-form-inner
+	.wp-block-mailster-messages.mailster-wrapper {
+	display: none;
+}
+.mailster-block-form.wp-block-mailster-form-wrapper {
+	box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px,
+		rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px,
+		rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+	background-color: #fff;
+	background-color: var(--wp--custom--color--background, #fff);
+	width: 50rem;
+	min-height: 3rem;
+	overflow: visible !important;
+	flex-basis: auto;
+	z-index: 1;
+
+	.mailster-block-form-info {
+		height: auto;
+		transform: scale(1);
+	}
+
+	.mailster-block-form-info > div {
+		display: block !important;
+	}
+	> button {
+		z-index: 100;
+		position: relative;
+	}
+
+	.mailster-wrapper {
+		.input,
+		.disabled-input {
+			pointer-events: none;
+		}
+
+		label.mailster-label {
+			pointer-events: all !important;
+			white-space: nowrap !important;
+		}
+		.mailster-group-checkbox {
+			pointer-events: none;
+			align-items: center;
+			input {
+				pointer-events: all;
+			}
+		}
+		// remove some default style
+		input[type='checkbox']:checked::before,
+		input[type='radio']:checked::before {
+		}
+	}
+}
+
+.custom-css-tabs .components-tab-panel__tabs {
+	overflow: auto;
+	max-width: 248px;
+}
+
+.css-modal {
+	.custom-css-tabs {
+		width: 100%;
+		.components-tab-panel__tabs {
+			overflow: unset;
+			max-width: none;
+		}
+	}
+}
+
+.form-select-modal {
+	.form-title input {
+		font-size: 2.5em;
+	}
+	.block-editor-block-preview__container .is-root-container {
+		max-width: 100%;
+		transform: scale(0.95);
+		pointer-events: none;
+		margin: auto;
+	}
+
+	.block-editor-block-preview__container .wp-block {
+		max-width: 100%;
+	}
+	.components-card {
+		cursor: pointer;
+		.components-card__body {
+			min-height: 15vw;
+			display: flex;
+			align-items: center;
+			background: url('data:image/svg+xml,<svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 100 100" xml:space="preserve"><style>.st0{fill:%23fafafa}</style><path class="st0" d="M0 0h50v50H0zM50.5 49.5h50v50h-50z"/></svg>')
+				white !important;
+			background-repeat: repeat;
+			background-size: 10px !important;
+			.block-editor-block-preview__container {
+				padding: 0;
+				margin: 0;
+				box-shadow: rgb(0 0 0 / 7%) 0px 1px 2px,
+					rgb(0 0 0 / 7%) 0px 2px 4px, rgb(0 0 0 / 7%) 0px 4px 8px,
+					rgb(0 0 0 / 7%) 0px 8px 16px, rgb(0 0 0 / 7%) 0px 16px 32px,
+					rgb(0 0 0 / 7%) 0px 32px 64px;
+			}
+		}
+	}
+	.components-card:hover {
+		outline: 1px solid var(--wp-admin-theme-color);
+	}
+}
+
+.editor-styles-wrapper .is-root-container > [hidden] {
+	display: block;
+}
+
+.editor-styles-wrapper .mailster-editor-info {
+	font-family: sans-serif;
+	color: #1e1e1e;
+	text-align: center;
+	font-size: 12px;
+	margin-top: 3em;
+	display: block;
+	pointer-events: none;
+}
+
+.is-mobile-preview,
+.is-tablet-preview {
+	border: none !important;
+}
+
+.block-editor-block-preview__content-iframe .editor-styles-wrapper::after {
+	content: unset;
+}
+
+.placement-tabs .schedule-box {
+	margin: 0.5em 0;
+}
+
+.block-editor-block-preview__content-iframe .editor-styles-wrapper {
+	background-color: unset;
+	.mailster-block-form.wp-block-mailster-form-wrapper {
+		max-height: 100%;
+		max-width: 100%;
+	}
+	.mailster-block-form.wp-block-mailster-form-wrapper
+		.mailster-block-form-inner {
+		max-height: 100%;
+		max-width: 100%;
+	}
+
+	.mailster-editor-info {
+		display: none;
+	}
+
+	.is-root-container {
+		padding: 0;
+	}
+	h1.wp-block-post-title {
+		display: none;
+	}
+
+	.wp-block-mailster-form-wrapper {
+		max-width: 100%;
+		pointer-events: none;
+		margin: auto;
+	}
+	.wp-block {
+		max-width: 100%;
+	}
+	.block-list-appender {
+		display: none;
+	}
+	.mailster-block-form.wp-block-mailster-form-wrapper {
+		width: 100%;
+		box-shadow: none;
+	}
+}

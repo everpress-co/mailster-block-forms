@@ -1,0 +1,69 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"name": "mailster/messages",
+	"version": "0.1.0",
+	"title": "Message Field",
+	"category": "mailster-form-fields",
+	"keywords": ["container", "wrapper", "row", "section"],
+	"parent": ["mailster/form-wrapper", "core/column", "core/group"],
+	"description": "Adds a Message field to your Mailster Block Form",
+	"supports": {
+		"html": false,
+		"reusable": false,
+		"multiple": false,
+		"inserter": false,
+		"spacing": {
+			"margin": true,
+			"padding": true
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true
+		}
+	},
+	"attributes": {
+		"lock": {
+			"type": "object",
+			"default": {
+				"remove": true
+			}
+		},
+		"successMessage": {
+			"type": "string",
+			"source": "html",
+			"selector": ".mailster-block-form-info-success > div"
+		},
+		"errorMessage": {
+			"type": "string",
+			"source": "html",
+			"selector": ".mailster-block-form-info-error > div"
+		},
+		"success": {
+			"type": "string",
+			"default": "#ffffff"
+		},
+		"successBackground": {
+			"type": "string",
+			"default": "#6fbf4d"
+		},
+		"error": {
+			"type": "string",
+			"default": "#ffffff"
+		},
+		"errorBackground": {
+			"type": "string",
+			"default": "#bf4d4d"
+		},
+		"align": {
+			"type": "string"
+		},
+		"width": {
+			"type": "integer"
+		}
+	},
+	"textdomain": "mailster",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
+}

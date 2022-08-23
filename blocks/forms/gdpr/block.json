@@ -1,0 +1,36 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"name": "mailster/gdpr",
+	"version": "0.1.0",
+	"title": "GDPR Field",
+	"category": "mailster-form-fields",
+	"keywords": ["container", "wrapper", "row", "section"],
+	"parent": ["mailster/form-wrapper", "core/column", "core/group"],
+	"description": "Adds a Checkbox to your Mailster Block form for GDPR compliance",
+	"example": {},
+	"supports": {
+		"html": false,
+		"reusable": false,
+		"multiple": false,
+		"inserter": false,
+		"color": true
+	},
+	"attributes": {
+		"content": {
+			"type": "string",
+			"source": "html",
+			"selector": "label"
+		},
+		"id": {
+			"type": "string"
+		},
+		"align": {
+			"type": "string"
+		}
+	},
+	"textdomain": "mailster",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
+}

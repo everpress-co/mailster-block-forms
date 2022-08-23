@@ -1,0 +1,63 @@
+.wp-block-mailster-form {
+	.placeholder-buttons-wrap {
+		width: 100%;
+	}
+
+	.update-form-button {
+		visibility: hidden;
+		position: absolute;
+		left: 50%;
+		top: 45%;
+		transform: translate(-50%, -50%);
+		z-index: 10;
+		color: #333;
+		text-shadow: -1px -1px 0 #ddd, 1px -1px 0 #ddd, -1px 1px 0 #ddd,
+			1px 1px 0 #ddd;
+	}
+	.mailster-block-form-editor-wrap {
+		min-height: 200px;
+	}
+	.mailster-block-form-editor-wrap::before {
+		content: '';
+		display: block;
+		height: 100%;
+		width: 100%;
+		position: absolute;
+		opacity: 0;
+		background-color: rgba(255, 255, 255, 0.95);
+		z-index: 10;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+	}
+	@supports (backdrop-filter: blur(2px)) {
+		.mailster-block-form-editor-wrap::before {
+			background-color: rgba(255, 255, 255, 0);
+			-webkit-backdrop-filter: blur(2px);
+			backdrop-filter: blur(2px);
+		}
+	}
+
+	.mailster-block-form {
+		max-width: 100%;
+		background-size: cover;
+		background-color: transparent;
+		position: relative;
+	}
+
+	.wp-block-mailster-form-wrapper > * {
+		position: relative;
+	}
+}
+.wp-block-mailster-form.is-selected:hover {
+	.update-form-button {
+		visibility: visible;
+	}
+	.mailster-block-form-editor-wrap .mailster-block-form-editor-wrap-inner {
+		opacity: 0.3;
+	}
+	.mailster-block-form-editor-wrap::before {
+		opacity: 1;
+	}
+}
