@@ -34,6 +34,7 @@ export default function save(props) {
 		style = {},
 		hasLabel,
 		align,
+		justify,
 		labelAlign,
 		vertical,
 	} = attributes;
@@ -42,6 +43,7 @@ export default function save(props) {
 	if (required) className.push('mailster-wrapper-required');
 	if (type) className.push('mailster-wrapper-type-' + type);
 	if (align) className.push('mailster-wrapper-align-' + align);
+	if (justify) className.push('mailster-wrapper-justify-' + justify);
 	if (vertical) className.push('mailster-wrapper-is-vertical');
 	if (labelAlign)
 		className.push('mailster-wrapper-label-align-' + labelAlign);

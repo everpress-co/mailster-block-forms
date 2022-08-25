@@ -42,6 +42,12 @@ body.mailster-form-active {
 			width: 70vw;
 		}
 	}
+	.wp-block-mailster-form-outside-wrapper
+		form.wp-block-mailster-form-wrapper.mailster-block-form {
+		flex-basis: 100%;
+		max-width: 98vw;
+		max-width: min(98vw, 560px);
+	}
 }
 @media only screen and (max-width: 400px) {
 	.mailster-block-form-type-popup,
@@ -49,10 +55,6 @@ body.mailster-form-active {
 		.mailster-block-form {
 			width: 95vw;
 		}
-	}
-	.wp-block-mailster-form-outside-wrapper
-		form.wp-block-mailster-form-wrapper.mailster-block-form {
-		flex-basis: 100%;
 	}
 }
 .mailster-block-form-type-popup {
@@ -121,13 +123,15 @@ body.mailster-form-active {
 		transform: translate(130%, 0%);
 		font-size: 120%;
 	}
-}
-@media only screen and (max-width: 400px) {
 	.mailster-block-form-type-popup .mailster-block-form-close {
 		transform: translate(-25%);
 		font-size: 150%;
 		text-shadow: -1px -1px 0 #00000055, 1px -1px 0 #00000055,
 			-1px 1px 0 #00000055, 1px 1px 0 #00000055;
+	}
+	.is-light-bg.mailster-block-form-type-popup .mailster-block-form-close {
+		text-shadow: -1px -1px 0 #ffffff55, 1px -1px 0 #ffffff55,
+			-1px 1px 0 #ffffff55, 1px 1px 0 #ffffff55;
 	}
 }
 .wp-block-mailster-form-outside-wrapper-placeholder form::before {
@@ -221,6 +225,7 @@ body.mailster-form-active {
 	.submit-button {
 		width: 100%;
 		display: inline-block;
+		text-decoration: none;
 	}
 	.mailster-block-form-info > div {
 		padding: 0.5rem 1rem;
@@ -495,68 +500,80 @@ body.mailster-form-active {
 		width: 100%;
 	}
 
-	.mailster-wrapper-label-align-left {
-		justify-content: flex-start;
-		label.mailster-label {
+	.mailster-block-form-inner {
+		.mailster-wrapper-label-align-left {
 			justify-content: flex-start;
+			label.mailster-label {
+				justify-content: flex-start;
+			}
+			.submit-button {
+				text-align: left;
+			}
 		}
-		.submit-button {
-			text-align: left;
-		}
-	}
-	.mailster-wrapper-label-align-center {
-		justify-content: center;
-		label.mailster-label {
+		.mailster-wrapper-label-align-center {
 			justify-content: center;
+			label.mailster-label {
+				justify-content: center;
+			}
+			.submit-button {
+				text-align: center;
+			}
 		}
-		.submit-button {
-			text-align: center;
-		}
-	}
-	.mailster-wrapper-label-align-right {
-		justify-content: flex-end;
-		label.mailster-label {
+		.mailster-wrapper-label-align-right {
 			justify-content: flex-end;
+			label.mailster-label {
+				justify-content: flex-end;
+			}
+			.submit-button {
+				text-align: right;
+			}
 		}
-		.submit-button {
-			text-align: right;
+		.mailster-wrapper.mailster-wrapper-justify-left {
+			margin-right: auto;
 		}
-	}
-	.mailster-wrapper-align-left {
-		.input {
-			text-align: left;
+		.mailster-wrapper.mailster-wrapper-justify-center {
+			margin-left: auto;
+			margin-right: auto;
 		}
-		.mailster-group {
-			justify-content: flex-start;
-		}
-		.submit-button {
-			text-align: left;
-		}
-	}
-	.mailster-wrapper-align-center {
-		.input {
-			text-align: center;
-		}
-		.mailster-group {
-			justify-content: center;
-		}
-		.submit-button {
-			text-align: center;
-		}
-	}
-	.mailster-wrapper-align-right {
-		.input {
-			text-align: right;
-		}
-		.mailster-group {
-			justify-content: flex-end;
+		.mailster-wrapper.mailster-wrapper-justify-right {
+			margin-left: auto;
 		}
 
-		.submit-button {
-			text-align: right;
+		.mailster-wrapper-align-left {
+			.input {
+				text-align: left;
+			}
+			.mailster-group {
+				justify-content: flex-start;
+			}
+			.submit-button {
+				text-align: left;
+			}
+		}
+		.mailster-wrapper-align-center {
+			.input {
+				text-align: center;
+			}
+			.mailster-group {
+				justify-content: center;
+			}
+			.submit-button {
+				text-align: center;
+			}
+		}
+		.mailster-wrapper-align-right {
+			.input {
+				text-align: right;
+			}
+			.mailster-group {
+				justify-content: flex-end;
+			}
+
+			.submit-button {
+				text-align: right;
+			}
 		}
 	}
-
 	.mailster-wrapper-is-vertical {
 		.mailster-label {
 			_width: 100%;
