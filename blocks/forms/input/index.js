@@ -107,6 +107,9 @@ window.mailster_fields &&
 				align: {
 					type: 'string',
 				},
+				justify: {
+					type: 'string',
+				},
 				labelAlign: {
 					type: 'string',
 				},

@@ -10,7 +10,13 @@ import { __ } from '@wordpress/i18n';
 import { BlockControls, AlignmentToolbar } from '@wordpress/block-editor';
 import { ToolbarDropdownMenu, ToolbarButton } from '@wordpress/components';
 
-import { arrowRight, arrowDown } from '@wordpress/icons';
+import {
+	arrowRight,
+	arrowDown,
+	justifyLeft,
+	justifyCenter,
+	justifyRight,
+} from '@wordpress/icons';
 
 /**
  * Internal dependencies
@@ -20,9 +26,9 @@ import Icons from './Icons';
 
 export default function InputBlockControls(props) {
 	const { attributes, setAttributes } = props;
-	const { align, labelAlign, hasLabel, vertical, type } = attributes;
+	const { align, justify, labelAlign, hasLabel, vertical, type } = attributes;
 
-	const buttonPositionControls = [
+	const labelPositionControls = [
 		{
 			role: 'menuitemradio',
 			title: __('Align left', 'mailster'),
@@ -46,7 +52,31 @@ export default function InputBlockControls(props) {
 		},
 	];
 
-	const getButtonPositionIcon = () => {
+	const justifyPositionControls = [
+		{
+			role: 'menuitemradio',
+			title: __('Align left', 'mailster'),
+			isActive: justify === 'left',
+			icon: justifyLeft,
+			onClick: () => setAttributes({ justify: 'left' }),
+		},
+		{
+			role: 'menuitemradio',
+			title: __('Align center', 'mailster'),
+			isActive: justify === 'center',
+			icon: justifyCenter,
+			onClick: () => setAttributes({ justify: 'center' }),
+		},
+		{
+			role: 'menuitemradio',
+			title: __('Align right', 'mailster'),
+			isActive: justify === 'right',
+			icon: justifyRight,
+			onClick: () => setAttributes({ justify: 'right' }),
+		},
+	];
+
+	const getLabelPostionIcon = () => {
 		switch (labelAlign) {
 			case 'left':
 				return Icons.labelLeft;
@@ -56,6 +86,18 @@ export default function InputBlockControls(props) {
 				return Icons.labelRight;
 		}
 		return Icons.labelLeft;
+	};
+
+	const getJustifyPostionIcon = () => {
+		switch (justify) {
+			case 'left':
+				return justifyLeft;
+			case 'center':
+				return justifyCenter;
+			case 'right':
+				return justifyRight;
+		}
+		return justifyLeft;
 	};
 
 	function updateAlignment(alignment) {
@@ -79,11 +121,16 @@ export default function InputBlockControls(props) {
 			/>
 			{hasLabel && (
 				<ToolbarDropdownMenu
-					icon={getButtonPositionIcon()}
+					icon={getLabelPostionIcon()}
 					label={__('Change label alignment', 'mailster')}
-					controls={buttonPositionControls}
+					controls={labelPositionControls}
 				/>
 			)}
+			<ToolbarDropdownMenu
+				icon={getJustifyPostionIcon()}
+				label={__('Change element alignment', 'mailster')}
+				controls={justifyPositionControls}
+			/>
 		</BlockControls>
 	);
 }
