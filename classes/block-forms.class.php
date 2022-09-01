@@ -1357,9 +1357,7 @@ class MailsterBlockForms {
 
 		$inject  = '';
 		$inject .= '<a class="mailster-block-form-close" aria-label="' . esc_attr__( 'close', 'mailster' ) . '" tabindex="0">&#10005;</a>';
-		if ( ! $this->preview_data ) {
-			$inject .= '<script class="mailster-block-form-data" type="application/json">' . json_encode( $form_args ) . '</script>';
-		}
+		$inject .= '<script class="mailster-block-form-data" type="application/json">' . json_encode( $form_args ) . '</script>';
 		$inject .= '<input name="_formid" type="hidden" value="' . esc_attr( $form->ID ) . '">' . "\n";
 		$inject .= '<input name="_timestamp" type="hidden" value="' . esc_attr( time() ) . '">' . "\n";
 
