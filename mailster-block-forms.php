@@ -213,6 +213,19 @@ function mailster_block_forms_shortcode( $atts, $content ) {
 }
 add_shortcode( 'newsletter_block_form', 'mailster_block_forms_shortcode' );
 
+function mailster_block_forms_enable_on_classic_editor( $settings ) {
+	if ( ! $settings && isset( $_GET['post'] ) && get_post_type( (int) $_GET['post'] ) === 'newsletter_form' ) {
+		$settings = array( 'editor' => 'block' );
+	}
+	if ( ! $settings && isset( $_GET['post_type'] ) && $_GET['post_type'] === 'newsletter_form' ) {
+		$settings = array( 'editor' => 'block' );
+	}
+
+	return $settings;
+}
+add_filter( 'classic_editor_plugin_settings', 'mailster_block_forms_enable_on_classic_editor' );
+
+
 
 global $mailster_block_forms;
 require_once MAILSTER_FORM_BLOCK_DIR . 'classes/block-forms.class.php';
