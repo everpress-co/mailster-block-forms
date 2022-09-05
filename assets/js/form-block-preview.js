@@ -61,8 +61,15 @@ jQuery(document).ready(function ($) {
 	}
 
 	window.addEventListener('message', function (event) {
-		var data = JSON.parse(event.data),
+		var data,
 			source = event;
+
+		try {
+			data = JSON.parse(event.data);
+			if (!data.form_id) return;
+		} catch (e) {
+			return;
+		}
 
 		var params = new URLSearchParams();
 
