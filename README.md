@@ -1,7 +1,7 @@
 # Mailster Block Forms
 
 Contributors: everpress, xaverb  
-Tags: mailster, blocks, forms  
+Tags: mailster, blocks, forms, mailsterblockforms  
 Requires at least: 6.0  
 Tested up to: 6.0  
 Stable tag: 0.1.2  
