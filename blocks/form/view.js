@@ -34,7 +34,7 @@ import apiFetch from '@wordpress/api-fetch';
 				'.mailster-block-form-inner-close'
 			);
 			let countImpressionEvery = 3600;
-			let openIfClosedAfter = 3;
+			let openIfClosedAfter = 3600;
 			let scroll = {};
 			let delayTimeout = null;
 			let inactiveTimeout = null;
