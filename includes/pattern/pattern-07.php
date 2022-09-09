@@ -27,7 +27,9 @@
 
 <!-- wp:mailster/field-submit {"id":"149c10","values":[],"style":{"width":100},"className":"mailster-wrapper-asterisk"} -->
 <div class="wp-block-mailster-field-submit mailster-wrapper mailster-wrapper-type-submit wp-block-button mailster-wrapper-asterisk" style="width:100%"><input name="submit" id="mailster-input-149c10" type="submit" value="Subscribe" class="wp-block-button__link submit-button"/></div>
-<!-- /wp:mailster/field-submit --></div>
+<!-- /wp:mailster/field-submit --><!-- wp:mailster/close {"align":"center","fontSize":"extra-small"} -->
+<div class="wp-block-mailster-close mailster-wrapper mailster-wrapper-label-align-center has-extra-small-font-size"><a href="" class="mailster-block-form-inner-close" aria-label="I'm not interested" tabindex="0">I'm not interested</a></div>
+<!-- /wp:mailster/close --></div>
 <!-- /wp:column --></div>
 <!-- /wp:columns --></div></form>
 <!-- /wp:mailster/form-wrapper -->

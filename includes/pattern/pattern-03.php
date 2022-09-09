@@ -13,5 +13,7 @@
 
 <!-- wp:mailster/field-submit {"id":"2af8f4","style":{"width":57,"backgroundColor":"#ffffff","borderColor":"#1A1B1F","borderWidth":"3px","color":"#1A1B1F","inputColor":"#151515","borderRadius":"0px","typography":{"textTransform":"uppercase","fontSize":"30px"},"spacing":{"padding":{"top":"1em","right":"1em","bottom":"1em","left":"1em"}}},"className":"mailster-wrapper-asterisk"} -->
 <div class="wp-block-mailster-field-submit mailster-wrapper mailster-wrapper-type-submit wp-block-button mailster-wrapper-asterisk" style="width:57%"><input name="submit" id="mailster-input-2af8f4" type="submit" style="padding-top:1em;padding-right:1em;padding-bottom:1em;padding-left:1em;font-size:30px;text-transform:uppercase;color:#151515;background-color:#ffffff;border-color:#1A1B1F;border-width:3px;border-radius:0px" value="Get 20% now" class="wp-block-button__link submit-button"/></div>
-<!-- /wp:mailster/field-submit --></div></form>
+<!-- /wp:mailster/field-submit --></div><!-- wp:mailster/close {"align":"right","fontSize":"extra-small"} -->
+<div class="wp-block-mailster-close mailster-wrapper mailster-wrapper-label-align-right has-extra-small-font-size"><a href="" class="mailster-block-form-inner-close" aria-label="Close popup" tabindex="0">Close popup</a></div>
+<!-- /wp:mailster/close --></form>
 <!-- /wp:mailster/form-wrapper -->

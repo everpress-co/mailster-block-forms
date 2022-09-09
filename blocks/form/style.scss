@@ -102,7 +102,9 @@ body.mailster-form-active {
 	}
 }
 .mailster-block-form-type-content .mailster-block-form-close,
-.mailster-block-form-type-other .mailster-block-form-close {
+.mailster-block-form-type-content .mailster-block-form-inner-close,
+.mailster-block-form-type-other .mailster-block-form-close,
+.mailster-block-form-type-other .mailster-block-form-inner-close {
 	display: none;
 }
 .mailster-block-form-type-popup .mailster-block-form-close {
@@ -222,6 +224,9 @@ body.mailster-form-active {
 		margin-bottom: 0;
 		width: 100%;
 		max-width: 100%;
+	}
+	.mailster-block-form-inner-close {
+		cursor: pointer;
 	}
 	.submit-button {
 		width: 100%;
@@ -685,6 +690,7 @@ body.mailster-form-active {
 	}
 }
 .wp-block-mailster-form-outside-wrapper.closing {
+	pointer-events: none;
 	transition: opacity 1.5s;
 	opacity: 0;
 }

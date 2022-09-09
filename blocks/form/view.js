@@ -30,8 +30,11 @@ import apiFetch from '@wordpress/api-fetch';
 			let wrap = form.closest('.wp-block-mailster-form-outside-wrapper');
 			let isPopup = !!wrap.getAttribute('aria-modal');
 			let closeButton = wrap.querySelector('.mailster-block-form-close');
+			let iCloseButton = wrap.querySelector(
+				'.mailster-block-form-inner-close'
+			);
 			let countImpressionEvery = 3600;
-			let openIfClosedAfter = 3600;
+			let openIfClosedAfter = 3;
 			let scroll = {};
 			let delayTimeout = null;
 			let inactiveTimeout = null;
@@ -259,6 +262,7 @@ import apiFetch from '@wordpress/api-fetch';
 
 					//wrap.addEventListener('click', closeFormExplicit);
 					closeButton.addEventListener('click', closeFormExplicit);
+					iCloseButton.addEventListener('click', closeFormExplicit);
 					form.addEventListener('click', stopPropagation);
 
 					wrap.classList.add('active');
@@ -292,20 +296,22 @@ import apiFetch from '@wordpress/api-fetch';
 				document.removeEventListener('keydown', handleTab);
 				wrap.removeEventListener('click', closeForm);
 				closeButton.removeEventListener('click', closeForm);
+				iCloseButton.removeEventListener('click', closeForm);
 				form.removeEventListener('click', stopPropagation);
 
 				wrap.classList.add('closing');
+				body.classList.remove('mailster-form-active');
 
 				setTimeout(() => {
 					wrap.classList.remove('closing');
 					wrap.classList.remove('active');
 					wrap.setAttribute('aria-hidden', 'true');
-					body.classList.remove('mailster-form-active');
 					body.setAttribute('aria-hidden', 'false');
 				}, 1500);
 			}
 
 			function closeFormExplicit(event) {
+				event && event.preventDefault();
 				closeForm();
 				set('closed');
 			}

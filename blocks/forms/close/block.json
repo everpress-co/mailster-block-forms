@@ -1,0 +1,43 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"name": "mailster/close",
+	"version": "0.1.0",
+	"title": "Close Link",
+	"category": "mailster-form-fields",
+	"keywords": ["container", "wrapper", "row", "section"],
+	"parent": ["mailster/form-wrapper", "core/column", "core/group"],
+	"description": "A simple link to close the popup",
+	"example": {},
+	"supports": {
+		"html": false,
+		"reusable": false,
+		"color": true,
+		"spacing": {
+			"margin": true,
+			"padding": true,
+			"blockGap": true
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true
+		}
+	},
+	"attributes": {
+		"content": {
+			"type": "string",
+			"source": "html",
+			"selector": "a"
+		},
+		"id": {
+			"type": "string"
+		},
+		"align": {
+			"type": "string"
+		}
+	},
+	"textdomain": "mailster",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
+}
