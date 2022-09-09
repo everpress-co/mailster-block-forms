@@ -262,7 +262,11 @@ import apiFetch from '@wordpress/api-fetch';
 
 					//wrap.addEventListener('click', closeFormExplicit);
 					closeButton.addEventListener('click', closeFormExplicit);
-					iCloseButton.addEventListener('click', closeFormExplicit);
+					iCloseButton &&
+						iCloseButton.addEventListener(
+							'click',
+							closeFormExplicit
+						);
 					form.addEventListener('click', stopPropagation);
 
 					wrap.classList.add('active');
@@ -296,7 +300,8 @@ import apiFetch from '@wordpress/api-fetch';
 				document.removeEventListener('keydown', handleTab);
 				wrap.removeEventListener('click', closeForm);
 				closeButton.removeEventListener('click', closeForm);
-				iCloseButton.removeEventListener('click', closeForm);
+				iCloseButton &&
+					iCloseButton.removeEventListener('click', closeForm);
 				form.removeEventListener('click', stopPropagation);
 
 				wrap.classList.add('closing');
