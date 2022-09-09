@@ -87,7 +87,6 @@ body.mailster-form-active {
 	display: flex;
 	pointer-events: none;
 }
-
 .mailster-block-form-type-bar {
 	.mailster-block-form {
 		width: 100vw;
@@ -102,13 +101,14 @@ body.mailster-form-active {
 		backdrop-filter: blur(6px);
 	}
 }
-
 .mailster-block-form-type-content .mailster-block-form-close,
-.mailster-block-form-type-other .mailster-block-form-close {
+.mailster-block-form-type-content .mailster-block-form-inner-close,
+.mailster-block-form-type-other .mailster-block-form-close,
+.mailster-block-form-type-other .mailster-block-form-inner-close {
 	display: none;
 }
 .mailster-block-form-type-popup .mailster-block-form-close {
-	transform: translate(100%, -100%);
+	transform: translate(100%, 0%);
 }
 .mailster-block-form-type-bar .mailster-block-form-close {
 	transform: translate(150%, 120%);
@@ -120,18 +120,22 @@ body.mailster-form-active {
 }
 @media only screen and (max-width: 800px) {
 	.mailster-block-form-type-popup .mailster-block-form-close {
-		transform: translate(130%, 0%);
-		font-size: 120%;
-	}
-	.mailster-block-form-type-popup .mailster-block-form-close {
-		transform: translate(-25%);
-		font-size: 150%;
-		text-shadow: -1px -1px 0 #00000055, 1px -1px 0 #00000055,
-			-1px 1px 0 #00000055, 1px 1px 0 #00000055;
+		transform: translate(0%, 0%);
+		font-size: 160%;
+		width: 40px;
+		height: 40px;
+		opacity: 1;
+		svg text {
+			stroke-width: 2px;
+			fill: #ffffff;
+			stroke: rgba(0, 0, 0, 0.8);
+		}
 	}
 	.is-light-bg.mailster-block-form-type-popup .mailster-block-form-close {
-		text-shadow: -1px -1px 0 #ffffff55, 1px -1px 0 #ffffff55,
-			-1px 1px 0 #ffffff55, 1px 1px 0 #ffffff55;
+		svg text {
+			fill: #000000;
+			stroke: rgba(255, 255, 255, 0.8);
+		}
 	}
 }
 .wp-block-mailster-form-outside-wrapper-placeholder form::before {
@@ -140,7 +144,6 @@ body.mailster-form-active {
 .wp-block-mailster-form-outside-wrapper.mailster-block-form-type-content {
 	margin-bottom: 1em;
 }
-
 .wp-block-mailster-form-outside-wrapper.active,
 .wp-block-mailster-form-outside-wrapper.mailster-block-form-type-content,
 .wp-block-mailster-form-outside-wrapper.mailster-block-form-type-other {
@@ -222,10 +225,14 @@ body.mailster-form-active {
 		width: 100%;
 		max-width: 100%;
 	}
+	.mailster-block-form-inner-close {
+		cursor: pointer;
+	}
 	.submit-button {
 		width: 100%;
 		display: inline-block;
 		text-decoration: none;
+		cursor: pointer;
 	}
 	.mailster-block-form-info > div {
 		padding: 0.5rem 1rem;
@@ -333,11 +340,9 @@ body.mailster-form-active {
 	position: absolute;
 	top: 0;
 	right: 0;
-	width: 25px;
-	height: 25px;
 	transition: all 0.2s;
 	text-decoration: none;
-	padding: 2px;
+	padding: 0.2em;
 	opacity: 0.7;
 	z-index: 1000;
 	animation: mailster-showlate 1.5s 1 linear;
@@ -349,14 +354,32 @@ body.mailster-form-active {
 	user-select: none;
 	background: none;
 	border: none;
+	text-align: center;
+	width: 30px;
+	height: 30px;
+	svg {
+		width: 100%;
+		height: 100%;
+		paint-order: stroke;
+		overflow: visible;
+	}
+	svg text {
+		fill: #000;
+		text-anchor: middle;
+		dominant-baseline: central;
+		transform: translate(50%, 50%);
+	}
 }
 .is-dark-bg .mailster-block-form-close {
-	color: #fff;
+	svg text {
+		fill: #fff;
+	}
 }
 .is-light-bg .mailster-block-form-close {
-	color: #000;
+	svg text {
+		fill: #000;
+	}
 }
-
 .mailster-block-form-close:hover {
 	opacity: 1;
 }
@@ -369,7 +392,7 @@ body.mailster-form-active {
 		max-width: 100%;
 		flex-basis: 100%;
 		display: none;
-		transition: transform 2.2s;
+		transition: all 2.2s;
 		.mailster-block-form-info-extra span {
 			display: block;
 		}
@@ -377,7 +400,7 @@ body.mailster-form-active {
 	.mailster-block-form-info.is-error,
 	.mailster-block-form-info.is-success {
 		display: block;
-		animation: mailster-fadein 0.2s 1 ease-in-out;
+		animation: mailster-info 0.2s 1 ease-in-out;
 	}
 
 	.mailster-block-form-info .mailster-block-form-info-error,
@@ -666,6 +689,15 @@ body.mailster-form-active {
 		background-position: 800px 0;
 	}
 }
+.wp-block-mailster-form-outside-wrapper.closing {
+	pointer-events: none;
+	transition: opacity 1.5s;
+	opacity: 0;
+}
+.wp-block-mailster-form-outside-wrapper.closing .mailster-block-form {
+	transition: opacity 0.1s;
+	opacity: 0;
+}
 .wp-block-mailster-form-outside-wrapper.has-animation {
 	animation: mailster-fadein 0.2s 1 ease-in-out;
 }
@@ -695,21 +727,29 @@ body.mailster-form-active {
 	animation: mailster-wobble 1s 1 ease-in-out;
 }
 
+@keyframes mailster-info {
+	0% {
+		opacity: 0;
+		transform: scale(0.8);
+	}
+	100% {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
 @keyframes mailster-fadein {
 	0% {
 		opacity: 0;
 	}
-
 	100% {
 		opacity: 1;
 	}
 }
 @keyframes mailster-showlate {
 	0%,
-	25% {
+	90% {
 		opacity: 0;
 	}
-
 	100% {
 		opacity: 0.7;
 	}
@@ -720,13 +760,11 @@ body.mailster-form-active {
 	to {
 		transform: translate3d(0, 0, 0);
 	}
-
 	10%,
 	50%,
 	90% {
 		transform: translate3d(-6px, 0, 0);
 	}
-
 	30%,
 	70% {
 		transform: translate3d(6px, 0, 0);
@@ -737,19 +775,15 @@ body.mailster-form-active {
 	20% {
 		transform: rotate3d(0, 0, 1, 15deg);
 	}
-
 	40% {
 		transform: rotate3d(0, 0, 1, -10deg);
 	}
-
 	60% {
 		transform: rotate3d(0, 0, 1, 5deg);
 	}
-
 	80% {
 		transform: rotate3d(0, 0, 1, -5deg);
 	}
-
 	to {
 		transform: rotate3d(0, 0, 1, 0deg);
 	}
@@ -760,7 +794,6 @@ body.mailster-form-active {
 	70% {
 		transform: scale(1);
 	}
-
 	14%,
 	42% {
 		transform: scale(1.1);
@@ -770,25 +803,21 @@ body.mailster-form-active {
 	from {
 		transform: scale3d(1, 1, 1);
 	}
-
 	10%,
 	20% {
 		transform: scale3d(0.9, 0.9, 0.9) rotate3d(0, 0, 1, -3deg);
 	}
-
 	30%,
 	50%,
 	70%,
 	90% {
 		transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 3deg);
 	}
-
 	40%,
 	60%,
 	80% {
 		transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -3deg);
 	}
-
 	to {
 		transform: scale3d(1, 1, 1);
 	}
@@ -797,27 +826,21 @@ body.mailster-form-active {
 	from {
 		transform: translate3d(0, 0, 0);
 	}
-
 	15% {
 		transform: translate3d(-25%, 0, 0) rotate3d(0, 0, 1, -5deg);
 	}
-
 	30% {
 		transform: translate3d(20%, 0, 0) rotate3d(0, 0, 1, 3deg);
 	}
-
 	45% {
 		transform: translate3d(-15%, 0, 0) rotate3d(0, 0, 1, -3deg);
 	}
-
 	60% {
 		transform: translate3d(10%, 0, 0) rotate3d(0, 0, 1, 2deg);
 	}
-
 	75% {
 		transform: translate3d(-5%, 0, 0) rotate3d(0, 0, 1, -1deg);
 	}
-
 	to {
 		transform: translate3d(0, 0, 0);
 	}
