@@ -87,7 +87,6 @@ body.mailster-form-active {
 	display: flex;
 	pointer-events: none;
 }
-
 .mailster-block-form-type-bar {
 	.mailster-block-form {
 		width: 100vw;
@@ -102,13 +101,12 @@ body.mailster-form-active {
 		backdrop-filter: blur(6px);
 	}
 }
-
 .mailster-block-form-type-content .mailster-block-form-close,
 .mailster-block-form-type-other .mailster-block-form-close {
 	display: none;
 }
 .mailster-block-form-type-popup .mailster-block-form-close {
-	transform: translate(100%, -100%);
+	transform: translate(100%, 0%);
 }
 .mailster-block-form-type-bar .mailster-block-form-close {
 	transform: translate(150%, 120%);
@@ -120,18 +118,22 @@ body.mailster-form-active {
 }
 @media only screen and (max-width: 800px) {
 	.mailster-block-form-type-popup .mailster-block-form-close {
-		transform: translate(130%, 0%);
-		font-size: 120%;
-	}
-	.mailster-block-form-type-popup .mailster-block-form-close {
-		transform: translate(-25%);
-		font-size: 150%;
-		text-shadow: -1px -1px 0 #00000055, 1px -1px 0 #00000055,
-			-1px 1px 0 #00000055, 1px 1px 0 #00000055;
+		transform: translate(0%, 0%);
+		font-size: 160%;
+		width: 40px;
+		height: 40px;
+		opacity: 1;
+		svg text {
+			stroke-width: 2px;
+			fill: #ffffff;
+			stroke: rgba(0, 0, 0, 0.8);
+		}
 	}
 	.is-light-bg.mailster-block-form-type-popup .mailster-block-form-close {
-		text-shadow: -1px -1px 0 #ffffff55, 1px -1px 0 #ffffff55,
-			-1px 1px 0 #ffffff55, 1px 1px 0 #ffffff55;
+		svg text {
+			fill: #000000;
+			stroke: rgba(255, 255, 255, 0.8);
+		}
 	}
 }
 .wp-block-mailster-form-outside-wrapper-placeholder form::before {
@@ -140,7 +142,6 @@ body.mailster-form-active {
 .wp-block-mailster-form-outside-wrapper.mailster-block-form-type-content {
 	margin-bottom: 1em;
 }
-
 .wp-block-mailster-form-outside-wrapper.active,
 .wp-block-mailster-form-outside-wrapper.mailster-block-form-type-content,
 .wp-block-mailster-form-outside-wrapper.mailster-block-form-type-other {
@@ -226,6 +227,7 @@ body.mailster-form-active {
 		width: 100%;
 		display: inline-block;
 		text-decoration: none;
+		cursor: pointer;
 	}
 	.mailster-block-form-info > div {
 		padding: 0.5rem 1rem;
@@ -333,14 +335,12 @@ body.mailster-form-active {
 	position: absolute;
 	top: 0;
 	right: 0;
-	width: 25px;
-	height: 25px;
 	transition: all 0.2s;
 	text-decoration: none;
-	padding: 2px;
+	padding: 0.2em;
 	opacity: 0.7;
 	z-index: 1000;
-	animation: mailster-showlate 1.5s 1 linear;
+	animation: mailster-showlate 2s 1 linear;
 	cursor: pointer;
 	color: #fff;
 	font-size: 120%;
@@ -349,14 +349,32 @@ body.mailster-form-active {
 	user-select: none;
 	background: none;
 	border: none;
+	text-align: center;
+	width: 30px;
+	height: 30px;
+	svg {
+		width: 100%;
+		height: 100%;
+		paint-order: stroke;
+		overflow: visible;
+	}
+	svg text {
+		fill: #000;
+		text-anchor: middle;
+		dominant-baseline: central;
+		transform: translate(50%, 50%);
+	}
 }
 .is-dark-bg .mailster-block-form-close {
-	color: #fff;
+	svg text {
+		fill: #fff;
+	}
 }
 .is-light-bg .mailster-block-form-close {
-	color: #000;
+	svg text {
+		fill: #000;
+	}
 }
-
 .mailster-block-form-close:hover {
 	opacity: 1;
 }
@@ -706,7 +724,7 @@ body.mailster-form-active {
 }
 @keyframes mailster-showlate {
 	0%,
-	25% {
+	75% {
 		opacity: 0;
 	}
 

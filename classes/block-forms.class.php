@@ -1019,18 +1019,23 @@ class MailsterBlockForms {
 
 
 	public function kses( $content ) {
+
 		// allow form elements in KSES
-		// add_filter( 'wp_kses_allowed_html', array( $this, 'wp_kses_allowed_html' ) );
-		// $content = wp_kses_post( $content );
+		add_filter( 'wp_kses_allowed_html', array( $this, 'wp_kses_allowed_html' ) );
+		$content = wp_kses_post( $content );
 		// only here
-		// remove_filter( 'wp_kses_allowed_html', array( $this, 'wp_kses_allowed_html' ) );
+		remove_filter( 'wp_kses_allowed_html', array( $this, 'wp_kses_allowed_html' ) );
 
 		return $content;
 	}
 
 
 	public function wp_kses_allowed_html( $tags ) {
-		$tags['input']  = array(
+
+		$tags['a']['tabindex']     = true;
+		$tags['div']['tabindex']   = true;
+		$tags['div']['aria-modal'] = true;
+		$tags['input']             = array(
 			'id'            => true,
 			'class'         => true,
 			'name'          => true,
@@ -1044,24 +1049,28 @@ class MailsterBlockForms {
 			'placeholder'   => true,
 			'checked'       => true,
 		);
-		$tags['select'] = $tags['input'];
-		$tags['form']   = array(
+		$tags['select']            = $tags['input'];
+		$tags['form']              = array(
+			'action'     => true,
 			'method'     => true,
 			'novalidate' => true,
 			'class'      => true,
 			'style'      => true,
+			'data-*'     => true,
+			'aria-*'     => true,
 		);
-		$tags['style']  = array(
-			'style' => true,
-
+		$tags['style']             = array(
+			'class' => true,
 		);
-		$tags['script'] = array(
+		$tags['script']            = array(
 			'class' => true,
 			'type'  => true,
 		);
-		$tags['option'] = array(
+		$tags['option']            = array(
 			'value' => true,
 		);
+		$tags['svg']               = true;
+		$tags['text']              = true;
 
 		return $tags;
 	}
@@ -1356,7 +1365,7 @@ class MailsterBlockForms {
 		}
 
 		$inject  = '';
-		$inject .= '<a class="mailster-block-form-close" aria-label="' . esc_attr__( 'close', 'mailster' ) . '" tabindex="0">&#10005;</a>';
+		$inject .= '<a class="mailster-block-form-close" aria-label="' . esc_attr__( 'close', 'mailster' ) . '" tabindex="0"><svg><text>&#10005;</text></svg></a>';
 		$inject .= '<script class="mailster-block-form-data" type="application/json">' . json_encode( $form_args ) . '</script>';
 		$inject .= '<input name="_formid" type="hidden" value="' . esc_attr( $form->ID ) . '">' . "\n";
 		$inject .= '<input name="_timestamp" type="hidden" value="' . esc_attr( time() ) . '">' . "\n";
