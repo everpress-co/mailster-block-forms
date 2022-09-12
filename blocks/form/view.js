@@ -20,7 +20,7 @@ import apiFetch from '@wordpress/api-fetch';
 		: window.addEventListener('DOMContentLoaded', app);
 
 	function app() {
-		let body = document.querySelector('body');
+		let html = document.documentElement;
 		let forms = document.querySelectorAll('.mailster-block-form');
 
 		Array.prototype.forEach.call(forms, (form, i) => {
@@ -29,9 +29,8 @@ import apiFetch from '@wordpress/api-fetch';
 
 			let wrap = form.closest('.wp-block-mailster-form-outside-wrapper');
 			let isPopup = !!wrap.getAttribute('aria-modal');
-			let closeButton = wrap.querySelector('.mailster-block-form-close');
-			let iCloseButton = wrap.querySelector(
-				'.mailster-block-form-inner-close'
+			let closeButtons = wrap.querySelectorAll(
+				'.mailster-block-form-close, .mailster-block-form-inner-close'
 			);
 			let countImpressionEvery = 3600;
 			let openIfClosedAfter = 3600;
@@ -261,18 +260,14 @@ import apiFetch from '@wordpress/api-fetch';
 					document.addEventListener('keyup', closeOnEsc);
 
 					//wrap.addEventListener('click', closeFormExplicit);
-					closeButton.addEventListener('click', closeFormExplicit);
-					iCloseButton &&
-						iCloseButton.addEventListener(
-							'click',
-							closeFormExplicit
-						);
+					closeButtons.forEach((btn) =>
+						btn.addEventListener('click', closeFormExplicit)
+					);
 					form.addEventListener('click', stopPropagation);
 
 					wrap.classList.add('active');
 					wrap.setAttribute('aria-hidden', 'false');
-					body.classList.add('mailster-form-active');
-					body.setAttribute('aria-hidden', 'true');
+					html.classList.add('mailster-form-active');
 
 					if (event && event.type === 'click') {
 						form.querySelector('input.input').focus();
@@ -299,20 +294,19 @@ import apiFetch from '@wordpress/api-fetch';
 				document.removeEventListener('keyup', closeOnEsc);
 				document.removeEventListener('keydown', handleTab);
 				wrap.removeEventListener('click', closeForm);
-				closeButton.removeEventListener('click', closeForm);
-				iCloseButton &&
-					iCloseButton.removeEventListener('click', closeForm);
+				closeButtons.forEach((btn) =>
+					btn.removeEventListener('click', closeFormExplicit)
+				);
 				form.removeEventListener('click', stopPropagation);
 
 				wrap.classList.add('closing');
-				body.classList.remove('mailster-form-active');
+				html.classList.remove('mailster-form-active');
 
 				setTimeout(() => {
 					wrap.classList.remove('closing');
 					wrap.classList.remove('active');
 					wrap.setAttribute('aria-hidden', 'true');
-					body.setAttribute('aria-hidden', 'false');
-				}, 1500);
+				}, 1000);
 			}
 
 			function closeFormExplicit(event) {

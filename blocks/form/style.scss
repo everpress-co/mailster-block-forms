@@ -1,5 +1,8 @@
-body.mailster-form-active {
+html.mailster-form-active {
 	overflow: hidden;
+	body {
+		overflow: hidden;
+	}
 }
 .mailster-block-form-type-popup,
 .mailster-block-form-type-bar,
@@ -40,6 +43,8 @@ body.mailster-form-active {
 	.mailster-block-form-type-bar {
 		.mailster-block-form {
 			width: 70vw;
+			max-height: 100%;
+			max-height: -webkit-fill-available; /* for Chrome iOS not showing the close button */
 		}
 	}
 	.wp-block-mailster-form-outside-wrapper
@@ -120,19 +125,18 @@ body.mailster-form-active {
 }
 @media only screen and (max-width: 800px) {
 	.mailster-block-form-type-popup .mailster-block-form-close {
-		transform: translate(0%, 0%);
-		font-size: 160%;
-		width: 40px;
-		height: 40px;
+		transform: translate(-20%, 20%);
+		width: 35px;
+		height: 35px;
 		opacity: 1;
-		svg text {
-			stroke-width: 2px;
+		svg path {
+			stroke-width: 10px;
 			fill: #ffffff;
 			stroke: rgba(0, 0, 0, 0.8);
 		}
 	}
 	.is-light-bg.mailster-block-form-type-popup .mailster-block-form-close {
-		svg text {
+		svg path {
 			fill: #000000;
 			stroke: rgba(255, 255, 255, 0.8);
 		}
@@ -190,6 +194,11 @@ body.mailster-form-active {
 		max-width: 98vw;
 		overflow: auto;
 		overflow-y: auto;
+		-ms-overflow-style: none;
+		scrollbar-width: none;
+	}
+	.mailster-block-form-inner::-webkit-scrollbar {
+		display: none;
 	}
 }
 .mailster-block-form.wp-block-mailster-form-wrapper .mailster-block-form-inner,
@@ -347,36 +356,28 @@ body.mailster-form-active {
 	z-index: 1000;
 	animation: mailster-showlate 1.5s 1 linear;
 	cursor: pointer;
-	color: #fff;
-	font-size: 120%;
-	font-weight: 900;
-	line-height: 1em;
 	user-select: none;
 	background: none;
 	border: none;
-	text-align: center;
-	width: 30px;
-	height: 30px;
+	width: 25px;
+	height: 25px;
 	svg {
 		width: 100%;
 		height: 100%;
 		paint-order: stroke;
 		overflow: visible;
 	}
-	svg text {
+	svg path {
 		fill: #000;
-		text-anchor: middle;
-		dominant-baseline: central;
-		transform: translate(50%, 50%);
 	}
 }
 .is-dark-bg .mailster-block-form-close {
-	svg text {
+	svg path {
 		fill: #fff;
 	}
 }
 .is-light-bg .mailster-block-form-close {
-	svg text {
+	svg path {
 		fill: #000;
 	}
 }
@@ -691,7 +692,7 @@ body.mailster-form-active {
 }
 .wp-block-mailster-form-outside-wrapper.closing {
 	pointer-events: none;
-	transition: opacity 1.5s;
+	transition: opacity 1s;
 	opacity: 0;
 }
 .wp-block-mailster-form-outside-wrapper.closing .mailster-block-form {
