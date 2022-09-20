@@ -1069,8 +1069,12 @@ class MailsterBlockForms {
 		$tags['option']            = array(
 			'value' => true,
 		);
-		$tags['svg']               = true;
-		$tags['text']              = true;
+		$tags['svg']               = array(
+			'viewbox' => true,
+		);
+		$tags['path']              = array(
+			'd' => true,
+		);
 
 		return $tags;
 	}
@@ -1365,7 +1369,8 @@ class MailsterBlockForms {
 		}
 
 		$inject  = '';
-		$inject .= '<a class="mailster-block-form-close" aria-label="' . esc_attr__( 'close', 'mailster' ) . '" tabindex="0" href=""><svg><text>&#10005;</text></svg></a>';
+		$inject .= '<a class="mailster-block-form-close" aria-label="' . esc_attr__( 'close', 'mailster' ) . '" tabindex="0"><svg viewbox="0 0 100 100"><path d="M100 10.71 89.29 0 50 39.29 10.71 0 0 10.71 39.29 50 0 89.29 10.71 100 50 60.71 89.29 100 100 89.29 60.71 50z"/></svg></a>';
+
 		$inject .= '<script class="mailster-block-form-data" type="application/json">' . json_encode( $form_args ) . '</script>';
 		$inject .= '<input name="_formid" type="hidden" value="' . esc_attr( $form->ID ) . '">' . "\n";
 		$inject .= '<input name="_timestamp" type="hidden" value="' . esc_attr( time() ) . '">' . "\n";
