@@ -258,8 +258,9 @@ import apiFetch from '@wordpress/api-fetch';
 					removeEventListeners();
 
 					document.addEventListener('keyup', closeOnEsc);
-
+					document.addEventListener('keydown', handleTab);
 					//wrap.addEventListener('click', closeFormExplicit);
+
 					closeButtons.forEach((btn) =>
 						btn.addEventListener('click', closeFormExplicit)
 					);
@@ -267,12 +268,11 @@ import apiFetch from '@wordpress/api-fetch';
 
 					wrap.classList.add('active');
 					wrap.setAttribute('aria-hidden', 'false');
+					wrap.focus();
 					html.classList.add('mailster-form-active');
 
 					if (event && event.type === 'click') {
 						form.querySelector('input.input').focus();
-					} else {
-						document.addEventListener('keydown', handleTab);
 					}
 					countImpression();
 				}
@@ -323,9 +323,13 @@ import apiFetch from '@wordpress/api-fetch';
 
 			function handleTab(event) {
 				if (event.key === 'Tab' || event.keyCode === 9) {
-					wrap.focus();
-					//event.preventDefault();
-					document.removeEventListener('keydown', handleTab);
+					// if close button set focus on wrap to loop through elements with tab
+					if (
+						event.target.classList.contains(
+							'mailster-block-form-close'
+						)
+					)
+						wrap.focus();
 				}
 			}
 
