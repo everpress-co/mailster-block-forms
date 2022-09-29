@@ -226,6 +226,15 @@ html.mailster-form-active {
 	> div {
 		position: relative;
 	}
+	fieldset {
+		border: 0;
+		padding: 0;
+		margin: 0;
+		min-width: 0;
+		legend {
+			display: none;
+		}
+	}
 	.wp-block.wp-block.wp-block.wp-block.wp-block:not(.mailster-wrapper) {
 		margin-top: 0;
 		margin-left: 0;
