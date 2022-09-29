@@ -43,6 +43,13 @@ No, Mailster 3.2.0 or above is required to use this plugin. Get it [here](https:
 
 ## Changelog
 
+### 0.1.5
+
+-   updated cool down method (Please update this settings in the Appearance menu)
+-   using fieldsets for accessibility
+-   use preventDefault on button click to prevent default behavior
+-   preview improvements
+
 ### 0.1.4
 
 -   tab now iterates through elements for accessibility.
