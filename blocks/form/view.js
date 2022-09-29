@@ -251,7 +251,7 @@ import apiFetch from '@wordpress/api-fetch';
 				);
 			}
 
-			function openForm() {
+			function openForm(event) {
 				if (wrap && !wrap.classList.contains('active')) {
 					clearTimeout(delayTimeout);
 					clearTimeout(inactiveTimeout);
@@ -272,6 +272,7 @@ import apiFetch from '@wordpress/api-fetch';
 					html.classList.add('mailster-form-active');
 
 					if (event && event.type === 'click') {
+						event.preventDefault();
 						form.querySelector('input.input').focus();
 					}
 					countImpression();
