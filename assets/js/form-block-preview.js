@@ -24,15 +24,10 @@ jQuery(document).ready(function ($) {
 		document.addEventListener('mouseover', function (event) {
 			if (event.target) {
 				if (current) {
-					current.removeAttribute(
-						'html-elements-screenshot-mouseover-effect'
-					);
+					current.removeAttribute('mouseover-effect');
 				}
 				current = event.target;
-				current.setAttribute(
-					'html-elements-screenshot-mouseover-effect',
-					''
-				);
+				current.setAttribute('mouseover-effect', '');
 				console.warn(findSelector(event.target));
 			}
 		});
@@ -133,7 +128,7 @@ jQuery(document).ready(function ($) {
 			var css = {};
 
 			css['flex-basis'] = data.options.width
-				? data.options.width + '%'
+				? Math.min(96, data.options.width) + '%'
 				: '100%';
 			if (data.options.padding) {
 				css['paddingTop'] = data.options.padding.top || 0;

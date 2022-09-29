@@ -136,17 +136,16 @@ const ModalContent = (props) => {
 	}, [options]);
 
 	useEventListener('message', (e) => {
-		if (!e.data) return;
+		if (!e.data || typeof e.data !== 'string') return;
 		if (!iframeRef.current) return;
 
 		const data = JSON.parse(e.data);
-
-		setDisplayUrl(data.location);
-		setIsLoading(false);
-
 		const form = iframeRef.current.contentWindow.document.querySelector(
 			'.wp-block-mailster-form-outside-wrapper-' + formId
 		);
+		setDisplayUrl(data.location);
+		setIsLoading(false);
+
 		if (form && 'content' == type) {
 			form.scrollIntoView({
 				behavior: 'smooth',
