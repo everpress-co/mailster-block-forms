@@ -125,9 +125,7 @@ html.mailster-form-active {
 }
 @media only screen and (max-width: 800px) {
 	.mailster-block-form-type-popup .mailster-block-form-close {
-		transform: translate(-20%, 20%);
-		width: 35px;
-		height: 35px;
+		transform: translate(-20%, 20%) scale(0.8);
 		opacity: 1;
 		svg path {
 			stroke-width: 10px;
@@ -140,6 +138,12 @@ html.mailster-form-active {
 			fill: #000000;
 			stroke: rgba(255, 255, 255, 0.8);
 		}
+	}
+}
+@media only screen and (max-width: 400px) {
+	.mailster-block-form-type-popup .mailster-block-form-close {
+		width: 30px;
+		height: 30px;
 	}
 }
 .wp-block-mailster-form-outside-wrapper-placeholder form::before {
@@ -225,6 +229,15 @@ html.mailster-form-active {
 	}
 	> div {
 		position: relative;
+	}
+	fieldset {
+		border: 0;
+		padding: 0;
+		margin: 0;
+		min-width: 0;
+		legend {
+			display: none;
+		}
 	}
 	.wp-block.wp-block.wp-block.wp-block.wp-block:not(.mailster-wrapper) {
 		margin-top: 0;
@@ -712,7 +725,7 @@ html.mailster-form-active {
 }
 .wp-block-mailster-form-outside-wrapper.has-animation.animation-heartbeat
 	.mailster-block-form {
-	animation: mailster-heartbeat 1.3s 1 ease-in-out;
+	animation: mailster-heartbeat 1s 1 ease-in-out;
 }
 .wp-block-mailster-form-outside-wrapper.has-animation.animation-swing
 	.mailster-block-form {
@@ -725,7 +738,7 @@ html.mailster-form-active {
 }
 .wp-block-mailster-form-outside-wrapper.has-animation.animation-wobble
 	.mailster-block-form {
-	animation: mailster-wobble 1s 1 ease-in-out;
+	animation: mailster-wobble 0.8s 1 ease-in-out;
 }
 
 @keyframes mailster-info {

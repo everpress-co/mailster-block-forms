@@ -111,7 +111,8 @@ export default function Edit(props) {
 					})}
 				</select>
 			) : (
-				<>
+				<fieldset>
+					<legend>{__('Lists', 'mailster')}</legend>
 					{lists.map((list, i) => {
 						return (
 							<div
@@ -138,7 +139,7 @@ export default function Edit(props) {
 							</div>
 						);
 					})}
-				</>
+				</fieldset>
 			)}
 
 			<InputBlockControls {...props} />

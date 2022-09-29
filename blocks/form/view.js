@@ -26,14 +26,13 @@ import apiFetch from '@wordpress/api-fetch';
 		Array.prototype.forEach.call(forms, (form, i) => {
 			let placement = form.querySelector('.mailster-block-form-data');
 			placement = JSON.parse(placement.textContent);
-
 			let wrap = form.closest('.wp-block-mailster-form-outside-wrapper');
 			let isPopup = !!wrap.getAttribute('aria-modal');
 			let closeButtons = wrap.querySelectorAll(
 				'.mailster-block-form-close, .mailster-block-form-inner-close'
 			);
 			let countImpressionEvery = 3600;
-			let openIfClosedAfter = 3600;
+			let cooldown = (placement.cooldown || 0) * 3600;
 			let scroll = {};
 			let delayTimeout = null;
 			let inactiveTimeout = null;
@@ -224,7 +223,7 @@ import apiFetch from '@wordpress/api-fetch';
 					});
 			});
 
-			function show(delay) {
+			function show() {
 				if (placement.isPreview) {
 					return true;
 				}
@@ -233,7 +232,7 @@ import apiFetch from '@wordpress/api-fetch';
 					return false;
 				}
 
-				if (inTimeFrame('closed', openIfClosedAfter)) {
+				if (inTimeFrame('closed', cooldown)) {
 					return false;
 				}
 
@@ -245,13 +244,10 @@ import apiFetch from '@wordpress/api-fetch';
 			}
 
 			function inTimeFrame(key, delay) {
-				return !(
-					get(key, 0) <
-					+new Date() - (delay ? delay : 60) * 1000
-				);
+				return !(get(key, 0) < +new Date() - delay * 1000);
 			}
 
-			function openForm() {
+			function openForm(event) {
 				if (wrap && !wrap.classList.contains('active')) {
 					clearTimeout(delayTimeout);
 					clearTimeout(inactiveTimeout);
@@ -272,6 +268,7 @@ import apiFetch from '@wordpress/api-fetch';
 					html.classList.add('mailster-form-active');
 
 					if (event && event.type === 'click') {
+						event.preventDefault();
 						form.querySelector('input.input').focus();
 					}
 					countImpression();

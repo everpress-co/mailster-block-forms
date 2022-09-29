@@ -9,33 +9,14 @@
 import { __ } from '@wordpress/i18n';
 
 import {
-	Panel,
 	PanelBody,
 	PanelRow,
 	CheckboxControl,
-	RadioControl,
 	TextControl,
-	CardMedia,
-	Card,
-	CardHeader,
-	CardBody,
-	CardDivider,
-	CardFooter,
-	Button,
-	Modal,
 	Icon,
-	RangeControl,
-	FormTokenField,
-	Flex,
-	FlexItem,
-	FlexBlock,
-	BaseControl,
-	SelectControl,
-	useCopyToClipboard,
 	Tooltip,
 	__experimentalNumberControl as NumberControl,
 } from '@wordpress/components';
-import { undo, chevronRight, chevronLeft, helpFilled } from '@wordpress/icons';
 
 /**
  * Internal dependencies
