@@ -62,12 +62,12 @@ export default function PlacementSettings(props) {
 				<ItemGroup isBordered={false} size="small" className="widefat">
 					<SelectControl
 						label={__('Show form', 'mailster')}
-						value={options.delay}
+						value={options.cooldown}
 						help={__(
 							'Mailster will show this popup again when it has been explicitly closed. If there is a conversation the popup will not show up again.',
 							'mailster'
 						)}
-						onChange={(val) => setOptions({ delay: val })}
+						onChange={(val) => setOptions({ cooldown: val })}
 					>
 						<option value={0}>{__('Always', 'mailster')}</option>
 						<option value={1}>

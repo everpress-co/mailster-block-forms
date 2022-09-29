@@ -32,7 +32,7 @@ import apiFetch from '@wordpress/api-fetch';
 				'.mailster-block-form-close, .mailster-block-form-inner-close'
 			);
 			let countImpressionEvery = 3600;
-			let openIfClosedAfter = (placement.delay || 0) * 3600;
+			let cooldown = (placement.cooldown || 0) * 3600;
 			let scroll = {};
 			let delayTimeout = null;
 			let inactiveTimeout = null;
@@ -232,7 +232,7 @@ import apiFetch from '@wordpress/api-fetch';
 					return false;
 				}
 
-				if (inTimeFrame('closed', openIfClosedAfter)) {
+				if (inTimeFrame('closed', cooldown)) {
 					return false;
 				}
 

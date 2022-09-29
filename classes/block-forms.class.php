@@ -690,7 +690,7 @@ class MailsterBlockForms {
 					'trigger_click'    => '',
 					'trigger_scroll'   => 66,
 					'width'            => 70,
-					'delay'            => 24,
+					'cooldown'         => 24,
 
 				);
 			}
@@ -757,7 +757,7 @@ class MailsterBlockForms {
 								'animation'        => array(
 									'type' => 'string',
 								),
-								'delay'            => array(
+								'cooldown'         => array(
 									'type' => 'integer',
 								),
 							),
@@ -1132,7 +1132,7 @@ class MailsterBlockForms {
 			array(
 				'identifier' => $identifier,
 				'classes'    => array( 'mailster-block-form-type-content' ), // gets overwritten by other types
-				'delay'      => 0,
+				'cooldown'   => 0,
 				'isPreview'  => null,
 			)
 		);
@@ -1357,7 +1357,7 @@ class MailsterBlockForms {
 			array(
 				'id'         => $args['id'],
 				'identifier' => $args['identifier'],
-				'delay'      => $args['delay'],
+				'cooldown'   => $args['cooldown'],
 				'isPreview'  => $args['isPreview'],
 			)
 		);
