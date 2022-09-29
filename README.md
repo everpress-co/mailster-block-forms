@@ -4,7 +4,7 @@ Contributors: everpress, xaverb
 Tags: mailster, blocks, forms, mailsterblockforms  
 Requires at least: 6.0  
 Tested up to: 6.0  
-Stable tag: 0.1.4  
+Stable tag: 0.1.5  
 Requires PHP: 7.2.5+  
 License: GPLv2 or later  
 Author: EverPress  
@@ -42,6 +42,13 @@ Create newsletter signup forms for [Mailster](https://mailster.co/?utm_campaign=
 No, Mailster 3.2.0 or above is required to use this plugin. Get it [here](https://mailster.co/?utm_campaign=wporg&utm_source=Mailster+Block+Forms&utm_medium=readme).
 
 ## Changelog
+
+### 0.1.5
+
+-   updated cool down method (Please update this settings in the Appearance menu)
+-   using fieldsets for accessibility
+-   use preventDefault on button click to prevent default behavior
+-   preview improvements
 
 ### 0.1.4
 
