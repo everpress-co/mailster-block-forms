@@ -1034,6 +1034,7 @@ class MailsterBlockForms {
 	public function wp_kses_allowed_html( $tags ) {
 
 		$tags['a']['tabindex']     = true;
+		$tags['a']['aria-role']     = true;
 		$tags['div']['tabindex']   = true;
 		$tags['div']['aria-modal'] = true;
 		$tags['input']             = array(
@@ -1372,12 +1373,11 @@ class MailsterBlockForms {
 		}
 
 		$inject  = '';
-		$inject .= '<a class="mailster-block-form-close" aria-label="' . esc_attr__( 'close', 'mailster' ) . '" tabindex="0"><svg viewbox="0 0 100 100"><path d="M100 10.71 89.29 0 50 39.29 10.71 0 0 10.71 39.29 50 0 89.29 10.71 100 50 60.71 89.29 100 100 89.29 60.71 50z"/></svg></a>';
-
 		$inject .= '<script class="mailster-block-form-data" type="application/json">' . json_encode( $form_args ) . '</script>';
 		$inject .= '<input name="_formid" type="hidden" value="' . esc_attr( $form->ID ) . '" />' . "\n";
 		$inject .= '<input name="_timestamp" type="hidden" value="' . esc_attr( time() ) . '" />' . "\n";
-
+		$inject .= '<button class="mailster-block-form-close"  aria-label="' . esc_attr__( 'close', 'mailster' ) . '" tabindex="0"><svg viewbox="0 0 100 100"><path d="M100 10.71 89.29 0 50 39.29 10.71 0 0 10.71 39.29 50 0 89.29 10.71 100 50 60.71 89.29 100 100 89.29 60.71 50z"/></svg></button>';
+		
 		$output = str_replace( '</form>', $inject . '</form>', $output );
 
 		return $output;
