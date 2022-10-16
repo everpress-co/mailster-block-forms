@@ -25,13 +25,8 @@ export default function PlacementSettings(props) {
 	const { options, setOptions, placement, attributes } = props;
 	const { type } = placement;
 
-	const padding = options.padding ||
-		attributes?.style?.spacing?.padding || {
-			top: '1em',
-			left: '1em',
-			right: '1em',
-			bottom: '1em',
-		};
+	const padding =
+		options.padding || attributes?.style?.spacing?.padding || {};
 
 	return (
 		<PanelBody title={__('Appearance', 'mailster')} initialOpen={false}>
