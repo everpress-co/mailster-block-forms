@@ -2,15 +2,19 @@ document.documentElement.setAttribute('hidden', true);
 jQuery(document).ready(function ($) {
 	'use strict';
 
-	var oldUrl;
-	var lastanimation = '';
+	var oldUrl,
+		lastanimation = '',
+		form = $('.wp-block-mailster-form-outside-wrapper-placeholder');
 
 	document.documentElement.removeAttribute('hidden');
-	$('.wp-block-mailster-form-outside-wrapper-placeholder')[0].scrollIntoView({
-		behavior: 'auto',
-		block: 'center',
-		inline: 'nearest',
-	});
+
+	if (form.length && !form.is('.is-empty')) {
+		form[0].scrollIntoView({
+			behavior: 'auto',
+			block: 'center',
+			inline: 'nearest',
+		});
+	}
 
 	$('a[href]')
 		.css({ cursor: 'not-allowed' })
@@ -28,7 +32,6 @@ jQuery(document).ready(function ($) {
 				}
 				current = event.target;
 				current.setAttribute('mouseover-effect', '');
-				console.warn(findSelector(event.target));
 			}
 		});
 
@@ -150,7 +153,6 @@ jQuery(document).ready(function ($) {
 			var form = $(
 				'.wp-block-mailster-form-outside-wrapper-' + data.form_id
 			);
-
 			form.removeClass('has-animation animation-' + lastanimation);
 
 			if (data.options.animation) {

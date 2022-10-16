@@ -262,7 +262,7 @@ class MailsterBlockForms {
 			$this->forms[ $this->preview_data['type'] ][ $this->preview_data['form_id'] ] = $this->preview_data['options'];
 
 			$suffix = '';
-			wp_enqueue_script( 'mailster-form-block-preview', MAILSTER_FORM_BLOCK_URI . 'assets/js/form-block-preview' . $suffix . '.js', array( 'jquery' ), MAILSTER_VERSION );
+			wp_enqueue_script( 'mailster-form-block-preview', MAILSTER_FORM_BLOCK_URI . 'assets/js/form-block-preview' . $suffix . '.js', array( 'jquery', 'mailster-form-view-script', 'wp-api-fetch' ), MAILSTER_VERSION );
 			wp_enqueue_style( 'mailster-form-block-preview', MAILSTER_FORM_BLOCK_URI . 'assets/css/form-block-preview' . $suffix . '.css', array(), MAILSTER_VERSION );
 
 		} elseif ( $forms = $this->query_forms() ) {
@@ -1034,7 +1034,7 @@ class MailsterBlockForms {
 	public function wp_kses_allowed_html( $tags ) {
 
 		$tags['a']['tabindex']     = true;
-		$tags['a']['aria-role']     = true;
+		$tags['a']['aria-role']    = true;
 		$tags['div']['tabindex']   = true;
 		$tags['div']['aria-modal'] = true;
 		$tags['input']             = array(
@@ -1120,11 +1120,6 @@ class MailsterBlockForms {
 			}
 		}
 
-		// further checks for revisions
-		if ( get_post_status( $form ) !== 'publish' ) {
-			return;
-		}
-
 		// create identifier based on arguments
 		$identifier = $this->get_identifier( $form );
 
@@ -1161,6 +1156,7 @@ class MailsterBlockForms {
 			}
 			$is_preview = true;
 		} else {
+
 			$form_block = $this->get_form_block( $form );
 		}
 
@@ -1377,7 +1373,7 @@ class MailsterBlockForms {
 		$inject .= '<input name="_formid" type="hidden" value="' . esc_attr( $form->ID ) . '" />' . "\n";
 		$inject .= '<input name="_timestamp" type="hidden" value="' . esc_attr( time() ) . '" />' . "\n";
 		$inject .= '<button class="mailster-block-form-close"  aria-label="' . esc_attr__( 'close', 'mailster' ) . '" tabindex="0"><svg viewbox="0 0 100 100"><path d="M100 10.71 89.29 0 50 39.29 10.71 0 0 10.71 39.29 50 0 89.29 10.71 100 50 60.71 89.29 100 100 89.29 60.71 50z"/></svg></button>';
-		
+
 		$output = str_replace( '</form>', $inject . '</form>', $output );
 
 		return $output;
