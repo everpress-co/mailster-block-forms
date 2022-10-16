@@ -12,7 +12,7 @@ Author URI: https://mailster.co
 
 ## Description
 
-Create newsletter signup forms for [Mailster](https://mailster.co/?utm_campaign=wporg&utm_source=Mailster+Block+Forms&utm_medium=readme) with the block editor.
+Create newsletter signup forms for [Mailster](https://mailster.co/?utm_campaign=wporg&utm_source=wordpress.org&utm_medium=readme&utm_term=Mailster+Block+Forms) with the block editor.
 
 **Read the [documentation](https://docs.mailster.co/#/block-forms-overview)**
 
@@ -39,7 +39,7 @@ Create newsletter signup forms for [Mailster](https://mailster.co/?utm_campaign=
 
 ### Can I use this as a stand alone plugin?
 
-No, Mailster 3.2.0 or above is required to use this plugin. Get it [here](https://mailster.co/?utm_campaign=wporg&utm_source=Mailster+Block+Forms&utm_medium=readme).
+No, Mailster 3.2.0 or above is required to use this plugin. Get it [here](https://mailster.co/?utm_campaign=wporg&utm_source=wordpress.org&utm_medium=readme&utm_term=Mailster+Block+Forms).
 
 ## Changelog
 
@@ -77,4 +77,4 @@ No, Mailster 3.2.0 or above is required to use this plugin. Get it [here](https:
 
 ## Additional Info
 
-> This Plugin requires [Mailster Newsletter Plugin for WordPress](https://mailster.co/?utm_campaign=wporg&utm_source=Mailster+Block+Forms&utm_medium=readme)
+> This Plugin requires [Mailster Newsletter Plugin for WordPress](https://mailster.co/?utm_campaign=wporg&utm_source=wordpress.org&utm_medium=readme&utm_term=Mailster+Block+Forms)
