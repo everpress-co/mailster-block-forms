@@ -41,7 +41,11 @@ html {
 .wp-block-mailster-form-outside-wrapper-placeholder .mailster-label::after {
 	display: none !important;
 }
-
+@media only screen and (max-width: 400px) {
+	.wp-block-mailster-form-wrapper {
+		flex-basis: 100% !important;
+	}
+}
 @keyframes mailster-placeholder {
 	0% {
 		background-position: 800px 0;

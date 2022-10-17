@@ -176,8 +176,9 @@ class Mailster_REST_Subscribe_Controller extends WP_REST_Controller {
 
 		$response = array(
 			'data' => array(
-				'status'   => 200,
-				'redirect' => $redirect,
+				'status'            => 200,
+				'subscriber_status' => $entry['status'],
+				'redirect'          => $redirect ? $redirect : null,
 			),
 		);
 

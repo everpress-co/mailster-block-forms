@@ -2,15 +2,19 @@ document.documentElement.setAttribute('hidden', true);
 jQuery(document).ready(function ($) {
 	'use strict';
 
-	var oldUrl;
-	var lastanimation = '';
+	var oldUrl,
+		lastanimation = '',
+		form = $('.wp-block-mailster-form-outside-wrapper-placeholder');
 
 	document.documentElement.removeAttribute('hidden');
-	$('.wp-block-mailster-form-outside-wrapper-placeholder')[0].scrollIntoView({
-		behavior: 'auto',
-		block: 'center',
-		inline: 'nearest',
-	});
+
+	if (form.length && !form.is('.is-empty')) {
+		form[0].scrollIntoView({
+			behavior: 'auto',
+			block: 'center',
+			inline: 'nearest',
+		});
+	}
 
 	$('a[href]')
 		.css({ cursor: 'not-allowed' })
@@ -24,16 +28,10 @@ jQuery(document).ready(function ($) {
 		document.addEventListener('mouseover', function (event) {
 			if (event.target) {
 				if (current) {
-					current.removeAttribute(
-						'html-elements-screenshot-mouseover-effect'
-					);
+					current.removeAttribute('mouseover-effect');
 				}
 				current = event.target;
-				current.setAttribute(
-					'html-elements-screenshot-mouseover-effect',
-					''
-				);
-				console.warn(findSelector(event.target));
+				current.setAttribute('mouseover-effect', '');
 			}
 		});
 
@@ -133,7 +131,7 @@ jQuery(document).ready(function ($) {
 			var css = {};
 
 			css['flex-basis'] = data.options.width
-				? data.options.width + '%'
+				? Math.min(96, data.options.width) + '%'
 				: '100%';
 			if (data.options.padding) {
 				css['paddingTop'] = data.options.padding.top || 0;
@@ -155,7 +153,6 @@ jQuery(document).ready(function ($) {
 			var form = $(
 				'.wp-block-mailster-form-outside-wrapper-' + data.form_id
 			);
-
 			form.removeClass('has-animation animation-' + lastanimation);
 
 			if (data.options.animation) {

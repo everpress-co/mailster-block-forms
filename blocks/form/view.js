@@ -26,14 +26,18 @@ import apiFetch from '@wordpress/api-fetch';
 		Array.prototype.forEach.call(forms, (form, i) => {
 			let placement = form.querySelector('.mailster-block-form-data');
 			placement = JSON.parse(placement.textContent);
-
 			let wrap = form.closest('.wp-block-mailster-form-outside-wrapper');
 			let isPopup = !!wrap.getAttribute('aria-modal');
 			let closeButtons = wrap.querySelectorAll(
 				'.mailster-block-form-close, .mailster-block-form-inner-close'
 			);
+			let closeButton = closeButtons[closeButtons.length - 1];
+			let firstFocusable = wrap.querySelector(
+				'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+			);
+			let info = form.querySelector('.mailster-block-form-info');
 			let countImpressionEvery = 3600;
-			let openIfClosedAfter = 3600;
+			let cooldown = (placement.cooldown || 0) * 3600;
 			let scroll = {};
 			let delayTimeout = null;
 			let inactiveTimeout = null;
@@ -126,7 +130,6 @@ import apiFetch from '@wordpress/api-fetch';
 				let formData = new FormData(form),
 					data = {},
 					message = [],
-					info = form.querySelector('.mailster-block-form-info'),
 					submit = form.querySelector('.submit-button'),
 					infoSuccess = info.querySelector(
 						'.mailster-block-form-info-success .mailster-block-form-info-extra'
@@ -147,7 +150,14 @@ import apiFetch from '@wordpress/api-fetch';
 				form.classList.add('loading');
 				form.setAttribute('disabled', true);
 
-				formData.append('_referer', document.referrer);
+				if (
+					new URL(document.referrer).origin ==
+					document.location.origin
+				) {
+					formData.append('_referer', document.location.href);
+				} else {
+					formData.append('_referer', document.referrer);
+				}
 
 				for (let key of formData.keys()) {
 					data[key] = formData.get(key);
@@ -160,6 +170,7 @@ import apiFetch from '@wordpress/api-fetch';
 				})
 					.then((response) => {
 						set('conversion');
+						triggerEvent(form, 'submit', response.data);
 
 						info.classList.remove('is-error');
 
@@ -168,13 +179,15 @@ import apiFetch from '@wordpress/api-fetch';
 							return;
 						}
 
-						info.classList.add('is-success');
-
 						infoSuccess.innerHTML = message.join('<br>');
+						info.setAttribute('role', 'alert');
+						info.classList.add('is-success');
 
 						if (!form.classList.contains('is-profile')) {
 							form.classList.add('completed');
 							form.reset();
+							document.activeElement.blur();
+							isPopup && setTimeout(() => closeForm(), 3000);
 						}
 					})
 					.catch((error) => {
@@ -214,6 +227,7 @@ import apiFetch from '@wordpress/api-fetch';
 						info.classList.remove('is-success');
 						info.classList.add('is-error');
 						infoError.innerHTML = message.join('');
+						triggerEvent(form, 'error', error.data);
 					})
 					.finally(() => {
 						set('show');
@@ -224,7 +238,7 @@ import apiFetch from '@wordpress/api-fetch';
 					});
 			});
 
-			function show(delay) {
+			function show() {
 				if (placement.isPreview) {
 					return true;
 				}
@@ -233,7 +247,7 @@ import apiFetch from '@wordpress/api-fetch';
 					return false;
 				}
 
-				if (inTimeFrame('closed', openIfClosedAfter)) {
+				if (inTimeFrame('closed', cooldown)) {
 					return false;
 				}
 
@@ -245,13 +259,10 @@ import apiFetch from '@wordpress/api-fetch';
 			}
 
 			function inTimeFrame(key, delay) {
-				return !(
-					get(key, 0) <
-					+new Date() - (delay ? delay : 60) * 1000
-				);
+				return !(get(key, 0) < +new Date() - delay * 1000);
 			}
 
-			function openForm() {
+			function openForm(event) {
 				if (wrap && !wrap.classList.contains('active')) {
 					clearTimeout(delayTimeout);
 					clearTimeout(inactiveTimeout);
@@ -259,7 +270,10 @@ import apiFetch from '@wordpress/api-fetch';
 
 					document.addEventListener('keyup', closeOnEsc);
 					document.addEventListener('keydown', handleTab);
-					//wrap.addEventListener('click', closeFormExplicit);
+					setTimeout(
+						() => wrap.addEventListener('click', closeFormExplicit),
+						1500
+					);
 
 					closeButtons.forEach((btn) =>
 						btn.addEventListener('click', closeFormExplicit)
@@ -267,13 +281,17 @@ import apiFetch from '@wordpress/api-fetch';
 					form.addEventListener('click', stopPropagation);
 
 					wrap.classList.add('active');
+					info.classList.remove('is-success');
+					form.classList.remove('completed');
 					wrap.setAttribute('aria-hidden', 'false');
 					wrap.focus();
 					html.classList.add('mailster-form-active');
 
 					if (event && event.type === 'click') {
-						form.querySelector('input.input').focus();
+						event.preventDefault();
+						firstFocusable.focus();
 					}
+					triggerEvent(form, 'open', placement);
 					countImpression();
 				}
 			}
@@ -294,6 +312,7 @@ import apiFetch from '@wordpress/api-fetch';
 				document.removeEventListener('keyup', closeOnEsc);
 				document.removeEventListener('keydown', handleTab);
 				wrap.removeEventListener('click', closeForm);
+				wrap.removeEventListener('click', closeFormExplicit);
 				closeButtons.forEach((btn) =>
 					btn.removeEventListener('click', closeFormExplicit)
 				);
@@ -302,11 +321,13 @@ import apiFetch from '@wordpress/api-fetch';
 				wrap.classList.add('closing');
 				html.classList.remove('mailster-form-active');
 
+				triggerEvent(form, 'close', placement);
+
 				setTimeout(() => {
 					wrap.classList.remove('closing');
 					wrap.classList.remove('active');
 					wrap.setAttribute('aria-hidden', 'true');
-				}, 1000);
+				}, 500);
 			}
 
 			function closeFormExplicit(event) {
@@ -323,13 +344,16 @@ import apiFetch from '@wordpress/api-fetch';
 
 			function handleTab(event) {
 				if (event.key === 'Tab' || event.keyCode === 9) {
-					// if close button set focus on wrap to loop through elements with tab
-					if (
-						event.target.classList.contains(
-							'mailster-block-form-close'
-						)
-					)
-						wrap.focus();
+					// select close button when using tab navigation on the first element
+					if (firstFocusable === event.target && event.shiftKey) {
+						closeButton.focus();
+						event.preventDefault();
+					}
+					// select first element when close button is focused
+					if (closeButton === event.target && !event.shiftKey) {
+						firstFocusable.focus();
+						event.preventDefault();
+					}
 				}
 			}
 
@@ -394,6 +418,19 @@ import apiFetch from '@wordpress/api-fetch';
 		);
 	}
 
+	function triggerEvent(target, name, detail) {
+		const event = new CustomEvent('mailster:' + name, {
+			bubbles: true,
+			detail,
+		});
+
+		if (typeof target === 'string') {
+			target = document.querySelector(target);
+		}
+
+		target.dispatchEvent(event);
+	}
+
 	function debounce(func, wait, immediate) {
 		let timeout;
 
@@ -426,10 +463,5 @@ import apiFetch from '@wordpress/api-fetch';
 		);
 		let yiq = (c[1] * 299 + c[2] * 587 + c[3] * 114) / 1000;
 		return yiq >= 128 ? 'is-light-bg' : 'is-dark-bg';
-	}
-
-	function _trigger(event, data) {
-		data = data ? { detail: data } : null;
-		return document.dispatchEvent(new CustomEvent(event, data));
 	}
 })();

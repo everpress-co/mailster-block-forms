@@ -66,7 +66,8 @@ export default function FormElement(props) {
 	switch (type) {
 		case 'radio':
 			return (
-				<>
+				<fieldset>
+					<legend>{label}</legend>
 					{values.map((value, i) => {
 						const fieldid = isEditor
 							? null
@@ -101,17 +102,18 @@ export default function FormElement(props) {
 							</div>
 						);
 					})}
-				</>
+				</fieldset>
 			);
 		case 'checkbox':
 			const fieldid = isEditor
 				? null
 				: cleanForSlug(name) + '-' + attributes.id;
 			return (
-				<div
+				<fieldset
 					className="mailster-group mailster-group-checkbox"
 					style={inputStyle}
 				>
+					<legend>{label}</legend>
 					<input
 						name={name}
 						id={fieldid}
@@ -125,7 +127,7 @@ export default function FormElement(props) {
 					<label className="mailster-label" htmlFor={fieldid}>
 						{label}
 					</label>
-				</div>
+				</fieldset>
 			);
 		case 'dropdown':
 			return (

@@ -6,72 +6,24 @@
  * WordPress dependencies
  */
 
-import { __, sprintf } from '@wordpress/i18n';
+import { __ } from '@wordpress/i18n';
 
 import {
-	useBlockProps,
-	InspectorControls,
-	RichText,
-	PlainText,
-	BlockPatternList,
-	BlockPreview,
-} from '@wordpress/block-editor';
-import {
-	BaseControl,
-	Panel,
-	PanelBody,
-	PanelRow,
-	CheckboxControl,
 	TextControl,
-	TextareaControl,
-	CardMedia,
-	Card,
-	CardHeader,
-	CardBody,
-	CardDivider,
-	CardFooter,
-	Spinner,
 	Flex,
 	FlexItem,
 	TabPanel,
 	Toolbar,
-	ToolbarGroup,
-	ToolbarItem,
 	ToolbarButton,
-	__experimentalGrid as Grid,
 } from '@wordpress/components';
 
-import {
-	Fragment,
-	Component,
-	useState,
-	useEffect,
-	useRef,
-	useMemo,
-} from '@wordpress/element';
-import {
-	useSelect,
-	select,
-	useDispatch,
-	dispatch,
-	subscribe,
-} from '@wordpress/data';
+import { useState, useEffect, useRef } from '@wordpress/element';
+import { useSelect } from '@wordpress/data';
 
-import apiFetch from '@wordpress/api-fetch';
-
-import { useFocusableIframe } from '@wordpress/compose';
-
-import { Modal, Button, Tooltip } from '@wordpress/components';
+import { Modal } from '@wordpress/components';
 import { useDebounce } from '@wordpress/compose';
 
-import {
-	check,
-	desktop,
-	tablet,
-	mobile,
-	update,
-	login,
-} from '@wordpress/icons';
+import { desktop, tablet, mobile, update, login } from '@wordpress/icons';
 import { useEntityProp } from '@wordpress/core-data';
 
 /**
@@ -184,17 +136,16 @@ const ModalContent = (props) => {
 	}, [options]);
 
 	useEventListener('message', (e) => {
-		if (!e.data) return;
+		if (!e.data || typeof e.data !== 'string') return;
 		if (!iframeRef.current) return;
 
 		const data = JSON.parse(e.data);
-
-		setDisplayUrl(data.location);
-		setIsLoading(false);
-
 		const form = iframeRef.current.contentWindow.document.querySelector(
 			'.wp-block-mailster-form-outside-wrapper-' + formId
 		);
+		setDisplayUrl(data.location);
+		setIsLoading(false);
+
 		if (form && 'content' == type) {
 			form.scrollIntoView({
 				behavior: 'smooth',
