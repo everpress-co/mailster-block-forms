@@ -134,9 +134,22 @@ body::before {
 	overflow: auto;
 	max-width: 248px;
 }
+.custom-events-tabs .components-tab-panel__tabs {
+	overflow: auto;
+	max-width: 248px;
+}
 
 .css-modal {
 	.custom-css-tabs {
+		width: 100%;
+		.components-tab-panel__tabs {
+			overflow: unset;
+			max-width: none;
+		}
+	}
+}
+.events-modal {
+	.custom-events-tabs {
 		width: 100%;
 		.components-tab-panel__tabs {
 			overflow: unset;

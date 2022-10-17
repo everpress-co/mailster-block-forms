@@ -25,6 +25,7 @@ import { useEntityProp } from '@wordpress/core-data';
 import InputStyles from './InputStyles';
 import FormStyles from './FormStyles';
 import Css from './Css';
+import Events from './Events';
 import Options from './Options';
 import Doubleoptin from './Doubleoptin';
 import Lists from './Lists';
@@ -101,6 +102,7 @@ function SettingsPanelPlugin() {
 			<FormStyles {...blockProps} />
 			<InputStyles {...blockProps} />
 			<Css {...blockProps} />
+			<Events {...blockProps} />
 			<Placement meta={meta} setMeta={setMeta} {...blockProps} />
 		</>
 	);

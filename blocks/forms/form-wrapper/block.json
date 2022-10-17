@@ -57,6 +57,16 @@
 				"mobile": ""
 			}
 		},
+		"events": {
+			"type": "object",
+			"default": {
+				"impression": "",
+				"open": "",
+				"close": "",
+				"submit": "",
+				"error": ""
+			}
+		},
 		"basiccss": {
 			"type": "boolean"
 		}

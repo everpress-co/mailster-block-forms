@@ -824,6 +824,12 @@ class MailsterBlockForms {
 					'codemirror' => array( 'lint' => true ),
 				)
 			);
+			wp_enqueue_code_editor(
+				array(
+					'type'       => 'javascript',
+					'codemirror' => array( 'lint' => true ),
+				)
+			);
 
 			$blocks = $this->get_blocks();
 
@@ -1276,6 +1282,21 @@ class MailsterBlockForms {
 		// add inline styles from block for visual accuracy
 		if ( $is_backend && $input_styles = get_option( 'mailster_inline_styles' ) ) {
 			$embeded_style .= $input_styles;
+		}
+
+		$events = '';
+		if ( isset( $form_block['attrs']['events'] ) ) {
+			foreach ( $form_block['attrs']['events'] as $eventname => $rawjs ) {
+				if ( empty( $rawjs ) ) {
+					continue;
+				}
+
+				$events .= 'window.mailsterBlockEvents["' . $uniqid . '"]["' . $eventname . '"] = function(){' . $rawjs . '};';
+			}
+		}
+
+		if ( ! empty( $events ) ) {
+			$output = '<script class="mailster-form-script-' . $uniqid . '">window.mailsterBlockEvents = window.mailsterBlockEvents || {};window.mailsterBlockEvents["' . $uniqid . '"] = window.mailsterBlockEvents["' . $uniqid . '"] || {};' . $events . '</script>' . $output;
 		}
 
 		if ( isset( $form_block['attrs']['css'] ) ) {
