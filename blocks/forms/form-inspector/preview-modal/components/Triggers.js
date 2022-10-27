@@ -144,7 +144,7 @@ export default function Triggers(props) {
 						isShiftStepEnabled
 						step={1}
 						min={1}
-						min={100}
+						max={100}
 						value={options.trigger_scroll}
 						label={__('Scroll Position in %', 'mailster')}
 						labelPosition="edge"
