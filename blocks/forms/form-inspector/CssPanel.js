@@ -36,7 +36,7 @@ input, select {
 	font: inherit;
 }
 .submit-button{
-    border:initial;
+    border: initial;
     padding: .6em;
 }`;
 
@@ -170,22 +170,22 @@ export const CssPanel = (props) => {
 		if (!isOpened || !wp.CodeMirror) return;
 
 		setTimeout(() => {
-			if (!document || document.querySelector('.CodeMirror')) return;
+			const el = document.getElementById('custom-css-textarea');
+			if (!el) return;
 
 			const settings = {
 				...wp.codeEditor.defaultSettings.codemirror,
 				...{
+					mode: 'text/css',
 					autofocus: true,
 					placeholder: placeholder,
 				},
 			};
 
-			codeEditor = wp.CodeMirror.fromTextArea(
-				document.getElementById('custom-css-textarea'),
-				settings
-			).on('change', function (editor) {
-				setCssDebounce(name, editor.getValue());
-			});
+			codeEditor = wp.CodeMirror.fromTextArea(el, settings).on(
+				'change',
+				(editor) => setEventsDebounce(name, editor.getValue())
+			);
 		}, 0);
 
 		return;

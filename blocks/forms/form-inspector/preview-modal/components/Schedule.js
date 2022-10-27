@@ -76,7 +76,7 @@ function ScheduleEntry(props) {
 							)}
 						</Button>
 					)}
-					onClose={() => console.warn('asdasdasd')}
+					onClose={() => console.warn('close')}
 					renderContent={() => (
 						<DateTimePicker
 							currentDate={schedule.start}
