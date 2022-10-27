@@ -262,7 +262,7 @@ class MailsterBlockForms {
 			$this->forms[ $this->preview_data['type'] ][ $this->preview_data['form_id'] ] = $this->preview_data['options'];
 
 			$suffix = '';
-			wp_enqueue_script( 'mailster-form-block-preview', MAILSTER_FORM_BLOCK_URI . 'assets/js/form-block-preview' . $suffix . '.js', array( 'jquery' ), MAILSTER_VERSION );
+			wp_enqueue_script( 'mailster-form-block-preview', MAILSTER_FORM_BLOCK_URI . 'assets/js/form-block-preview' . $suffix . '.js', array( 'jquery', 'mailster-form-view-script', 'wp-api-fetch' ), MAILSTER_VERSION );
 			wp_enqueue_style( 'mailster-form-block-preview', MAILSTER_FORM_BLOCK_URI . 'assets/css/form-block-preview' . $suffix . '.css', array(), MAILSTER_VERSION );
 
 		} elseif ( $forms = $this->query_forms() ) {
@@ -690,6 +690,7 @@ class MailsterBlockForms {
 					'trigger_click'    => '',
 					'trigger_scroll'   => 66,
 					'width'            => 70,
+					'cooldown'         => 24,
 
 				);
 			}
@@ -756,7 +757,7 @@ class MailsterBlockForms {
 								'animation'        => array(
 									'type' => 'string',
 								),
-								'delay'            => array(
+								'cooldown'         => array(
 									'type' => 'integer',
 								),
 							),
@@ -820,7 +821,7 @@ class MailsterBlockForms {
 
 			wp_enqueue_code_editor(
 				array(
-					'type'       => 'text/css',
+					'type'       => 'htmlmixed',
 					'codemirror' => array( 'lint' => true ),
 				)
 			);
@@ -1033,6 +1034,7 @@ class MailsterBlockForms {
 	public function wp_kses_allowed_html( $tags ) {
 
 		$tags['a']['tabindex']     = true;
+		$tags['a']['aria-role']    = true;
 		$tags['div']['tabindex']   = true;
 		$tags['div']['aria-modal'] = true;
 		$tags['input']             = array(
@@ -1118,11 +1120,6 @@ class MailsterBlockForms {
 			}
 		}
 
-		// further checks for revisions
-		if ( get_post_status( $form ) !== 'publish' ) {
-			return;
-		}
-
 		// create identifier based on arguments
 		$identifier = $this->get_identifier( $form );
 
@@ -1131,16 +1128,17 @@ class MailsterBlockForms {
 			array(
 				'identifier' => $identifier,
 				'classes'    => array( 'mailster-block-form-type-content' ), // gets overwritten by other types
-				'delay'      => 0,
-				'isPreview'  => null,
+				'cooldown'   => 0,
+				'isPreview'  => false,
 			)
 		);
 
 		wp_enqueue_script( 'mailster-form-view-script' );
 
 		// is on a page in the backend and loaded via the REST API
-		$is_backend    = defined( 'REST_REQUEST' ) && REST_REQUEST;
-		$is_in_content = current_filter() === 'the_content';
+		$is_backend = defined( 'REST_REQUEST' ) && REST_REQUEST;
+		$is_preview = false;
+		$is_popup   = current_filter() !== 'the_content';
 
 		$blockattributes = $block->attributes;
 		$uniqid          = substr( uniqid(), 8, 5 );
@@ -1156,7 +1154,9 @@ class MailsterBlockForms {
 			} else {
 				$form_block = $this->get_form_block( $form );
 			}
+			$is_preview = true;
 		} else {
+
 			$form_block = $this->get_form_block( $form );
 		}
 
@@ -1269,13 +1269,28 @@ class MailsterBlockForms {
 		}
 
 		// add theme specific styles
-		if ( ! $is_in_content ) {
+		if ( $is_popup ) {
 			$embeded_style .= $this->get_theme_styles( '.wp-block-mailster-form-outside-wrapper-' . $uniqid . ':not(.mailster-block-form-type-content) .wp-block-mailster-form-wrapper.mailster-block-form' );
 		}
 
 		// add inline styles from block for visual accuracy
-		if ( $is_backend && $input_styles = get_option( 'mailster_inline_styles' ) ) {
+		if ( ! $is_preview && $is_backend && $input_styles = get_option( 'mailster_inline_styles' ) ) {
 			$embeded_style .= $input_styles;
+		}
+
+		$events = '';
+		if ( isset( $form_block['attrs']['events'] ) ) {
+			foreach ( $form_block['attrs']['events'] as $eventname => $rawjs ) {
+				if ( empty( $rawjs ) ) {
+					continue;
+				}
+
+				$events .= 'window.mailsterBlockEvents[' . $form->ID . ']["' . $eventname . '"] = function(){' . $rawjs . '};';
+			}
+		}
+
+		if ( ! empty( $events ) ) {
+			$output = '<script class="mailster-form-script-' . $uniqid . '">window.mailsterBlockEvents = window.mailsterBlockEvents || {};window.mailsterBlockEvents[' . $form->ID . '] = window.mailsterBlockEvents[' . $form->ID . '] || {};' . $events . '</script>' . $output;
 		}
 
 		if ( isset( $form_block['attrs']['css'] ) ) {
@@ -1340,7 +1355,7 @@ class MailsterBlockForms {
 			$output = '<style class="mailster-form-style-' . $uniqid . '">' . $embeded_style . '</style>' . $output;
 		}
 
-		if ( ! $is_in_content ) {
+		if ( $is_popup ) {
 			$output = '<div class="' . implode( ' ', $args['classes'] ) . '" aria-modal="true" aria-label="' . esc_attr__( 'Newsletter Signup Form', 'mailster' ) . '" role="dialog" aria-hidden="true" tabindex="-1">' . $output . '</div>';
 		} else {
 			$output = '<div class="' . implode( ' ', $args['classes'] ) . '">' . $output . '</div>';
@@ -1350,14 +1365,15 @@ class MailsterBlockForms {
 			$output = do_shortcode( $output );
 		}
 
-		$form_args = array_filter(
+		$form_args = 
 			array(
 				'id'         => $args['id'],
 				'identifier' => $args['identifier'],
-				'delay'      => $args['delay'],
+				'cooldown'   => $args['cooldown'],
 				'isPreview'  => $args['isPreview'],
+				'isPopup'    => $is_popup,
 			)
-		);
+		;
 
 		if ( isset( $args['triggers'] ) ) {
 			$form_args['triggers'] = $args['triggers'];
@@ -1369,11 +1385,10 @@ class MailsterBlockForms {
 		}
 
 		$inject  = '';
-		$inject .= '<a class="mailster-block-form-close" aria-label="' . esc_attr__( 'close', 'mailster' ) . '" tabindex="0"><svg viewbox="0 0 100 100"><path d="M100 10.71 89.29 0 50 39.29 10.71 0 0 10.71 39.29 50 0 89.29 10.71 100 50 60.71 89.29 100 100 89.29 60.71 50z"/></svg></a>';
-
 		$inject .= '<script class="mailster-block-form-data" type="application/json">' . json_encode( $form_args ) . '</script>';
-		$inject .= '<input name="_formid" type="hidden" value="' . esc_attr( $form->ID ) . '">' . "\n";
-		$inject .= '<input name="_timestamp" type="hidden" value="' . esc_attr( time() ) . '">' . "\n";
+		$inject .= '<input name="_formid" type="hidden" value="' . esc_attr( $form->ID ) . '" />' . "\n";
+		$inject .= '<input name="_timestamp" type="hidden" value="' . esc_attr( time() ) . '" />' . "\n";
+		$inject .= '<button class="mailster-block-form-close"  aria-label="' . esc_attr__( 'close', 'mailster' ) . '" tabindex="0"><svg viewbox="0 0 100 100"><path d="M100 10.71 89.29 0 50 39.29 10.71 0 0 10.71 39.29 50 0 89.29 10.71 100 50 60.71 89.29 100 100 89.29 60.71 50z"/></svg></button>';
 
 		$output = str_replace( '</form>', $inject . '</form>', $output );
 

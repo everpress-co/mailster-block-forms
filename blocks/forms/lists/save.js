@@ -40,7 +40,8 @@ export default function save(props) {
 					})}
 				</select>
 			) : (
-				<>
+				<fieldset>
+					<legend>{__('Lists', 'mailster')}</legend>
 					{lists.map((list, i) => {
 						const fieldid =
 							cleanForSlug(list.name) + '-' + attributes.id;
@@ -66,7 +67,7 @@ export default function save(props) {
 							</div>
 						);
 					})}
-				</>
+				</fieldset>
 			)}
 		</div>
 	);
