@@ -336,7 +336,7 @@ class MailsterBlockForms {
 	public function maybe_add_form_to_content( $content ) {
 
 		if ( ! is_singular() ) {
-			return;
+			return $content;
 		}
 
 		foreach ( $this->forms['content'] as $form_id => $options ) {

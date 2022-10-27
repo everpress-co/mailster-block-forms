@@ -4,7 +4,7 @@ Contributors: everpress, xaverb
 Tags: mailster, blocks, forms, mailsterblockforms  
 Requires at least: 6.0  
 Tested up to: 6.0  
-Stable tag: 0.1.5  
+Stable tag: 0.1.6  
 Requires PHP: 7.2.5+  
 License: GPLv2 or later  
 Author: EverPress  
@@ -42,6 +42,18 @@ Create newsletter signup forms for [Mailster](https://mailster.co/?utm_campaign=
 No, Mailster 3.2.0 or above is required to use this plugin. Get it [here](https://mailster.co/?utm_campaign=wporg&utm_source=wordpress.org&utm_medium=readme&utm_term=Mailster+Block+Forms).
 
 ## Changelog
+
+### 0.1.6
+
+-   new: define custom JavaScript code to get triggered on certain form events.
+-   fixed: unable to change the value of the scroll trigger threshold.
+-   fixed: don't scroll to bottom of page in preview pane if form has not been saved for the first time.
+-   fixed: excerpt was empty on archive page if form was used in content.
+-   improved: accessibility on form submission messages (may require form updates).
+-   improved: close button accessibility.
+-   redirection after form submission now delayed for 150ms to complete all remote events.
+-   updated: referrer is now the current page if no the referrer is from the same origin.
+-   padding for popups in preview panel is not unset by default.
 
 ### 0.1.5
 
