@@ -821,13 +821,7 @@ class MailsterBlockForms {
 
 			wp_enqueue_code_editor(
 				array(
-					'type'       => 'text/css',
-					'codemirror' => array( 'lint' => true ),
-				)
-			);
-			wp_enqueue_code_editor(
-				array(
-					'type'       => 'javascript',
+					'type'       => 'htmlmixed',
 					'codemirror' => array( 'lint' => true ),
 				)
 			);
@@ -1135,16 +1129,16 @@ class MailsterBlockForms {
 				'identifier' => $identifier,
 				'classes'    => array( 'mailster-block-form-type-content' ), // gets overwritten by other types
 				'cooldown'   => 0,
-				'isPreview'  => null,
+				'isPreview'  => false,
 			)
 		);
 
 		wp_enqueue_script( 'mailster-form-view-script' );
 
 		// is on a page in the backend and loaded via the REST API
-		$is_backend    = defined( 'REST_REQUEST' ) && REST_REQUEST;
-		$is_preview    = false;
-		$is_in_content = current_filter() === 'the_content';
+		$is_backend = defined( 'REST_REQUEST' ) && REST_REQUEST;
+		$is_preview = false;
+		$is_popup   = current_filter() !== 'the_content';
 
 		$blockattributes = $block->attributes;
 		$uniqid          = substr( uniqid(), 8, 5 );
@@ -1275,7 +1269,7 @@ class MailsterBlockForms {
 		}
 
 		// add theme specific styles
-		if ( ! $is_in_content ) {
+		if ( $is_popup ) {
 			$embeded_style .= $this->get_theme_styles( '.wp-block-mailster-form-outside-wrapper-' . $uniqid . ':not(.mailster-block-form-type-content) .wp-block-mailster-form-wrapper.mailster-block-form' );
 		}
 
@@ -1291,12 +1285,12 @@ class MailsterBlockForms {
 					continue;
 				}
 
-				$events .= 'window.mailsterBlockEvents["' . $uniqid . '"]["' . $eventname . '"] = function(){' . $rawjs . '};';
+				$events .= 'window.mailsterBlockEvents[' . $form->ID . ']["' . $eventname . '"] = function(){' . $rawjs . '};';
 			}
 		}
 
 		if ( ! empty( $events ) ) {
-			$output = '<script class="mailster-form-script-' . $uniqid . '">window.mailsterBlockEvents = window.mailsterBlockEvents || {};window.mailsterBlockEvents["' . $uniqid . '"] = window.mailsterBlockEvents["' . $uniqid . '"] || {};' . $events . '</script>' . $output;
+			$output = '<script class="mailster-form-script-' . $uniqid . '">window.mailsterBlockEvents = window.mailsterBlockEvents || {};window.mailsterBlockEvents[' . $form->ID . '] = window.mailsterBlockEvents[' . $form->ID . '] || {};' . $events . '</script>' . $output;
 		}
 
 		if ( isset( $form_block['attrs']['css'] ) ) {
@@ -1361,7 +1355,7 @@ class MailsterBlockForms {
 			$output = '<style class="mailster-form-style-' . $uniqid . '">' . $embeded_style . '</style>' . $output;
 		}
 
-		if ( ! $is_in_content ) {
+		if ( $is_popup ) {
 			$output = '<div class="' . implode( ' ', $args['classes'] ) . '" aria-modal="true" aria-label="' . esc_attr__( 'Newsletter Signup Form', 'mailster' ) . '" role="dialog" aria-hidden="true" tabindex="-1">' . $output . '</div>';
 		} else {
 			$output = '<div class="' . implode( ' ', $args['classes'] ) . '">' . $output . '</div>';
@@ -1371,14 +1365,15 @@ class MailsterBlockForms {
 			$output = do_shortcode( $output );
 		}
 
-		$form_args = array_filter(
+		$form_args = 
 			array(
 				'id'         => $args['id'],
 				'identifier' => $args['identifier'],
 				'cooldown'   => $args['cooldown'],
 				'isPreview'  => $args['isPreview'],
+				'isPopup'    => $is_popup,
 			)
-		);
+		;
 
 		if ( isset( $args['triggers'] ) ) {
 			$form_args['triggers'] = $args['triggers'];

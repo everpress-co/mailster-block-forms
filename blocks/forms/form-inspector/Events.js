@@ -20,8 +20,8 @@ export default function Events(props) {
 
 	return (
 		<PluginDocumentSettingPanel
-			name="custom-event"
-			title={__('Custom Events', 'mailster')}
+			name="events"
+			title={__('Events', 'mailster')}
 		>
 			<EventsPanel
 				attributes={attributes}

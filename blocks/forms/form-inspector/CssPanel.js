@@ -36,7 +36,7 @@ input, select {
 	font: inherit;
 }
 .submit-button{
-    border:initial;
+    border: initial;
     padding: .6em;
 }`;
 

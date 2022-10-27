@@ -8,7 +8,6 @@
 import { __ } from '@wordpress/i18n';
 
 import {
-	Button,
 	PanelRow,
 	TextareaControl,
 	CheckboxControl,
@@ -16,13 +15,15 @@ import {
 	SelectControl,
 	TabPanel,
 	Modal,
+	Tip,
+	ExternalLink,
 } from '@wordpress/components';
 
 import { useDebounce } from '@wordpress/compose';
 
 import { useState, useEffect, useMemo } from '@wordpress/element';
 
-import { external } from '@wordpress/icons';
+import { dispatch, select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -31,7 +32,7 @@ import { external } from '@wordpress/icons';
 const Wrapper = ({ children, isEventsModal, setEventsModal }) => {
 	return isEventsModal ? (
 		<Modal
-			title={__('Enter your custom Events', 'mailster')}
+			title={__('Define code triggered on Events', 'mailster')}
 			className="events-modal"
 			onRequestClose={() => setEventsModal(false)}
 			style={{
@@ -45,6 +46,13 @@ const Wrapper = ({ children, isEventsModal, setEventsModal }) => {
 	);
 };
 
+const hideEditorPanel = (name) => {
+	const id = 'mailster-block-form-settings-panel/' + name;
+	const isOpen = select('core/edit-post').isEditorPanelOpened(id);
+	dispatch('core/edit-post').closePublishSidebar();
+	if (isOpen) dispatch('core/edit-post').toggleEditorPanelOpened(id);
+};
+
 export const EventsPanel = (props) => {
 	const { attributes, setAttributes, children } = props;
 
@@ -53,6 +61,7 @@ export const EventsPanel = (props) => {
 	}
 
 	const { events = {} } = attributes;
+	const [isEventsModal, setEventsModal] = useState(true);
 
 	const tabnames = {
 		impression: __('Impression', 'mailster'),
@@ -63,7 +72,7 @@ export const EventsPanel = (props) => {
 	};
 	const explanation = {
 		impression: __(
-			'Gets triggered whenever a form is visible to a user. The creator of the form does not trigger an impression.',
+			'Gets triggered whenever a form is visible to a user.',
 			'mailster'
 		),
 		open: __(
@@ -82,8 +91,7 @@ export const EventsPanel = (props) => {
 	};
 
 	useEffect(() => {
-		var newEvents = { ...events };
-		setAttributes({ events: newEvents });
+		!isEventsModal && hideEditorPanel('events');
 	}, []);
 
 	let codeEditor;
@@ -98,7 +106,7 @@ export const EventsPanel = (props) => {
 
 	const initCodeMirror = (isOpened, name) => {
 		const placeholder =
-			'/* JavsScript triggered on ' + tabnames[name] + ' /*';
+			'/* JavaScript triggered on ' + tabnames[name] + ' /*';
 		if (!isOpened || !wp.CodeMirror) return;
 
 		setTimeout(() => {
@@ -122,30 +130,29 @@ export const EventsPanel = (props) => {
 		return;
 	};
 
-	const [isEventsModal, setEventsModal] = useState(false);
-
 	useEffect(() => {
 		initCodeMirror(true, 'impression');
+		!isEventsModal && hideEditorPanel('events');
 	}, [isEventsModal]);
 
 	return (
 		<>
-			<PanelRow>
-				<Button
-					onClick={() => setEventsModal(true)}
-					variant="link"
-					iconPosition="right"
-					isSmall={true}
-					disabled={isEventsModal}
-					icon={external}
-				>
-					{__('Open in Modal Window', 'mailster')}
-				</Button>
-			</PanelRow>
 			<Wrapper
 				isEventsModal={isEventsModal}
 				setEventsModal={setEventsModal}
 			>
+				<PanelRow>
+					<Tip>
+						{__(
+							'You can use certain events to trigger custom JavaScript code on your form. This can be helpful if you want to connect your Analytics with those events and track them in your reports.',
+							'mailster'
+						)}
+					</Tip>
+					<ExternalLink href="https://kb.mailster.co/trigger-custom-javascript-on-form-submission/">
+						{__('Learn more about Events', 'mailster')}
+					</ExternalLink>
+				</PanelRow>
+				<PanelRow></PanelRow>
 				<PanelRow>
 					<TabPanel
 						className="custom-events-tabs"

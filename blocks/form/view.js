@@ -22,12 +22,14 @@ import apiFetch from '@wordpress/api-fetch';
 	function app() {
 		let html = document.documentElement;
 		let forms = document.querySelectorAll('.mailster-block-form');
+		let events = window.mailsterBlockEvents || {};
 
-		Array.prototype.forEach.call(forms, (form, i) => {
-			let placement = form.querySelector('.mailster-block-form-data');
-			placement = JSON.parse(placement.textContent);
-			let wrap = form.closest('.wp-block-mailster-form-outside-wrapper');
-			let isPopup = !!wrap.getAttribute('aria-modal');
+		Array.prototype.forEach.call(forms, (formEl, i) => {
+			let form = formEl.querySelector('.mailster-block-form-data');
+			form = JSON.parse(form.textContent);
+			let wrap = formEl.closest(
+				'.wp-block-mailster-form-outside-wrapper'
+			);
 			let closeButtons = wrap.querySelectorAll(
 				'.mailster-block-form-close, .mailster-block-form-inner-close'
 			);
@@ -35,9 +37,9 @@ import apiFetch from '@wordpress/api-fetch';
 			let firstFocusable = wrap.querySelector(
 				'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
 			);
-			let info = form.querySelector('.mailster-block-form-info');
+			let info = formEl.querySelector('.mailster-block-form-info');
 			let countImpressionEvery = 3600;
-			let cooldown = (placement.cooldown || 0) * 3600;
+			let cooldown = (form.cooldown || 0) * 3600;
 			let scroll = {};
 			let delayTimeout = null;
 			let inactiveTimeout = null;
@@ -46,7 +48,7 @@ import apiFetch from '@wordpress/api-fetch';
 					delayTimeout = setTimeout(() => {
 						if (!show()) return;
 						openForm();
-					}, placement.trigger_delay * 1000);
+					}, form.trigger_delay * 1000);
 				},
 				inactive: () => {
 					window.addEventListener('mousedown', _trigger_inactive);
@@ -62,7 +64,7 @@ import apiFetch from '@wordpress/api-fetch';
 				},
 				click: () => {
 					let elements = document.querySelectorAll(
-						placement.trigger_click
+						form.trigger_click
 					);
 					Array.prototype.forEach.call(elements, (element, i) => {
 						element.addEventListener('click', openForm);
@@ -79,11 +81,11 @@ import apiFetch from '@wordpress/api-fetch';
 				inactiveTimeout = setTimeout(() => {
 					if (!show()) return;
 					openForm();
-				}, placement.trigger_inactive * 1000);
+				}, form.trigger_inactive * 1000);
 			}
 			let _trigger_scroll = debounce(_trigger_scroll_debounced, 50);
 			function _trigger_scroll_debounced(event) {
-				if (getScrollPercent() >= placement.trigger_scroll / 100) {
+				if (getScrollPercent() >= form.trigger_scroll / 100) {
 					if (!show()) return;
 					openForm();
 				}
@@ -95,9 +97,9 @@ import apiFetch from '@wordpress/api-fetch';
 				}
 			}
 
-			if (placement) {
-				if (isPopup) {
-					placement.triggers.forEach((trigger) => {
+			if (form) {
+				if (form.isPopup) {
+					form.triggers.forEach((trigger) => {
 						triggerMethods[trigger] &&
 							triggerMethods[trigger].call(this);
 					});
@@ -120,17 +122,17 @@ import apiFetch from '@wordpress/api-fetch';
 							threshold: 1,
 						}
 					);
-					observer.observe(form);
+					observer.observe(formEl);
 				}
 			}
 
-			form.addEventListener('submit', (event) => {
+			formEl.addEventListener('submit', (event) => {
 				event.preventDefault();
 
-				let formData = new FormData(form),
+				let formData = new FormData(formEl),
 					data = {},
 					message = [],
-					submit = form.querySelector('.submit-button'),
+					submit = formEl.querySelector('.submit-button'),
 					infoSuccess = info.querySelector(
 						'.mailster-block-form-info-success .mailster-block-form-info-extra'
 					),
@@ -138,17 +140,17 @@ import apiFetch from '@wordpress/api-fetch';
 						'.mailster-block-form-info-error .mailster-block-form-info-extra'
 					);
 
-				form.classList.remove('has-errors');
-				form.classList.remove('completed');
-				form.querySelectorAll('.is-error').forEach((wrapper) => {
+				formEl.classList.remove('has-errors');
+				formEl.classList.remove('completed');
+				formEl.querySelectorAll('.is-error').forEach((wrapper) => {
 					wrapper.classList.remove('is-error');
 				});
-				form.querySelectorAll('[aria-invalid]').forEach((input) => {
+				formEl.querySelectorAll('[aria-invalid]').forEach((input) => {
 					input.removeAttribute('aria-invalid');
 				});
 
-				form.classList.add('loading');
-				form.setAttribute('disabled', true);
+				formEl.classList.add('loading');
+				formEl.setAttribute('disabled', true);
 
 				if (
 					new URL(document.referrer).origin ==
@@ -170,12 +172,18 @@ import apiFetch from '@wordpress/api-fetch';
 				})
 					.then((response) => {
 						set('conversion');
-						triggerEvent(form, 'submit', response.data);
+						triggerEvent('submit', {
+							...response.data,
+							formdata: data,
+						});
 
 						info.classList.remove('is-error');
 
 						if (response.data.redirect) {
-							window.location.href = response.data.redirect;
+							setTimeout(
+								() => (location.href = response.data.redirect),
+								150
+							);
 							return;
 						}
 
@@ -183,18 +191,18 @@ import apiFetch from '@wordpress/api-fetch';
 						info.setAttribute('role', 'alert');
 						info.classList.add('is-success');
 
-						if (!form.classList.contains('is-profile')) {
-							form.classList.add('completed');
-							form.reset();
+						if (!formEl.classList.contains('is-profile')) {
+							formEl.classList.add('completed');
+							formEl.reset();
 							document.activeElement.blur();
-							isPopup && setTimeout(() => closeForm(), 3000);
+							form.isPopup && setTimeout(() => closeForm(), 3000);
 						}
 					})
 					.catch((error) => {
 						if (error.data.fields) {
-							form.classList.add('has-errors');
+							formEl.classList.add('has-errors');
 							Object.keys(error.data.fields).map((fieldid) => {
-								let field = form.querySelector(
+								let field = formEl.querySelector(
 									'.wp-block-mailster-' +
 										fieldid +
 										', .wp-block-mailster-field-' +
@@ -202,10 +210,7 @@ import apiFetch from '@wordpress/api-fetch';
 								);
 								let input = field.querySelector('input');
 								let hintid =
-									'hint-' +
-									placement.identifier +
-									'-' +
-									input.id;
+									'hint-' + form.identifier + '-' + input.id;
 								let m =
 									field?.dataset?.errorMessage ||
 									error.data.fields[fieldid];
@@ -227,19 +232,22 @@ import apiFetch from '@wordpress/api-fetch';
 						info.classList.remove('is-success');
 						info.classList.add('is-error');
 						infoError.innerHTML = message.join('');
-						triggerEvent(form, 'error', error.data);
+						triggerEvent('error', {
+							...error.data,
+							formdata: data,
+						});
 					})
 					.finally(() => {
 						set('show');
-						form.classList.remove('loading');
-						form.removeAttribute('disabled');
+						formEl.classList.remove('loading');
+						formEl.removeAttribute('disabled');
 						submit.removeAttribute('disabled');
 						info.setAttribute('aria-hidden', 'false');
 					});
 			});
 
 			function show() {
-				if (placement.isPreview) {
+				if (form.isPreview) {
 					return true;
 				}
 
@@ -251,7 +259,7 @@ import apiFetch from '@wordpress/api-fetch';
 					return false;
 				}
 
-				// if (inTimeFrame('show', placement.delay)) {
+				// if (inTimeFrame('show', form.delay)) {
 				// 	return false;
 				// }
 
@@ -278,11 +286,11 @@ import apiFetch from '@wordpress/api-fetch';
 					closeButtons.forEach((btn) =>
 						btn.addEventListener('click', closeFormExplicit)
 					);
-					form.addEventListener('click', stopPropagation);
+					formEl.addEventListener('click', stopPropagation);
 
 					wrap.classList.add('active');
 					info.classList.remove('is-success');
-					form.classList.remove('completed');
+					formEl.classList.remove('completed');
 					wrap.setAttribute('aria-hidden', 'false');
 					wrap.focus();
 					html.classList.add('mailster-form-active');
@@ -291,7 +299,7 @@ import apiFetch from '@wordpress/api-fetch';
 						event.preventDefault();
 						firstFocusable.focus();
 					}
-					triggerEvent(form, 'open', placement);
+					triggerEvent('open');
 					countImpression();
 				}
 			}
@@ -316,12 +324,12 @@ import apiFetch from '@wordpress/api-fetch';
 				closeButtons.forEach((btn) =>
 					btn.removeEventListener('click', closeFormExplicit)
 				);
-				form.removeEventListener('click', stopPropagation);
+				formEl.removeEventListener('click', stopPropagation);
 
 				wrap.classList.add('closing');
 				html.classList.remove('mailster-form-active');
 
-				triggerEvent(form, 'close', placement);
+				triggerEvent('close');
 
 				setTimeout(() => {
 					wrap.classList.remove('closing');
@@ -361,7 +369,7 @@ import apiFetch from '@wordpress/api-fetch';
 				let data = get();
 				data[key] = value || +new Date();
 				localStorage.setItem(
-					'mailster-form-' + placement.identifier,
+					'mailster-form-' + form.identifier,
 					JSON.stringify(data)
 				);
 				return true;
@@ -369,7 +377,7 @@ import apiFetch from '@wordpress/api-fetch';
 
 			function get(key, fallback = null) {
 				let store = localStorage.getItem(
-					'mailster-form-' + placement.identifier
+					'mailster-form-' + form.identifier
 				);
 				store = store ? JSON.parse(store) : {};
 				if (!key) {
@@ -382,23 +390,44 @@ import apiFetch from '@wordpress/api-fetch';
 			}
 
 			function countImpression() {
-				if (placement.isPreview) {
+				if (form.isPreview) {
 					return false;
 				}
 				if (!inTimeFrame('impression', countImpressionEvery)) {
 					apiFetch({
-						path:
-							'mailster/v1/forms/' + placement.id + '/impression',
+						path: 'mailster/v1/forms/' + form.id + '/impression',
 						method: 'POST',
-						data: placement,
+						data: form,
 					})
 						.catch((error) => {
-							error.message && console.warn(error.message);
+							error.message && console.error(error.message);
 						})
 						.finally(() => {
+							triggerEvent('impression');
 							set('impression');
 						});
 				}
+			}
+
+			function triggerEvent(name, data) {
+				const detail = {
+					type: name,
+					el: formEl,
+					form: form,
+					data: data,
+				};
+				const event = new CustomEvent('mailster:' + name, {
+					bubbles: true,
+					detail,
+				});
+
+				detail['event'] = event;
+
+				if (events[form.id] && events[form.id][name]) {
+					events[form.id][name].apply(detail);
+				}
+
+				formEl.dispatchEvent(event);
 			}
 		});
 	}
@@ -416,19 +445,6 @@ import apiFetch from '@wordpress/api-fetch';
 			((scroll.el['scrollHeight'] || scroll.body['scrollHeight']) -
 				scroll.el.clientHeight)
 		);
-	}
-
-	function triggerEvent(target, name, detail) {
-		const event = new CustomEvent('mailster:' + name, {
-			bubbles: true,
-			detail,
-		});
-
-		if (typeof target === 'string') {
-			target = document.querySelector(target);
-		}
-
-		target.dispatchEvent(event);
 	}
 
 	function debounce(func, wait, immediate) {
