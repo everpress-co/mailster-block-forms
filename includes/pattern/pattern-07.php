@@ -1,5 +1,5 @@
 <!-- wp:mailster/form-wrapper {"lock":{"move":false,"remove":false},"css":{"general":".mailster-wrapper{\n\tmargin-top:1em;\n}","tablet":"","mobile":""},"style":{"color":{"background":"#ffffff"}}} -->
-<form method="post" novalidate style="background-color:#ffffff" class="wp-block-mailster-form-wrapper mailster-block-form has-background has-background"><div class="mailster-block-form-inner"><!-- wp:columns -->
+<form method="post" novalidate style="background-color:#ffffff" class="wp-block-mailster-form-wrapper mailster-block-form has-background"><div class="mailster-block-form-inner"><!-- wp:columns -->
 <div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
 <div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:cover {"url":"https://static.mailster.co/forms/young-african-american-woman-sitting-on-steps.jpg","dimRatio":50,"isDark":false,"style":{"color":{"duotone":["#39414D","#EEEADD"]}}} -->
 <div class="wp-block-cover is-light"><span aria-hidden="true" class="wp-block-cover__background has-background-dim"></span><img class="wp-block-cover__image-background" alt="" src="https://static.mailster.co/forms/young-african-american-woman-sitting-on-steps.jpg" data-object-fit="cover"/><div class="wp-block-cover__inner-container"><!-- wp:paragraph {"align":"center","placeholder":"Write title…","fontSize":"large"} -->
@@ -8,8 +8,8 @@
 <!-- /wp:cover --></div>
 <!-- /wp:column -->
 
-<!-- wp:column {"width":"66.67%","style":{"spacing":{"padding":{"top":"2rem","right":"2rem","bottom":"2rem","left":"2rem"}}}} -->
-<div class="wp-block-column" style="padding-top:2rem;padding-right:2rem;padding-bottom:2rem;padding-left:2rem;flex-basis:66.67%"><!-- wp:heading {"style":{"typography":{"fontStyle":"normal","fontWeight":"900"}}} -->
+<!-- wp:column {"verticalAlignment":"center","width":"66.67%","style":{"spacing":{"padding":{"top":"2rem","right":"2rem","bottom":"2rem","left":"2rem"}}}} -->
+<div class="wp-block-column is-vertically-aligned-center" style="padding-top:2rem;padding-right:2rem;padding-bottom:2rem;padding-left:2rem;flex-basis:66.67%"><!-- wp:heading {"style":{"typography":{"fontStyle":"normal","fontWeight":"900"}}} -->
 <h2 style="font-style:normal;font-weight:900">Subscribe!</h2>
 <!-- /wp:heading -->
 
@@ -27,9 +27,12 @@
 
 <!-- wp:mailster/field-submit {"id":"149c10","values":[],"style":{"width":100},"className":"mailster-wrapper-asterisk"} -->
 <div class="wp-block-mailster-field-submit mailster-wrapper mailster-wrapper-type-submit wp-block-button mailster-wrapper-asterisk" style="width:100%"><input name="submit" id="mailster-input-149c10" type="submit" value="Subscribe" class="wp-block-button__link submit-button"/></div>
-<!-- /wp:mailster/field-submit --><!-- wp:mailster/close {"align":"center","fontSize":"extra-small"} -->
+<!-- /wp:mailster/field-submit -->
+
+<!-- wp:mailster/close {"align":"center","fontSize":"extra-small"} -->
 <div class="wp-block-mailster-close mailster-wrapper mailster-wrapper-label-align-center has-extra-small-font-size"><a href="" class="mailster-block-form-inner-close" aria-label="I'm not interested" tabindex="0">I'm not interested</a></div>
 <!-- /wp:mailster/close --></div>
 <!-- /wp:column --></div>
 <!-- /wp:columns --></div></form>
 <!-- /wp:mailster/form-wrapper -->
+

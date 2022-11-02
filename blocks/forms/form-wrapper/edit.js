@@ -29,7 +29,7 @@ import { useEntityProp } from '@wordpress/core-data';
 
 import './editor.scss';
 
-import { useUpdateEffect, searchBlock } from '../../util';
+import { useUpdateEffect, searchBlock, whenEditorIsReady } from '../../util';
 import BlockRecovery from './BlockRecovery';
 import InlineStyles from '../../util/InlineStyles';
 
@@ -211,112 +211,123 @@ export default function Edit(props) {
 	}, [css]);
 
 	// enter the root wrapper or replace it with a new one
-	useEffect(() => {
-		const all = select('core/block-editor').getBlocks(),
-			count = all.length;
+	inEditor &&
+		useEffect(() => {
+			const all = select('core/block-editor').getBlocks(),
+				count = all.length;
 
-		if (count > 1) {
-			console.warn('enter the root wrapper or replace it with a new one');
-			const inserted = select('core/block-editor').getBlock(clientId);
-			const current = all.find(
-				(block) =>
-					block.name == 'mailster/form-wrapper' &&
-					block.clientId != clientId
-			);
-			if (
-				confirm(
-					'This will replace your current form with the selected one. Continue?'
-				)
-			) {
-				dispatch('core/block-editor').removeBlock(current.clientId);
-			} else {
-				dispatch('core/block-editor').removeBlock(inserted.clientId);
+			if (count > 1) {
+				console.warn(
+					'enter the root wrapper or replace it with a new one'
+				);
+				const inserted = select('core/block-editor').getBlock(clientId);
+				const current = all.find(
+					(block) =>
+						block.name == 'mailster/form-wrapper' &&
+						block.clientId != clientId
+				);
+				if (
+					confirm(
+						'This will replace your current form with the selected one. Continue?'
+					)
+				) {
+					dispatch('core/block-editor').removeBlock(current.clientId);
+				} else {
+					dispatch('core/block-editor').removeBlock(
+						inserted.clientId
+					);
+				}
 			}
-		}
-	}, []);
+		}, []);
 
-	// add message block if missing
-	useEffect(() => {
-		if (!inEditor) return;
-		const messagesBlock = searchBlock('mailster/messages', clientId);
+	inEditor &&
+		whenEditorIsReady().then(() => {
+			const messagesBlock = searchBlock('mailster/messages', clientId);
 
-		if (!messagesBlock) {
-			console.warn('Add message block');
-			const block = wp.blocks.createBlock('mailster/messages');
-			const referenceBlock = searchBlock(/^mailster\/field-/);
+			if (!messagesBlock) {
+				console.warn('Add message block');
+				const block = wp.blocks.createBlock('mailster/messages');
+				const referenceBlock = searchBlock(/^mailster\/field-/);
+				const pos = referenceBlock
+					? select('core/block-editor').getBlockIndex(
+							referenceBlock.clientId,
+							referenceBlock.rootClientId
+					  )
+					: 0;
 
-			const pos = referenceBlock
-				? select('core/block-editor').getBlockIndex(
-						referenceBlock.clientId,
-						referenceBlock.rootClientId
-				  )
-				: 0;
+				dispatch('core/block-editor').insertBlock(
+					block,
+					pos,
+					referenceBlock.rootClientId,
+					false
+				);
 
-			dispatch('core/block-editor').insertBlock(
-				block,
-				pos,
-				referenceBlock.rootClientId
-			);
-			// clear any selected block
-			dispatch('core/block-editor').clearSelectedBlock();
-			// select "Form" in side panel
-			dispatch('core/edit-post').openGeneralSidebar('edit-post/document');
-		}
-	}, []);
+				// clear any selected block
+				dispatch('core/block-editor').clearSelectedBlock();
+				// select "Form" in side panel
+				dispatch('core/edit-post').openGeneralSidebar(
+					'edit-post/document'
+				);
+			}
+		});
 
-	useEffect(() => {
-		if (!inEditor) return;
-		const block = searchBlock('mailster/gdpr', clientId);
+	inEditor &&
+		useEffect(() => {
+			const block = searchBlock('mailster/gdpr', clientId);
 
-		if (block && !meta.gdpr) {
-			console.warn('Remove gdpr block');
-			dispatch('core/block-editor').removeBlock(block.clientId);
-			dispatch('core/edit-post').openGeneralSidebar('edit-post/document');
-		} else if (!block && meta.gdpr) {
-			console.warn('Add gdpr block');
-			const block = wp.blocks.createBlock('mailster/gdpr');
-			const referenceBlock = searchBlock('mailster/field-submit');
-			const pos = referenceBlock
-				? select('core/block-editor').getBlockIndex(
-						referenceBlock.clientId,
-						referenceBlock.rootClientId
-				  )
-				: all.length;
+			if (block && !meta.gdpr) {
+				console.warn('Remove gdpr block');
+				dispatch('core/block-editor').removeBlock(block.clientId);
+				dispatch('core/edit-post').openGeneralSidebar(
+					'edit-post/document'
+				);
+			} else if (!block && meta.gdpr) {
+				console.warn('Add gdpr block');
+				const block = wp.blocks.createBlock('mailster/gdpr');
+				const referenceBlock = searchBlock('mailster/field-submit');
+				const pos = referenceBlock
+					? select('core/block-editor').getBlockIndex(
+							referenceBlock.clientId,
+							referenceBlock.rootClientId
+					  )
+					: all.length;
 
-			dispatch('core/block-editor').insertBlock(
-				block,
-				pos,
-				referenceBlock.rootClientId
-			);
-		}
-	}, [meta.gdpr]);
+				dispatch('core/block-editor').insertBlock(
+					block,
+					pos,
+					referenceBlock.rootClientId
+				);
+			}
+		}, [meta.gdpr]);
 
-	useEffect(() => {
-		if (!inEditor) return;
-		const block = searchBlock('mailster/lists', clientId);
+	inEditor &&
+		useEffect(() => {
+			const block = searchBlock('mailster/lists', clientId);
 
-		if (block && !meta.userschoice) {
-			block.attributes.lock.remove = false;
-			dispatch('core/block-editor').removeBlock(block.clientId);
-			dispatch('core/edit-post').openGeneralSidebar('edit-post/document');
-		} else if (!block && meta.userschoice) {
-			console.warn('Add lists block');
-			const block = wp.blocks.createBlock('mailster/lists');
-			const referenceBlock = searchBlock('mailster/field-submit');
-			const pos = referenceBlock
-				? select('core/block-editor').getBlockIndex(
-						referenceBlock.clientId,
-						referenceBlock.rootClientId
-				  )
-				: all.length;
+			if (block && !meta.userschoice) {
+				block.attributes.lock.remove = false;
+				dispatch('core/block-editor').removeBlock(block.clientId);
+				dispatch('core/edit-post').openGeneralSidebar(
+					'edit-post/document'
+				);
+			} else if (!block && meta.userschoice) {
+				console.warn('Add lists block');
+				const block = wp.blocks.createBlock('mailster/lists');
+				const referenceBlock = searchBlock('mailster/field-submit');
+				const pos = referenceBlock
+					? select('core/block-editor').getBlockIndex(
+							referenceBlock.clientId,
+							referenceBlock.rootClientId
+					  )
+					: all.length;
 
-			dispatch('core/block-editor').insertBlock(
-				block,
-				pos,
-				referenceBlock.rootClientId
-			);
-		}
-	}, [meta.userschoice]);
+				dispatch('core/block-editor').insertBlock(
+					block,
+					pos,
+					referenceBlock.rootClientId
+				);
+			}
+		}, [meta.userschoice]);
 
 	const [inlineStyles, setInlineStyles] = useEntityProp(
 		'root',
