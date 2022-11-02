@@ -7,7 +7,7 @@
  */
 
 import { useEffect, useRef } from '@wordpress/element';
-import { select } from '@wordpress/data';
+import { select, subscribe } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -108,4 +108,18 @@ export function searchBlock(blockName, clientId) {
 	}
 
 	return false;
+}
+
+export function whenEditorIsReady() {
+	return new Promise((resolve) => {
+		const unsubscribe = subscribe(() => {
+			if (
+				select('core/editor').isCleanNewPost() ||
+				select('core/block-editor').getBlockCount() > 0
+			) {
+				unsubscribe();
+				resolve();
+			}
+		});
+	});
 }
