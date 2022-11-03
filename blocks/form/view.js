@@ -98,7 +98,7 @@ import apiFetch from '@wordpress/api-fetch';
 			}
 
 			if (form) {
-				if (form.isPopup) {
+				if (form.triggers) {
 					form.triggers.forEach((trigger) => {
 						triggerMethods[trigger] &&
 							triggerMethods[trigger].call(this);
@@ -195,7 +195,8 @@ import apiFetch from '@wordpress/api-fetch';
 							formEl.classList.add('completed');
 							formEl.reset();
 							document.activeElement.blur();
-							form.isPopup && setTimeout(() => closeForm(), 3000);
+							form.triggers &&
+								setTimeout(() => closeForm(), 3000);
 						}
 					})
 					.catch((error) => {

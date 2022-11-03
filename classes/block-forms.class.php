@@ -1148,12 +1148,13 @@ class MailsterBlockForms {
 		if ( ! empty( $request_body ) ) {
 			$data = json_decode( $request_body, true );
 			if ( isset( $data['block_form_content'] ) ) {
-				$blocks     = parse_blocks( $data['block_form_content'] );
-				$args       = wp_parse_args( $data['args'], $args );
+				$blocks = parse_blocks( $data['block_form_content'] );
+				$args   = wp_parse_args( $data['args'], $args );
 				$form_block = $blocks[0];
 			} else {
 				$form_block = $this->get_form_block( $form );
 			}
+
 			$is_preview = true;
 		} else {
 
@@ -1365,15 +1366,12 @@ class MailsterBlockForms {
 			$output = do_shortcode( $output );
 		}
 
-		$form_args = 
-			array(
-				'id'         => $args['id'],
-				'identifier' => $args['identifier'],
-				'cooldown'   => $args['cooldown'],
-				'isPreview'  => $args['isPreview'],
-				'isPopup'    => $is_popup,
-			)
-		;
+		$form_args = array(
+			'id'         => $args['id'],
+			'identifier' => $args['identifier'],
+			'cooldown'   => $args['cooldown'],
+			'isPreview'  => $args['isPreview'],
+		);
 
 		if ( isset( $args['triggers'] ) ) {
 			$form_args['triggers'] = $args['triggers'];
