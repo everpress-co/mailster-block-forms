@@ -1148,8 +1148,8 @@ class MailsterBlockForms {
 		if ( ! empty( $request_body ) ) {
 			$data = json_decode( $request_body, true );
 			if ( isset( $data['block_form_content'] ) ) {
-				$blocks = parse_blocks( $data['block_form_content'] );
-				$args   = wp_parse_args( $data['args'], $args );
+				$blocks     = parse_blocks( $data['block_form_content'] );
+				$args       = wp_parse_args( $data['args'], $args );
 				$form_block = $blocks[0];
 			} else {
 				$form_block = $this->get_form_block( $form );
@@ -1390,7 +1390,7 @@ class MailsterBlockForms {
 
 		$output = str_replace( '</form>', $inject . '</form>', $output );
 
-		return $output;
+		return apply_filters( 'mailster_block_form', $output, $form_args );
 
 	}
 
