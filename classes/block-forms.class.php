@@ -1154,6 +1154,7 @@ class MailsterBlockForms {
 			} else {
 				$form_block = $this->get_form_block( $form );
 			}
+
 			$is_preview = true;
 		} else {
 
@@ -1365,15 +1366,12 @@ class MailsterBlockForms {
 			$output = do_shortcode( $output );
 		}
 
-		$form_args = 
-			array(
-				'id'         => $args['id'],
-				'identifier' => $args['identifier'],
-				'cooldown'   => $args['cooldown'],
-				'isPreview'  => $args['isPreview'],
-				'isPopup'    => $is_popup,
-			)
-		;
+		$form_args = array(
+			'id'         => $args['id'],
+			'identifier' => $args['identifier'],
+			'cooldown'   => $args['cooldown'],
+			'isPreview'  => $args['isPreview'],
+		);
 
 		if ( isset( $args['triggers'] ) ) {
 			$form_args['triggers'] = $args['triggers'];
@@ -1392,7 +1390,7 @@ class MailsterBlockForms {
 
 		$output = str_replace( '</form>', $inject . '</form>', $output );
 
-		return $output;
+		return apply_filters( 'mailster_block_form', $output, $form_args );
 
 	}
 

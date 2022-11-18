@@ -651,7 +651,6 @@ html.mailster-form-active {
 	}
 }
 .mailster-block-form.has-errors .mailster-block-form-inner {
-	animation: mailster-shake 0.3s 1 linear;
 	.mailster-block-form-info {
 		height: auto;
 		transform: scale(1);
@@ -660,6 +659,10 @@ html.mailster-form-active {
 		}
 	}
 }
+.mailster-block-form.has-errors .mailster-block-form-inner .mailster-wrapper {
+	animation: mailster-shake 0.3s 1 linear;
+}
+
 .mailster-block-form.has-success .mailster-block-form-inner {
 	.mailster-block-form-info {
 		height: auto;

@@ -105,6 +105,15 @@ class Mailster_REST_Subscribe_Controller extends WP_REST_Controller {
 			$fields_errors['email'] = sprintf( esc_html__( 'Please wait at least %s seconds before submitting the form.', 'mailster' ), human_time_diff( $time_check_value + $_timestamp ) );
 		}
 
+		/**
+		* Allow third parties to hook into the form submission errors
+		*
+		* @param array $fields_errors all current error
+		* @param array $entry the collected user data
+		* @param object $request the request
+		*/
+		$fields_errors = apply_filters( 'mailster_block_form_field_errors', $fields_errors, $entry, $request );
+
 		if ( ! empty( $fields_errors ) ) {
 			return new WP_Error( 'rest_forbidden', mailster_text( 'error' ), $this->response_data( array( 'fields' => $fields_errors ) ) );
 		}
