@@ -123,6 +123,7 @@ import apiFetch from '@wordpress/api-fetch';
 						}
 					);
 					observer.observe(formEl);
+					triggerEvent('load');
 				}
 			}
 
@@ -153,12 +154,13 @@ import apiFetch from '@wordpress/api-fetch';
 				formEl.setAttribute('disabled', true);
 
 				if (
-					new URL(document.referrer).origin ==
-					document.location.origin
+					document.referrer &&
+					new URL(document.referrer).origin !==
+						document.location.origin
 				) {
-					formData.append('_referer', document.location.href);
-				} else {
 					formData.append('_referer', document.referrer);
+				} else {
+					formData.append('_referer', document.location.href);
 				}
 
 				for (let key of formData.keys()) {
@@ -204,20 +206,27 @@ import apiFetch from '@wordpress/api-fetch';
 							formEl.classList.add('has-errors');
 							Object.keys(error.data.fields).map((fieldid) => {
 								let field = formEl.querySelector(
-									'.wp-block-mailster-' +
-										fieldid +
-										', .wp-block-mailster-field-' +
-										fieldid
-								);
-								let input = field.querySelector('input');
-								let hintid =
-									'hint-' + form.identifier + '-' + input.id;
+										'.wp-block-mailster-' +
+											fieldid +
+											', .wp-block-mailster-field-' +
+											fieldid
+									),
+									hintid =
+										'h-' + form.identifier + '-' + fieldid,
+									input;
+								if (field) {
+									input = field.querySelector('input');
+									input.setAttribute('aria-invalid', 'true');
+									input.setAttribute(
+										'aria-describedby',
+										hintid
+									);
+									field.classList.add('is-error');
+								}
 								let m =
 									field?.dataset?.errorMessage ||
 									error.data.fields[fieldid];
 
-								input.setAttribute('aria-invalid', 'true');
-								input.setAttribute('aria-describedby', hintid);
 								console.error('[' + fieldid + ']', m);
 								message.push(
 									'<span id="' +
@@ -226,8 +235,6 @@ import apiFetch from '@wordpress/api-fetch';
 										m +
 										'</span>'
 								);
-
-								field && field.classList.add('is-error');
 							});
 						}
 						info.classList.remove('is-success');
@@ -428,7 +435,7 @@ import apiFetch from '@wordpress/api-fetch';
 					events[form.id][name].apply(detail);
 				}
 
-				formEl.dispatchEvent(event);
+				return formEl.dispatchEvent(event);
 			}
 		});
 	}
