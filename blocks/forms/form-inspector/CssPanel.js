@@ -40,6 +40,13 @@ input, select {
     padding: .6em;
 }`;
 
+const CSS_TAB_NAMES = {
+	general: __('General', 'mailster'),
+	tablet: __('Tablet', 'mailster'),
+	mobile: __('Mobile', 'mailster'),
+	basic: __('Basic', 'mailster'),
+};
+
 function getSelectors() {
 	const custom = window.mailster_fields.filter((el) => el.id != 'submit');
 	return [
@@ -90,8 +97,7 @@ function getSelectors() {
 			label: __('Other', 'mailster'),
 			items: [
 				{
-					selector:
-						'.mailster-wrapper-required label.mailster-label::after',
+					selector: '.mailster-wrapper-required label.mailster-label::after',
 					title: __('Required Asterisk', 'mailster'),
 				},
 				{
@@ -125,7 +131,7 @@ const Wrapper = ({ children, isCSSModal, setCSSModal }) => {
 	);
 };
 
-export const CssPanel = (props) => {
+export function CssPanel(props) {
 	const { attributes, setAttributes, children } = props;
 
 	if (!attributes) {
@@ -133,13 +139,6 @@ export const CssPanel = (props) => {
 	}
 
 	const { css = {}, basiccss } = attributes;
-
-	const tabnames = {
-		general: __('General', 'mailster'),
-		tablet: __('Tablet', 'mailster'),
-		mobile: __('Mobile', 'mailster'),
-		basic: __('Basic', 'mailster'),
-	};
 
 	useEffect(() => {
 		var newCss = { ...css };
@@ -153,43 +152,9 @@ export const CssPanel = (props) => {
 
 	let codeEditor;
 
-	function setCss(name, data) {
-		var newCss = { ...css };
-		newCss[name] = data;
-		setAttributes({ css: newCss });
-	}
-
-	const setCssDebounce = wp.CodeMirror && useDebounce(setCss, 500);
-
 	const selectors = useMemo(() => {
 		return getSelectors();
 	}, [window.mailster_fields]);
-
-	const initCodeMirror = (isOpened, name) => {
-		const placeholder = '/* Style for ' + tabnames[name] + ' /*';
-		if (!isOpened || !wp.CodeMirror) return;
-
-		setTimeout(() => {
-			const el = document.getElementById('custom-css-textarea');
-			if (!el) return;
-
-			const settings = {
-				...wp.codeEditor.defaultSettings.codemirror,
-				...{
-					mode: 'text/css',
-					autofocus: true,
-					placeholder: placeholder,
-				},
-			};
-
-			codeEditor = wp.CodeMirror.fromTextArea(el, settings).on(
-				'change',
-				(editor) => setEventsDebounce(name, editor.getValue())
-			);
-		}, 0);
-
-		return;
-	};
 
 	const addSelector = (selector) => {
 		if (!selector) return;
@@ -217,10 +182,6 @@ export const CssPanel = (props) => {
 	};
 
 	const [isCSSModal, setCSSModal] = useState(false);
-
-	useEffect(() => {
-		initCodeMirror(true, 'general');
-	}, [isCSSModal]);
 
 	return (
 		<>
@@ -255,23 +216,16 @@ export const CssPanel = (props) => {
 						orientation="horizontal"
 						initialTabName="general"
 						onSelect={(tabName) => {
-							initCodeMirror(true, tabName);
+							//initCodeMirror(true, tabName);
 						}}
 						tabs={Object.keys(css).map((tab) => {
 							return {
 								name: tab,
-								title: tabnames[tab],
+								title: CSS_TAB_NAMES[tab],
 							};
 						})}
 					>
-						{(tab) => (
-							<TextareaControl
-								id="custom-css-textarea"
-								help="Enter your custom CSS here. Every declaration will get prefixed to work only for this specific form."
-								value={css[tab.name]}
-								onChange={(value) => setCssDebounce(tab, name)}
-							/>
-						)}
+						{(tab) => <EditTextArea {...props} tab={tab} />}
 					</TabPanel>
 				</PanelRow>
 				<PanelRow>
@@ -280,9 +234,7 @@ export const CssPanel = (props) => {
 						help="Helps you find the right selector for form elements"
 						onChange={addSelector}
 					>
-						<option value="">
-							{__('Choose Selector', 'mailster')}
-						</option>
+						<option value="">{__('Choose Selector', 'mailster')}</option>
 						{selectors.map((group, i) => {
 							return (
 								<optgroup key={i} label={group.label}>
@@ -301,5 +253,55 @@ export const CssPanel = (props) => {
 				{!!children && <>{children}</>}
 			</Wrapper>
 		</>
+	);
+}
+
+const EditTextArea = (props) => {
+	const { attributes, setAttributes, tab } = props;
+
+	const { css = {}, basiccss } = attributes;
+	const setCssDebounce = wp.CodeMirror && useDebounce(setCss, 500);
+	const id = 'css-code-editor-' + tab.name;
+
+	function setCss(name, data) {
+		var newCss = { ...css };
+		newCss[name] = data;
+		setAttributes({ css: newCss });
+	}
+
+	useEffect(() => {
+		const timeout = setTimeout(() => {
+			const placeholder = '/* Style for ' + CSS_TAB_NAMES[tab.name] + ' /*';
+
+			const el = document.getElementById(id);
+			if (!el) return;
+
+			const settings = {
+				...wp.codeEditor.defaultSettings.codemirror,
+				...{
+					mode: 'text/css',
+					autofocus: true,
+					placeholder: placeholder,
+				},
+			};
+
+			wp.CodeMirror.fromTextArea(el, settings).on('change', (editor) =>
+				setCss(tab.name, editor.getValue())
+			);
+		}, 0);
+
+		return () => clearTimeout(timeout);
+	}, []);
+
+	return (
+		<TextareaControl
+			id={id}
+			help={__(
+				'Enter your custom CSS here. Every declaration will get prefixed to work only for this specific form.',
+				'mailster'
+			)}
+			value={css[tab.name]}
+			onChange={(value) => setCssDebounce(tab, tab.name)}
+		/>
 	);
 };
