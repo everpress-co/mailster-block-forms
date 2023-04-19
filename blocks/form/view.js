@@ -27,9 +27,7 @@ import apiFetch from '@wordpress/api-fetch';
 		Array.prototype.forEach.call(forms, (formEl, i) => {
 			let form = formEl.querySelector('.mailster-block-form-data');
 			form = JSON.parse(form.textContent);
-			let wrap = formEl.closest(
-				'.wp-block-mailster-form-outside-wrapper'
-			);
+			let wrap = formEl.closest('.wp-block-mailster-form-outside-wrapper');
 			let closeButtons = wrap.querySelectorAll(
 				'.mailster-block-form-close, .mailster-block-form-inner-close'
 			);
@@ -63,9 +61,7 @@ import apiFetch from '@wordpress/api-fetch';
 					window.addEventListener('touchstart', _trigger_scroll);
 				},
 				click: () => {
-					let elements = document.querySelectorAll(
-						form.trigger_click
-					);
+					let elements = document.querySelectorAll(form.trigger_click);
 					Array.prototype.forEach.call(elements, (element, i) => {
 						element.addEventListener('click', openForm);
 					});
@@ -100,8 +96,7 @@ import apiFetch from '@wordpress/api-fetch';
 			if (form) {
 				if (form.triggers) {
 					form.triggers.forEach((trigger) => {
-						triggerMethods[trigger] &&
-							triggerMethods[trigger].call(this);
+						triggerMethods[trigger] && triggerMethods[trigger].call(this);
 					});
 					wrap.classList.add(
 						rgb2Contrast(
@@ -155,8 +150,7 @@ import apiFetch from '@wordpress/api-fetch';
 
 				if (
 					document.referrer &&
-					new URL(document.referrer).origin !==
-						document.location.origin
+					new URL(document.referrer).origin !== document.location.origin
 				) {
 					formData.append('_referer', document.referrer);
 				} else {
@@ -182,10 +176,7 @@ import apiFetch from '@wordpress/api-fetch';
 						info.classList.remove('is-error');
 
 						if (response.data.redirect) {
-							setTimeout(
-								() => (location.href = response.data.redirect),
-								150
-							);
+							setTimeout(() => (location.href = response.data.redirect), 150);
 							return;
 						}
 
@@ -197,8 +188,7 @@ import apiFetch from '@wordpress/api-fetch';
 							formEl.classList.add('completed');
 							formEl.reset();
 							document.activeElement.blur();
-							form.triggers &&
-								setTimeout(() => closeForm(), 3000);
+							form.triggers && setTimeout(() => closeForm(), 3000);
 						}
 					})
 					.catch((error) => {
@@ -211,29 +201,20 @@ import apiFetch from '@wordpress/api-fetch';
 											', .wp-block-mailster-field-' +
 											fieldid
 									),
-									hintid =
-										'h-' + form.identifier + '-' + fieldid,
+									hintid = 'h-' + form.identifier + '-' + fieldid,
 									input;
 								if (field) {
 									input = field.querySelector('input');
 									input.setAttribute('aria-invalid', 'true');
-									input.setAttribute(
-										'aria-describedby',
-										hintid
-									);
+									input.setAttribute('aria-describedby', hintid);
 									field.classList.add('is-error');
 								}
 								let m =
-									field?.dataset?.errorMessage ||
-									error.data.fields[fieldid];
+									field?.dataset?.errorMessage || error.data.fields[fieldid];
 
 								console.error('[' + fieldid + ']', m);
 								message.push(
-									'<span id="' +
-										hintid +
-										'" role="alert">' +
-										m +
-										'</span>'
+									'<span id="' + hintid + '" role="alert">' + m + '</span>'
 								);
 							});
 						}
@@ -384,9 +365,7 @@ import apiFetch from '@wordpress/api-fetch';
 			}
 
 			function get(key, fallback = null) {
-				let store = localStorage.getItem(
-					'mailster-form-' + form.identifier
-				);
+				let store = localStorage.getItem('mailster-form-' + form.identifier);
 				store = store ? JSON.parse(store) : {};
 				if (!key) {
 					return store;
