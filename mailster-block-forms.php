@@ -77,7 +77,7 @@ function mailster_block_forms_change_menu_position() {
 	unset( $submenu['edit.php?post_type=newsletter'][12] );
 	$submenu['edit.php?post_type=newsletter'][] = $entry;
 }
-add_action( 'admin_menu', 'mailster_block_forms_change_menu_position', 30 );
+// add_action( 'admin_menu', 'mailster_block_forms_change_menu_position', 30 );
 
 
 function mailster_block_forms_activate() {
