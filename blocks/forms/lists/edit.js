@@ -32,11 +32,7 @@ export default function Edit(props) {
 	const { lists, dropdown, vertical } = attributes;
 	const className = ['mailster-wrapper mailster-wrapper-_lists'];
 
-	const [meta, setMeta] = useEntityProp(
-		'postType',
-		'newsletter_form',
-		'meta'
-	);
+	const [meta, setMeta] = useEntityProp('postType', 'newsletter_form', 'meta');
 
 	if (vertical) className.push('mailster-wrapper-is-vertical');
 
@@ -115,18 +111,13 @@ export default function Edit(props) {
 					<legend>{__('Lists', 'mailster')}</legend>
 					{lists.map((list, i) => {
 						return (
-							<div
-								key={i}
-								className="mailster-group mailster-group-checkbox"
-							>
+							<div key={i} className="mailster-group mailster-group-checkbox">
 								<input
 									type="checkbox"
 									value={list.id}
 									checked={list.checked || false}
 									aria-label={list.name}
-									onChange={() =>
-										setChecked(!list.checked, i)
-									}
+									onChange={() => setChecked(!list.checked, i)}
 								/>
 								<RichText
 									tagName="label"

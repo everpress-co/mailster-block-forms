@@ -28,15 +28,12 @@ export default function Styles(props) {
 		const { width, ...newStyle } = style;
 		root.map((block) => {
 			var style = {
-				...select('core/block-editor').getBlockAttributes(
-					block.clientId
-				).style,
+				...select('core/block-editor').getBlockAttributes(block.clientId).style,
 			};
 
-			dispatch('core/block-editor').updateBlockAttributes(
-				block.clientId,
-				{ style: { ...style, ...newStyle } }
-			);
+			dispatch('core/block-editor').updateBlockAttributes(block.clientId, {
+				style: { ...style, ...newStyle },
+			});
 
 			dispatch('core/block-editor').clearSelectedBlock(block.clientId);
 			dispatch('core/block-editor').selectBlock(block.clientId);
@@ -56,17 +53,10 @@ export default function Styles(props) {
 			initialOpen={true}
 			opened={true}
 		>
-			<StylesContent
-				attributes={attributes}
-				setAttributes={setAttributes}
-			>
+			<StylesContent attributes={attributes} setAttributes={setAttributes}>
 				{type !== 'submit' && (
 					<PanelRow>
-						<Button
-							onClick={applyStyle}
-							variant="primary"
-							icon={external}
-						>
+						<Button onClick={applyStyle} variant="primary" icon={external}>
 							{__('Apply to all input fields', 'mailster')}
 						</Button>
 					</PanelRow>

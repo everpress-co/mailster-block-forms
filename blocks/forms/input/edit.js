@@ -12,7 +12,6 @@ import { __ } from '@wordpress/i18n';
 
 import {
 	useBlockProps,
-	InspectorControls,
 	RichText,
 	__experimentalUseBorderProps as useBorderProps,
 	__experimentalUseColorProps as useColorProps,
@@ -52,8 +51,7 @@ export default function Edit(props) {
 	if (align) className.push('mailster-wrapper-align-' + align);
 	if (justify) className.push('mailster-wrapper-justify-' + justify);
 	if (vertical) className.push('mailster-wrapper-is-vertical');
-	if (labelAlign)
-		className.push('mailster-wrapper-label-align-' + labelAlign);
+	if (labelAlign) className.push('mailster-wrapper-label-align-' + labelAlign);
 	if (inline) className.push('mailster-wrapper-inline');
 	if (required && asterisk) className.push('mailster-wrapper-asterisk');
 	if ('submit' == type) className.push('wp-block-button');

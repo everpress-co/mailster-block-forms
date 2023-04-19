@@ -27,17 +27,13 @@ import { useState } from '@wordpress/element';
 export default function GdprFieldInspectorControls({
 	attributes,
 	setAttributes,
-	isSelected,
 }) {
 	const { content } = attributes;
 
 	return (
 		<InspectorControls>
 			<Panel>
-				<PanelBody
-					title={__('Field Settings', 'mailster')}
-					initialOpen={true}
-				>
+				<PanelBody title={__('Field Settings', 'mailster')} initialOpen={true}>
 					<PanelRow>
 						<TextControl
 							label={__('Content', 'mailster')}

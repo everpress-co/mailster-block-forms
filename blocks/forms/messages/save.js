@@ -45,10 +45,7 @@ export default function save(props) {
 				<RichText.Content tagName="div" value={successMessage} />
 				<div className="mailster-block-form-info-extra"></div>
 			</div>
-			<div
-				className="mailster-block-form-info-error"
-				style={styleErrorMessage}
-			>
+			<div className="mailster-block-form-info-error" style={styleErrorMessage}>
 				<RichText.Content tagName="div" value={errorMessage} />
 				<div className="mailster-block-form-info-extra"></div>
 			</div>

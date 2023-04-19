@@ -83,9 +83,7 @@ export default function Edit(props) {
 					},
 				]}
 			>
-				{(tab) => (
-					<InnerBlocks template={[['mailster/form', { id: 147 }]]} />
-				)}
+				{(tab) => <InnerBlocks template={[['mailster/form', { id: 147 }]]} />}
 			</TabPanel>
 		</div>
 	);

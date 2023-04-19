@@ -45,8 +45,7 @@ export default function save(props) {
 	if (align) className.push('mailster-wrapper-align-' + align);
 	if (justify) className.push('mailster-wrapper-justify-' + justify);
 	if (vertical) className.push('mailster-wrapper-is-vertical');
-	if (labelAlign)
-		className.push('mailster-wrapper-label-align-' + labelAlign);
+	if (labelAlign) className.push('mailster-wrapper-label-align-' + labelAlign);
 	if (inline) className.push('mailster-wrapper-inline');
 	if (required && asterisk) className.push('mailster-wrapper-asterisk');
 	if ('submit' == type) className.push('wp-block-button');
@@ -96,11 +95,7 @@ export default function save(props) {
 	}
 
 	return (
-		<div
-			{...blockProps}
-			style={styleSheets}
-			data-error-message={errorMessage}
-		>
+		<div {...blockProps} style={styleSheets} data-error-message={errorMessage}>
 			{hasLabel && label && !inline && labelElement}
 			<FormElement
 				{...props}

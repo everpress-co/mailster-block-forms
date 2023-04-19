@@ -93,10 +93,7 @@ export default function FormElement(props) {
 										})
 									}
 								/>
-								<label
-									className="mailster-label"
-									htmlFor={fieldid}
-								>
+								<label className="mailster-label" htmlFor={fieldid}>
 									{value}
 								</label>
 							</div>

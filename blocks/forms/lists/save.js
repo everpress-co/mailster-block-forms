@@ -43,13 +43,9 @@ export default function save(props) {
 				<fieldset>
 					<legend>{__('Lists', 'mailster')}</legend>
 					{lists.map((list, i) => {
-						const fieldid =
-							cleanForSlug(list.name) + '-' + attributes.id;
+						const fieldid = cleanForSlug(list.name) + '-' + attributes.id;
 						return (
-							<div
-								key={i}
-								className="mailster-group mailster-group-checkbox"
-							>
+							<div key={i} className="mailster-group mailster-group-checkbox">
 								<input
 									type="checkbox"
 									name="_lists[]"

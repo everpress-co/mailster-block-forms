@@ -35,8 +35,7 @@ export default function InputFieldInspectorControls({
 				colorSettings={[
 					{
 						value: successBackground,
-						onChange: (value) =>
-							setAttributes({ successBackground: value }),
+						onChange: (value) => setAttributes({ successBackground: value }),
 						label: __('Background Color', 'mailster'),
 					},
 					{
@@ -56,8 +55,7 @@ export default function InputFieldInspectorControls({
 				colorSettings={[
 					{
 						value: errorBackground,
-						onChange: (value) =>
-							setAttributes({ errorBackground: value }),
+						onChange: (value) => setAttributes({ errorBackground: value }),
 						label: __('Background Color', 'mailster'),
 					},
 					{
@@ -67,10 +65,7 @@ export default function InputFieldInspectorControls({
 					},
 				]}
 			></PanelColorSettings>
-			<PanelBody
-				title={__('Field Settings', 'mailster')}
-				initialOpen={true}
-			>
+			<PanelBody title={__('Field Settings', 'mailster')} initialOpen={true}>
 				<PanelRow>
 					<RangeControl
 						className="widefat"

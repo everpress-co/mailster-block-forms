@@ -61,15 +61,12 @@ export default function InputFieldInspectorControls(props) {
 		const { width, ...newStyle } = style;
 		root.map((block) => {
 			var style = {
-				...select('core/block-editor').getBlockAttributes(
-					block.clientId
-				).style,
+				...select('core/block-editor').getBlockAttributes(block.clientId).style,
 			};
 
-			dispatch('core/block-editor').updateBlockAttributes(
-				block.clientId,
-				{ style: { ...style, ...newStyle } }
-			);
+			dispatch('core/block-editor').updateBlockAttributes(block.clientId, {
+				style: { ...style, ...newStyle },
+			});
 
 			dispatch('core/block-editor').clearSelectedBlock(block.clientId);
 			dispatch('core/block-editor').selectBlock(block.clientId);
@@ -86,28 +83,18 @@ export default function InputFieldInspectorControls(props) {
 			<InputStylesPanel {...props}>
 				{type !== 'submit' && (
 					<PanelRow>
-						<Button
-							onClick={applyStyle}
-							variant="primary"
-							icon={external}
-						>
+						<Button onClick={applyStyle} variant="primary" icon={external}>
 							{__('Apply to all input fields', 'mailster')}
 						</Button>
 					</PanelRow>
 				)}
 			</InputStylesPanel>
 			<Panel>
-				<PanelBody
-					title={__('Field Settings', 'mailster')}
-					initialOpen={true}
-				>
+				<PanelBody title={__('Field Settings', 'mailster')} initialOpen={true}>
 					<PanelRow>
 						<TextControl
 							label={__('Label', 'mailster')}
-							help={__(
-								'Define a label for your field',
-								'mailster'
-							)}
+							help={__('Define a label for your field', 'mailster')}
 							value={label}
 							onChange={(val) => setAttributes({ label: val })}
 						/>
@@ -124,9 +111,7 @@ export default function InputFieldInspectorControls(props) {
 										'mailster'
 									)}
 									checked={inline}
-									onChange={() =>
-										setAttributes({ inline: !inline })
-									}
+									onChange={() => setAttributes({ inline: !inline })}
 								/>
 							</PanelRow>
 						)}
@@ -140,9 +125,7 @@ export default function InputFieldInspectorControls(props) {
 								)}
 								checked={required || name == 'email'}
 								disabled={name == 'email'}
-								onChange={() =>
-									setAttributes({ required: !required })
-								}
+								onChange={() => setAttributes({ required: !required })}
 							/>
 						</PanelRow>
 					)}
@@ -155,27 +138,20 @@ export default function InputFieldInspectorControls(props) {
 									'mailster'
 								)}
 								checked={asterisk}
-								onChange={() =>
-									setAttributes({ asterisk: !asterisk })
-								}
+								onChange={() => setAttributes({ asterisk: !asterisk })}
 							/>
 						</PanelRow>
 					)}
 					{(type == 'email' || type == 'date') && (
 						<PanelRow>
 							<CheckboxControl
-								label={__(
-									'Use native form element',
-									'mailster'
-								)}
+								label={__('Use native form element', 'mailster')}
 								help={__(
 									'Native form elements provide a better user experience but often miss some styling.',
 									'mailster'
 								)}
 								checked={native}
-								onChange={() =>
-									setAttributes({ native: !native })
-								}
+								onChange={() => setAttributes({ native: !native })}
 							/>
 						</PanelRow>
 					)}
@@ -187,10 +163,7 @@ export default function InputFieldInspectorControls(props) {
 							allowReset={true}
 							initialPosition={100}
 							onChange={(value) => setStyle('width', value)}
-							help={__(
-								'Set the width of the input field',
-								'mailster'
-							)}
+							help={__('Set the width of the input field', 'mailster')}
 							min={10}
 							max={100}
 						/>
@@ -203,9 +176,7 @@ export default function InputFieldInspectorControls(props) {
 								'mailster'
 							)}
 							value={errorMessage}
-							onChange={(val) =>
-								setAttributes({ errorMessage: val })
-							}
+							onChange={(val) => setAttributes({ errorMessage: val })}
 						/>
 					</PanelRow>
 					<Values {...props} />

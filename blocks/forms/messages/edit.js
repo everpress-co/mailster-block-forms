@@ -10,11 +10,7 @@ import classnames from 'classnames';
 
 import { __ } from '@wordpress/i18n';
 
-import {
-	useBlockProps,
-	InspectorControls,
-	RichText,
-} from '@wordpress/block-editor';
+import { useBlockProps, RichText } from '@wordpress/block-editor';
 
 import { useEffect } from '@wordpress/element';
 import { useEntityProp } from '@wordpress/core-data';
@@ -34,11 +30,7 @@ export default function Edit(props) {
 
 	if (align) className.push('has-text-align-' + align);
 
-	const [meta, setMeta] = useEntityProp(
-		'postType',
-		'newsletter_form',
-		'meta'
-	);
+	const [meta, setMeta] = useEntityProp('postType', 'newsletter_form', 'meta');
 
 	const successMessageDefault = meta.doubleoptin
 		? __('Please confirm your subscription!', 'mailster')
@@ -85,9 +77,7 @@ export default function Edit(props) {
 					<RichText
 						tagName="div"
 						value={successMessage}
-						onChange={(val) =>
-							setAttributes({ successMessage: val })
-						}
+						onChange={(val) => setAttributes({ successMessage: val })}
 						placeholder={__('Enter Success Message', 'mailster')}
 					/>
 					<div className="mailster-block-form-info-extra"></div>

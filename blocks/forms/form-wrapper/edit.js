@@ -29,7 +29,7 @@ import { useEntityProp } from '@wordpress/core-data';
 
 import './editor.scss';
 
-import { useUpdateEffect, searchBlock, whenEditorIsReady } from '../../util';
+import { searchBlock, whenEditorIsReady } from '../../util';
 import BlockRecovery from './BlockRecovery';
 import InlineStyles from '../../util/InlineStyles';
 
@@ -65,12 +65,9 @@ const prefixCss = (css, className, type) => {
 			!isIn &&
 			nextChar !== '@' &&
 			nextChar !== '}' &&
-			(char === '}' ||
-				char === ',' ||
-				((char === '{' || char === ';') && isAt))
+			(char === '}' || char === ',' || ((char === '{' || char === ';') && isAt))
 		) {
-			rules =
-				rules.slice(0, i + 1) + className + ' ' + rules.slice(i + 1);
+			rules = rules.slice(0, i + 1) + className + ' ' + rules.slice(i + 1);
 			i += classLen;
 			isAt = false;
 		}
@@ -101,11 +98,7 @@ export default function Edit(props) {
 		props;
 	const { css, style, background, inputs } = attributes;
 
-	const [meta, setMeta] = useEntityProp(
-		'postType',
-		'newsletter_form',
-		'meta'
-	);
+	const [meta, setMeta] = useEntityProp('postType', 'newsletter_form', 'meta');
 
 	const borderProps = useBorderProps(attributes);
 	const colorProps = useColorProps(attributes);
@@ -154,15 +147,10 @@ export default function Edit(props) {
 			if (background.repeat) s += 'background-repeat:repeat;';
 			s +=
 				'background-size:' +
-				(isNaN(background.size)
-					? background.size
-					: background.size + '%') +
+				(isNaN(background.size) ? background.size : background.size + '%') +
 				';';
 			if (background.position)
-				s +=
-					'background-position:' +
-					mediaPosition(background.position) +
-					';';
+				s += 'background-position:' + mediaPosition(background.position) + ';';
 			s += 'opacity:' + background.opacity + '%;';
 			if (attributes.borderRadius) {
 				s += 'border-radius:' + attributes.borderRadius + ';';
@@ -217,14 +205,11 @@ export default function Edit(props) {
 				count = all.length;
 
 			if (count > 1) {
-				console.warn(
-					'enter the root wrapper or replace it with a new one'
-				);
+				console.warn('enter the root wrapper or replace it with a new one');
 				const inserted = select('core/block-editor').getBlock(clientId);
 				const current = all.find(
 					(block) =>
-						block.name == 'mailster/form-wrapper' &&
-						block.clientId != clientId
+						block.name == 'mailster/form-wrapper' && block.clientId != clientId
 				);
 				if (
 					confirm(
@@ -233,9 +218,7 @@ export default function Edit(props) {
 				) {
 					dispatch('core/block-editor').removeBlock(current.clientId);
 				} else {
-					dispatch('core/block-editor').removeBlock(
-						inserted.clientId
-					);
+					dispatch('core/block-editor').removeBlock(inserted.clientId);
 				}
 			}
 		}, []);
@@ -265,9 +248,7 @@ export default function Edit(props) {
 				// clear any selected block
 				dispatch('core/block-editor').clearSelectedBlock();
 				// select "Form" in side panel
-				dispatch('core/edit-post').openGeneralSidebar(
-					'edit-post/document'
-				);
+				dispatch('core/edit-post').openGeneralSidebar('edit-post/document');
 			}
 		});
 
@@ -278,9 +259,7 @@ export default function Edit(props) {
 			if (block && !meta.gdpr) {
 				console.warn('Remove gdpr block');
 				dispatch('core/block-editor').removeBlock(block.clientId);
-				dispatch('core/edit-post').openGeneralSidebar(
-					'edit-post/document'
-				);
+				dispatch('core/edit-post').openGeneralSidebar('edit-post/document');
 			} else if (!block && meta.gdpr) {
 				console.warn('Add gdpr block');
 				const block = wp.blocks.createBlock('mailster/gdpr');
@@ -307,9 +286,7 @@ export default function Edit(props) {
 			if (block && !meta.userschoice) {
 				block.attributes.lock.remove = false;
 				dispatch('core/block-editor').removeBlock(block.clientId);
-				dispatch('core/edit-post').openGeneralSidebar(
-					'edit-post/document'
-				);
+				dispatch('core/edit-post').openGeneralSidebar('edit-post/document');
 			} else if (!block && meta.userschoice) {
 				console.warn('Add lists block');
 				const block = wp.blocks.createBlock('mailster/lists');
@@ -351,9 +328,7 @@ export default function Edit(props) {
 				)}
 
 				{inlineStyles && (
-					<style className="mailster-custom-styles">
-						{inlineStyles}
-					</style>
+					<style className="mailster-custom-styles">{inlineStyles}</style>
 				)}
 				{prefixedCss && (
 					<style className="mailster-prefixed-custom-styles">
@@ -361,14 +336,10 @@ export default function Edit(props) {
 					</style>
 				)}
 				{backgroundStyles && (
-					<style className="mailster-bg-styles">
-						{backgroundStyles}
-					</style>
+					<style className="mailster-bg-styles">{backgroundStyles}</style>
 				)}
 				{inputStyle && (
-					<style className="mailster-inline-styles">
-						{inputStyle}
-					</style>
+					<style className="mailster-inline-styles">{inputStyle}</style>
 				)}
 				<div className="mailster-block-form-inner">
 					<InnerBlocks renderAppender={null} />

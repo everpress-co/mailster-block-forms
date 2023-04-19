@@ -9,26 +9,11 @@
 import { __, sprintf } from '@wordpress/i18n';
 
 import {
-	useBlockProps,
-	InspectorControls,
-	PanelColorSettings,
-	RichText,
-	PlainText,
-} from '@wordpress/block-editor';
-import {
 	Panel,
 	PanelBody,
 	PanelRow,
-	CheckboxControl,
 	TextControl,
 	RadioControl,
-	SelectControl,
-	RangeControl,
-	ColorPalette,
-	MenuGroup,
-	MenuItem,
-	Draggable,
-	IconButton,
 	Flex,
 	FlexItem,
 	FlexBlock,
@@ -36,16 +21,7 @@ import {
 	BaseControl,
 } from '@wordpress/components';
 
-import { Fragment, Component, useState } from '@wordpress/element';
-import { select, dispatch } from '@wordpress/data';
-
-import {
-	Icon,
-	chevronUp,
-	chevronDown,
-	trash,
-	external,
-} from '@wordpress/icons';
+import { chevronUp, chevronDown, trash } from '@wordpress/icons';
 
 /**
  * Internal dependencies

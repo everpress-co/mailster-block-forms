@@ -33,11 +33,7 @@ export default function BlockRecovery(props) {
 		const broken = getBrokenBlocks();
 
 		broken.map((block) => {
-			const b = createBlock(
-				block.name,
-				block.attributes,
-				block.innerBlocks
-			);
+			const b = createBlock(block.name, block.attributes, block.innerBlocks);
 			dispatch('core/block-editor').replaceBlock(block.clientId, b);
 		});
 		setHasBrokenBlocks(0);

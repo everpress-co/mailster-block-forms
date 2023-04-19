@@ -29,11 +29,7 @@ export default function Edit(props) {
 
 	if (align) className.push('mailster-wrapper-label-align-' + align);
 
-	const [meta, setMeta] = useEntityProp(
-		'postType',
-		'newsletter_form',
-		'meta'
-	);
+	const [meta, setMeta] = useEntityProp('postType', 'newsletter_form', 'meta');
 
 	useEffect(() => {
 		setMeta({ gdpr: true });
@@ -47,10 +43,7 @@ export default function Edit(props) {
 		if (!attributes.id) setAttributes({ id: clientId.substring(30) });
 		if (!content)
 			setAttributes({
-				content: __(
-					'I agree to the privacy policy and terms.',
-					'mailster'
-				),
+				content: __('I agree to the privacy policy and terms.', 'mailster'),
 			});
 	});
 
