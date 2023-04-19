@@ -150,8 +150,6 @@ export function CssPanel(props) {
 		setAttributes({ css: newCss });
 	}, [basiccss]);
 
-	let codeEditor;
-
 	const selectors = useMemo(() => {
 		return getSelectors();
 	}, [window.mailster_fields]);
@@ -214,10 +212,6 @@ export function CssPanel(props) {
 						className="custom-css-tabs"
 						activeClass="is-active"
 						orientation="horizontal"
-						initialTabName="general"
-						onSelect={(tabName) => {
-							//initCodeMirror(true, tabName);
-						}}
 						tabs={Object.keys(css).map((tab) => {
 							return {
 								name: tab,
@@ -259,7 +253,7 @@ export function CssPanel(props) {
 const EditTextArea = (props) => {
 	const { attributes, setAttributes, tab } = props;
 
-	const { css = {}, basiccss } = attributes;
+	const { css = {} } = attributes;
 	const setCssDebounce = wp.CodeMirror && useDebounce(setCss, 500);
 	const id = 'css-code-editor-' + tab.name;
 
