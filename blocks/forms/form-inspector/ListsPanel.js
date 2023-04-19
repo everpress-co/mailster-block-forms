@@ -13,7 +13,6 @@ import {
 	PanelRow,
 	BaseControl,
 	CheckboxControl,
-	RadioControl,
 	Flex,
 	FlexItem,
 	Spinner,
@@ -158,9 +157,7 @@ export default function ListsPanel(props) {
 									<Flex key={i} style={{ flexShrink: 0 }}>
 										<FlexItem>
 											<CheckboxControl
-												checked={lists.includes(
-													list.ID
-												)}
+												checked={lists.includes(list.ID)}
 												value={list.ID}
 												onChange={(checked) => {
 													setList(list.ID, checked);
@@ -181,10 +178,7 @@ export default function ListsPanel(props) {
 						<PanelRow>
 							<CheckboxControl
 								label={__('Display as dropdown', 'mailster')}
-								help={__(
-									'Let users only choose a single list.',
-									'mailster'
-								)}
+								help={__('Let users only choose a single list.', 'mailster')}
 								checked={!!attributes.dropdown}
 								onChange={() =>
 									setAttributes({

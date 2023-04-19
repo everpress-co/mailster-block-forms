@@ -8,10 +8,8 @@
 
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 
-import { useSelect, select, dispatch } from '@wordpress/data';
+import { useSelect, dispatch } from '@wordpress/data';
 import { useEffect } from '@wordpress/element';
-
-//import { __experimentalDimensionControl as DimensionControl } from '@wordpress/components';
 
 /**
  * Internal dependencies

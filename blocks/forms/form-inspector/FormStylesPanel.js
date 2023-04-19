@@ -18,7 +18,6 @@ import {
 	SelectControl,
 	ToggleControl,
 	FocalPointPicker,
-	FontSizePicker,
 	__experimentalBoxControl as BoxControl,
 } from '@wordpress/components';
 

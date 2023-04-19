@@ -65,8 +65,7 @@ export default function Doubleoptin(props) {
 						className={!isValidContent && 'error-message'}
 						value={content}
 						help={
-							!isValidContent &&
-							'Make sure this field contain a {link} tag.'
+							!isValidContent && 'Make sure this field contain a {link} tag.'
 						}
 						onChange={(value) => setMeta({ content: value })}
 					/>
@@ -83,9 +82,7 @@ export default function Doubleoptin(props) {
 							'mailster'
 						)}
 						value={confirmredirect}
-						onChange={(value) =>
-							setMeta({ confirmredirect: value })
-						}
+						onChange={(value) => setMeta({ confirmredirect: value })}
 						type="url"
 					/>
 				</>

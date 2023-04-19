@@ -66,10 +66,7 @@ export default function WelcomeGuide(props) {
 					content: (
 						<>
 							<h1 className="edit-post-welcome-guide__heading">
-								{__(
-									'Welcome to the Mailster Block Form Editor',
-									'mailster'
-								)}
+								{__('Welcome to the Mailster Block Form Editor', 'mailster')}
 							</h1>
 							<p className="edit-post-welcome-guide__text">
 								{__(
@@ -114,10 +111,7 @@ export default function WelcomeGuide(props) {
 					content: (
 						<>
 							<h1 className="edit-post-welcome-guide__heading">
-								{__(
-									'Add additional fields to your form.',
-									'mailster'
-								)}
+								{__('Add additional fields to your form.', 'mailster')}
 							</h1>
 							<p className="edit-post-welcome-guide__text">
 								{__(
@@ -141,10 +135,7 @@ export default function WelcomeGuide(props) {
 					content: (
 						<>
 							<h1 className="edit-post-welcome-guide__heading">
-								{__(
-									'Customize the look and feel of your form.',
-									'mailster'
-								)}
+								{__('Customize the look and feel of your form.', 'mailster')}
 							</h1>
 							<p className="edit-post-welcome-guide__text">
 								{__(
@@ -186,10 +177,7 @@ export default function WelcomeGuide(props) {
 					content: (
 						<>
 							<h1 className="edit-post-welcome-guide__heading">
-								{__(
-									'Mailster Forms are currently in Beta',
-									'mailster'
-								)}
+								{__('Mailster Forms are currently in Beta', 'mailster')}
 							</h1>
 							<p className="edit-post-welcome-guide__text">
 								{__(
@@ -223,10 +211,7 @@ export default function WelcomeGuide(props) {
 										);
 									}}
 								>
-									{__(
-										'WordPress.org Support Forum',
-										'mailster'
-									)}
+									{__('WordPress.org Support Forum', 'mailster')}
 								</Button>
 							</p>
 						</>
