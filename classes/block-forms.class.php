@@ -3,6 +3,7 @@
 class MailsterBlockForms {
 
 
+
 	private $forms = array();
 	private $preview_data;
 
@@ -89,17 +90,17 @@ class MailsterBlockForms {
 
 	public function rest_api_init() {
 
-		require MAILSTER_FORM_BLOCK_DIR . 'classes/rest-controller/rest.lists.class.php';
+		include MAILSTER_FORM_BLOCK_DIR . 'classes/rest-controller/rest.lists.class.php';
 
 		$controller = new Mailster_REST_List_Controller();
 		$controller->register_routes();
 
-		require MAILSTER_FORM_BLOCK_DIR . 'classes/rest-controller/rest.susbcribe.class.php';
+		include MAILSTER_FORM_BLOCK_DIR . 'classes/rest-controller/rest.susbcribe.class.php';
 
 		$controller = new Mailster_REST_Subscribe_Controller();
 		$controller->register_routes();
 
-		require MAILSTER_FORM_BLOCK_DIR . 'classes/rest-controller/rest.form.class.php';
+		include MAILSTER_FORM_BLOCK_DIR . 'classes/rest-controller/rest.form.class.php';
 
 		$controller = new Mailster_REST_Form_Controller();
 		$controller->register_routes();
@@ -175,7 +176,7 @@ class MailsterBlockForms {
 		} elseif ( is_object( $value ) ) {
 			$vars = get_object_vars( $value );
 			foreach ( $vars as $key => $data ) {
-				 $value->{$key} = $this->sanitize( $data );
+				$value->{$key} = $this->sanitize( $data );
 			}
 		}
 
@@ -796,7 +797,7 @@ class MailsterBlockForms {
 		// from https://www.designbombs.com/registering-gutenberg-blocks-for-custom-post-type/
 		if ( 'post-new.php' === $pagenow ) {
 			if ( isset( $_REQUEST['post_type'] ) && post_type_exists( $_REQUEST['post_type'] ) ) {
-				  $typenow = sanitize_key( $_REQUEST['post_type'] );
+				$typenow = sanitize_key( $_REQUEST['post_type'] );
 			};
 		} elseif ( 'post.php' === $pagenow ) {
 			if ( isset( $_GET['post'] ) && isset( $_POST['post_ID'] ) && (int) $_GET['post'] !== (int) $_POST['post_ID'] ) {
@@ -851,10 +852,12 @@ class MailsterBlockForms {
 	public function overview_script_styles() {
 
 		if ( 'newsletter_form' != get_post_type() ) {
-			 return;
+			return;
 		}
 
 		$suffix = '';
+
+		mailster()->add_admin_header();
 
 		wp_enqueue_style( 'mailster-block-forms-overview', MAILSTER_FORM_BLOCK_URI . 'assets/css/block-form-overview' . $suffix . '.css', array(), MAILSTER_VERSION );
 	}
@@ -866,6 +869,8 @@ class MailsterBlockForms {
 		}
 
 		$suffix = '';
+
+		mailster()->add_admin_header();
 
 		wp_enqueue_style( 'mailster-form-block-editor', MAILSTER_FORM_BLOCK_URI . 'assets/css/blocks-editor' . $suffix . '.css', array(), MAILSTER_VERSION );
 		wp_add_inline_style( 'mailster-form-block-editor', $this->get_theme_styles() );
@@ -1179,7 +1184,7 @@ class MailsterBlockForms {
 					$embeded_style .= '.wp-block-mailster-form-outside-wrapper-' . $uniqid . '{';
 					foreach ( $block['attrs'] as $key => $value ) {
 						if ( ! is_array( $value ) ) {
-							$embeded_style .= '--mailster--color--' . strtolower( preg_replace( '/([a-z])([A-Z])/', '$1-$2', $key ) ) . ': ' . $value . ';';
+							   $embeded_style .= '--mailster--color--' . strtolower( preg_replace( '/([a-z])([A-Z])/', '$1-$2', $key ) ) . ': ' . $value . ';';
 						}
 					}
 					$embeded_style .= '}';
