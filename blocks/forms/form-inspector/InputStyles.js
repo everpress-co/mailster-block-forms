@@ -19,20 +19,6 @@ import { useEffect } from '@wordpress/element';
 import { InputStylesPanel, colorSettings } from './InputStylesPanel';
 
 export default function InputStyles(props) {
-	const isInputPanelOpened = useSelect((select) => {
-		return select('core/edit-post').isEditorPanelOpened(
-			'mailster-block-form-settings-panel/input-styles'
-		);
-	});
-
-	useEffect(() => {
-		return;
-		!isInputPanelOpened &&
-			dispatch('core/edit-post').toggleEditorPanelOpened(
-				'mailster-block-form-settings-panel/input-styles'
-			);
-	}, [isInputPanelOpened]);
-
 	return (
 		<PluginDocumentSettingPanel
 			className="with-panel"

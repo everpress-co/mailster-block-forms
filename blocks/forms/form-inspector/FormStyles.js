@@ -19,20 +19,6 @@ import { useEffect } from '@wordpress/element';
 import { FormStylesPanel } from './FormStylesPanel';
 
 export default function Styles(props) {
-	const isFormPanelOpened = useSelect((select) => {
-		return select('core/edit-post').isEditorPanelOpened(
-			'mailster-block-form-settings-panel/form-styles'
-		);
-	});
-
-	useEffect(() => {
-		return;
-		!isFormPanelOpened &&
-			dispatch('core/edit-post').toggleEditorPanelOpened(
-				'mailster-block-form-settings-panel/form-styles'
-			);
-	}, [isFormPanelOpened]);
-
 	return (
 		<PluginDocumentSettingPanel
 			className="with-panel"
