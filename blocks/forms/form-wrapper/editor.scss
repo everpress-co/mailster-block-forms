@@ -176,8 +176,6 @@ body::before {
 		cursor: pointer;
 		.components-card__body {
 			min-height: 15vw;
-			display: flex;
-			align-items: center;
 			background: url('data:image/svg+xml,<svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 100 100" xml:space="preserve"><style>.st0{fill:%23fafafa}</style><path class="st0" d="M0 0h50v50H0zM50.5 49.5h50v50h-50z"/></svg>')
 				white !important;
 			background-repeat: repeat;
@@ -209,6 +207,7 @@ body::before {
 	margin-top: 3em;
 	display: block;
 	pointer-events: none;
+	min-width: 100%;
 }
 
 .is-mobile-preview,
