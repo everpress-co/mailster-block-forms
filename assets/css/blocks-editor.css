@@ -60,13 +60,17 @@
 }
 
 .components-panel__body.with-panel {
-	padding: 0;
+	_padding: 0;
 }
 .components-panel__body.with-panel.is-opened {
-	border: none;
+	_border: none;
 }
 .components-panel__body.with-panel.is-opened > .components-panel__body-title {
-	display: none;
+	_display: none;
+}
+.components-panel__body.with-panel.is-opened > .components-tools-panel {
+	padding: 0;
+	border-top: 0;
 }
 
 .placement-option:hover {
@@ -107,6 +111,9 @@
 }
 .preview-modal .components-modal__content::before {
 	margin: 0;
+}
+.preview-modal .components-modal__content > div:not(.components-modal__header) {
+	height: 100%;
 }
 .preview-modal .preview-pane-grid-wrap {
 	position: relative;

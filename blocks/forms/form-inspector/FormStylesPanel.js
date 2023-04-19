@@ -86,9 +86,8 @@ export const FormStylesPanel = (props) => {
 		<PanelColorGradientSettings
 			__experimentalHasMultipleOrigins
 			__experimentalIsRenderedInSidebar
-			title={__('Form Styles', 'mailster')}
 			name="form-styles-panel"
-			initialOpen={false}
+			initialOpen={true}
 			settings={[
 				{
 					colorValue: style?.color?.text,
@@ -132,9 +131,7 @@ export const FormStylesPanel = (props) => {
 							<RangeControl
 								value={size}
 								className="widefat"
-								onChange={(value) =>
-									setBackground('size', value)
-								}
+								onChange={(value) => setBackground('size', value)}
 								min={0}
 								max={200}
 								initialPosition={100}
@@ -166,9 +163,7 @@ export const FormStylesPanel = (props) => {
 							<FocalPointPicker
 								url={image}
 								value={position}
-								onChange={(value) =>
-									setBackground('position', value)
-								}
+								onChange={(value) => setBackground('position', value)}
 							/>
 						</PanelRow>
 					)}
@@ -177,9 +172,7 @@ export const FormStylesPanel = (props) => {
 							label={__('Opacity', 'mailster')}
 							value={opacity}
 							className="widefat"
-							onChange={(value) =>
-								setBackground('opacity', value)
-							}
+							onChange={(value) => setBackground('opacity', value)}
 							min={0}
 							max={100}
 							step={10}
@@ -242,16 +235,12 @@ export const FormStylesPanel = (props) => {
 				<RangeControl
 					className="widefat"
 					label={__('Border Radius', 'mailster')}
-					value={
-						borderRadius ? parseInt(borderRadius, 10) : undefined
-					}
+					value={borderRadius ? parseInt(borderRadius, 10) : undefined}
 					allowReset={true}
 					onChange={(value) =>
 						setAttributes({
 							borderRadius:
-								typeof value !== 'undefined'
-									? value + 'px'
-									: undefined,
+								typeof value !== 'undefined' ? value + 'px' : undefined,
 						})
 					}
 					min={0}

@@ -50,9 +50,10 @@ export const InputStylesPanel = (props) => {
 
 	return (
 		<PanelColorGradientSettings
-			title={__('Input Styles', 'mailster')}
+			__experimentalHasMultipleOrigins
+			__experimentalIsRenderedInSidebar
 			name="input-styles-panel"
-			initialOpen={false}
+			initialOpen={true}
 			settings={colorSettings.flatMap((color, i) => {
 				return {
 					colorValue: style?.[color.id],
@@ -67,17 +68,13 @@ export const InputStylesPanel = (props) => {
 					className="widefat"
 					label={__('Border Width', 'mailster')}
 					value={
-						style.borderWidth
-							? parseInt(style.borderWidth, 10)
-							: undefined
+						style.borderWidth ? parseInt(style.borderWidth, 10) : undefined
 					}
 					allowReset={true}
 					onChange={(value) =>
 						setStyle(
 							'borderWidth',
-							typeof value !== 'undefined'
-								? value + 'px'
-								: undefined
+							typeof value !== 'undefined' ? value + 'px' : undefined
 						)
 					}
 					min={0}
@@ -89,17 +86,13 @@ export const InputStylesPanel = (props) => {
 					className="widefat"
 					label={__('Border Radius', 'mailster')}
 					value={
-						style.borderRadius
-							? parseInt(style.borderRadius, 10)
-							: undefined
+						style.borderRadius ? parseInt(style.borderRadius, 10) : undefined
 					}
 					allowReset={true}
 					onChange={(value) =>
 						setStyle(
 							'borderRadius',
-							typeof value !== 'undefined'
-								? value + 'px'
-								: undefined
+							typeof value !== 'undefined' ? value + 'px' : undefined
 						)
 					}
 					min={0}

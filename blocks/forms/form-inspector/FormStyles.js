@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import { __ } from '@wordpress/i18n';
 
 /**
  * WordPress dependencies
@@ -25,6 +26,7 @@ export default function Styles(props) {
 	});
 
 	useEffect(() => {
+		return;
 		!isFormPanelOpened &&
 			dispatch('core/edit-post').toggleEditorPanelOpened(
 				'mailster-block-form-settings-panel/form-styles'
@@ -32,7 +34,11 @@ export default function Styles(props) {
 	}, [isFormPanelOpened]);
 
 	return (
-		<PluginDocumentSettingPanel className="with-panel" name="form-styles">
+		<PluginDocumentSettingPanel
+			className="with-panel"
+			name="form-styles"
+			title={__('Form Styles', 'mailster')}
+		>
 			<FormStylesPanel {...props} />
 		</PluginDocumentSettingPanel>
 	);

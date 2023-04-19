@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import { __ } from '@wordpress/i18n';
 
 /**
  * WordPress dependencies
@@ -25,6 +26,7 @@ export default function InputStyles(props) {
 	});
 
 	useEffect(() => {
+		return;
 		!isInputPanelOpened &&
 			dispatch('core/edit-post').toggleEditorPanelOpened(
 				'mailster-block-form-settings-panel/input-styles'
@@ -32,7 +34,11 @@ export default function InputStyles(props) {
 	}, [isInputPanelOpened]);
 
 	return (
-		<PluginDocumentSettingPanel className="with-panel" name="input-styles">
+		<PluginDocumentSettingPanel
+			className="with-panel"
+			name="input-styles"
+			title={__('Input Styles', 'mailster')}
+		>
 			<InputStylesPanel {...props} />
 		</PluginDocumentSettingPanel>
 	);
