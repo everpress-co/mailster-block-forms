@@ -144,7 +144,7 @@ class Mailster_REST_Subscribe_Controller extends WP_REST_Controller {
 			$entry
 		);
 
-		$subscriber_id = mailster( 'subscribers' )->add( $entry, $overwrite, true );
+		$subscriber_id = mailster( 'subscribers' )->add( $entry, $overwrite );
 
 		// handle subscriber updates
 		if ( is_wp_error( $subscriber_id ) ) {
