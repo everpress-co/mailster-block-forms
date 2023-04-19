@@ -851,13 +851,18 @@ class MailsterBlockForms {
 
 	public function overview_script_styles() {
 
-		if ( 'newsletter_form' != get_post_type() ) {
+		$post_type = get_post_type();
+		if ( ! $post_type ) {
+			$post_type = get_current_screen()->post_type;
+		}
+
+		if ( 'newsletter_form' != $post_type ) {
 			return;
 		}
 
 		$suffix = '';
 
-		mailster()->add_admin_header();
+		do_action( 'mailster_admin_header' );
 
 		wp_enqueue_style( 'mailster-block-forms-overview', MAILSTER_FORM_BLOCK_URI . 'assets/css/block-form-overview' . $suffix . '.css', array(), MAILSTER_VERSION );
 	}
@@ -870,7 +875,7 @@ class MailsterBlockForms {
 
 		$suffix = '';
 
-		mailster()->add_admin_header();
+		do_action( 'mailster_admin_header' );
 
 		wp_enqueue_style( 'mailster-form-block-editor', MAILSTER_FORM_BLOCK_URI . 'assets/css/blocks-editor' . $suffix . '.css', array(), MAILSTER_VERSION );
 		wp_add_inline_style( 'mailster-form-block-editor', $this->get_theme_styles() );
