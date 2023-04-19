@@ -90,7 +90,7 @@ const ModalContent = ({ setOpen, patterns }) => {
 							size="xSmall"
 							title={pattern.description ?? pattern.title}
 						>
-							<CardBody size="small">
+							<CardBody size="large">
 								<BlockPreview
 									blocks={block}
 									viewportWidth={pattern.viewportWidth}
@@ -149,9 +149,7 @@ export default function FormModal(props) {
 	const patterns = useSelect((select) => {
 		return select('core')
 			.getBlockPatterns()
-			.filter((pattern) =>
-				pattern.categories?.includes('mailster-forms')
-			);
+			.filter((pattern) => pattern.categories?.includes('mailster-forms'));
 	});
 
 	useEffect(() => {
