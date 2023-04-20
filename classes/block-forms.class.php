@@ -1264,6 +1264,7 @@ class MailsterBlockForms {
 						case 'borderWidth':
 						case 'backgroundColor':
 						case 'borderColor':
+						case 'borderRadius':
 							$custom_styles[' .input'][] = strtolower( preg_replace( '/([a-z])([A-Z])/', '$1-$2', $key ) ) . ':' . $value;
 							break;
 					}
