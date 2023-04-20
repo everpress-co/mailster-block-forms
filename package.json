@@ -1,6 +1,6 @@
 {
 	"name": "mailster-block-forms",
-	"version": "0.1.8",
+	"version": "0.1.9",
 	"author": "Xaver <xaver@everpress.co>",
 	"license": "GPL-2.0",
 	"private": true,
@@ -61,17 +61,6 @@
 	"scripts": {
 		"build": "wp-scripts build --webpack-src-dir=blocks",
 		"plugin-zip": "wp-scripts plugin-zip",
-		"format": "wp-scripts format",
-		"lint:css": "wp-scripts lint-style",
-		"lint:js": "wp-scripts lint-js",
-		"start": "wp-scripts start --webpack-src-dir=blocks",
-		"packages-update": "wp-scripts packages-update",
-		"c": "yarn workspace components",
-		"p": "yarn workspace pages",
-		"storybook": "yarn c storybook",
-		"test:ci": "yarn c test --ci && yarn p test --ci",
-		"build2": "yarn c build && yarn p build",
-		"rename": "node ./cli/rename.js",
-		"rename:basic": "node ./cli/basic.js"
+		"start": "wp-scripts start --webpack-src-dir=blocks"
 	}
 }
