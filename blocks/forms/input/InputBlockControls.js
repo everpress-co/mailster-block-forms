@@ -108,7 +108,7 @@ export default function InputBlockControls(props) {
 		<BlockControls group="block">
 			{'radio' == type && (
 				<ToolbarButton
-					icon={vertical ? arrowDown : arrowRight}
+					icon={vertical ? arrowRight : arrowDown}
 					onClick={() => setAttributes({ vertical: !vertical })}
 					label={__('Orientation', 'mailster')}
 				/>

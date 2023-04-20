@@ -25,7 +25,7 @@ export default function InputBlockControls(props) {
 	return (
 		<BlockControls group="block">
 			<ToolbarButton
-				icon={vertical ? arrowDown : arrowRight}
+				icon={vertical ? arrowRight : arrowDown}
 				onClick={() => setAttributes({ vertical: !vertical })}
 				label={__('Orientation', 'mailster')}
 			/>
