@@ -168,17 +168,19 @@ export default function InputFieldInspectorControls(props) {
 							max={100}
 						/>
 					</PanelRow>
-					<PanelRow>
-						<TextControl
-							label={__('Error Message (optional)', 'mailster')}
-							help={__(
-								'Define the text for this field if an error occurs.',
-								'mailster'
-							)}
-							value={errorMessage}
-							onChange={(val) => setAttributes({ errorMessage: val })}
-						/>
-					</PanelRow>
+					{type != 'submit' && (
+						<PanelRow>
+							<TextControl
+								label={__('Error Message (optional)', 'mailster')}
+								help={__(
+									'Define the text for this field if an error occurs.',
+									'mailster'
+								)}
+								value={errorMessage}
+								onChange={(val) => setAttributes({ errorMessage: val })}
+							/>
+						</PanelRow>
+					)}
 					<Values {...props} />
 				</PanelBody>
 			</Panel>
