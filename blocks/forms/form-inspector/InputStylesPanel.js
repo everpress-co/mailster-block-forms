@@ -36,10 +36,6 @@ export const colorSettings = [
 export const InputStylesPanel = (props) => {
 	const { attributes, setAttributes, children } = props;
 
-	if (!attributes) {
-		return null;
-	}
-
 	const { style = {} } = attributes;
 
 	function setStyle(prop, value) {

@@ -45,7 +45,6 @@ window.mailster_fields &&
 			title: field.name || field.id,
 			keywords: ['mailster', field.name, field.id],
 			category: 'mailster-form-fields',
-			example: {},
 			description: description,
 			parent: ['mailster/form-wrapper', 'core/column', 'core/group'],
 			transforms: {

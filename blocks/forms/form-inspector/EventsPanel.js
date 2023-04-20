@@ -75,11 +75,8 @@ const Wrapper = ({ children, isEventsModal, setEventsModal }) => {
 export const EventsPanel = (props) => {
 	const { attributes, setAttributes, children } = props;
 
-	if (!attributes) {
-		return <Spinner />;
-	}
-
 	const { events = {} } = attributes;
+
 	const [isEventsModal, setEventsModal] = useState(false);
 
 	return (

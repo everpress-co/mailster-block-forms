@@ -132,11 +132,7 @@ const Wrapper = ({ children, isCSSModal, setCSSModal }) => {
 };
 
 export function CssPanel(props) {
-	const { attributes, setAttributes, children } = props;
-
-	if (!attributes) {
-		return <Spinner />;
-	}
+	const { attributes = {}, setAttributes, children } = props;
 
 	const { css = {}, basiccss } = attributes;
 

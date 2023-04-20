@@ -32,14 +32,6 @@ export default function Edit(props) {
 	const [meta, setMeta] = useEntityProp('postType', 'newsletter_form', 'meta');
 
 	useEffect(() => {
-		setMeta({ gdpr: true });
-		return () => {
-			//need to check if in the main editor
-			setMeta({ gdpr: false });
-		};
-	}, []);
-
-	useEffect(() => {
 		if (!attributes.id) setAttributes({ id: clientId.substring(30) });
 		if (!content)
 			setAttributes({

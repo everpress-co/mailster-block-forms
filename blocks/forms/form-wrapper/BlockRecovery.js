@@ -9,7 +9,7 @@
 import { __ } from '@wordpress/i18n';
 
 import { useState, useEffect } from '@wordpress/element';
-import { select, dispatch } from '@wordpress/data';
+import { select, useSelect, dispatch } from '@wordpress/data';
 
 import { createBlock } from '@wordpress/blocks';
 
@@ -22,13 +22,30 @@ export default function BlockRecovery(props) {
 
 	const [hasBrokenBlocks, setHasBrokenBlocks] = useState(0);
 
+	const getAllBlocks = (blocks) => {
+		let allBlocks = [];
+
+		blocks.forEach((block) => {
+			allBlocks.push(block);
+			if (block.innerBlocks.length > 0) {
+				allBlocks = allBlocks.concat(getAllBlocks(block.innerBlocks));
+			}
+		});
+
+		return allBlocks;
+	};
+
+	const allBlocks = useSelect((select) =>
+		getAllBlocks(select('core/block-editor').getBlocks())
+	);
+
 	const getBrokenBlocks = () => {
-		const all = select('core/block-editor').getBlocks(clientId);
-		const broken = all.filter((block) => {
+		const broken = allBlocks.filter((block) => {
 			return block.isValid === false;
 		});
 		return broken;
 	};
+
 	const recoverAllBlocks = () => {
 		const broken = getBrokenBlocks();
 

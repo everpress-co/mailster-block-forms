@@ -17,6 +17,12 @@
 		"color": true
 	},
 	"attributes": {
+		"lock": {
+			"type": "object",
+			"default": {
+				"remove": true
+			}
+		},
 		"content": {
 			"type": "string",
 			"source": "html",

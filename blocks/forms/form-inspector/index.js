@@ -33,6 +33,7 @@ import WelcomeGuide from './WelcomeGuide';
 import Placement from './Placement';
 import PublishChecks from './PublishChecks';
 import '../store';
+import FormName from './FormName';
 
 function SettingsPanelPlugin() {
 	const [meta, setMeta] = useEntityProp('postType', 'newsletter_form', 'meta');
@@ -70,6 +71,10 @@ function SettingsPanelPlugin() {
 		}
 	}, [blocks]);
 
+	if (!blockProps) {
+		return null;
+	}
+
 	return (
 		<>
 			<PluginPrePublishPanel
@@ -90,6 +95,7 @@ function SettingsPanelPlugin() {
 				<PublishChecks meta={meta} setMeta={setMeta} />
 			</PluginPostStatusInfo>
 			<WelcomeGuide meta={meta} setMeta={setMeta} />
+			<FormName meta={meta} setMeta={setMeta} />
 			<Options meta={meta} setMeta={setMeta} />
 			<Doubleoptin meta={meta} setMeta={setMeta} />
 			<Lists meta={meta} setMeta={setMeta} />

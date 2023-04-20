@@ -264,6 +264,7 @@ export default function Edit(props) {
 				console.warn('Add gdpr block');
 				const block = wp.blocks.createBlock('mailster/gdpr');
 				const referenceBlock = searchBlock('mailster/field-submit');
+
 				const pos = referenceBlock
 					? select('core/block-editor').getBlockIndex(
 							referenceBlock.clientId,

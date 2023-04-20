@@ -30,10 +30,6 @@ import { useState } from '@wordpress/element';
 export const FormStylesPanel = (props) => {
 	const { attributes, setAttributes, children } = props;
 
-	if (!attributes) {
-		return null;
-	}
-
 	const [values, setValues] = useState({
 		top: '50px',
 		left: '10%',

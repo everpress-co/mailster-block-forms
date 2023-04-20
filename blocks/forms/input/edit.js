@@ -79,10 +79,6 @@ export default function Edit(props) {
 		if (!attributes.id) setAttributes({ id: clientId.substring(30) });
 	});
 
-	function autocompleteValue() {
-		return 'new-password';
-	}
-
 	return (
 		<>
 			<div {...blockProps} style={styleSheets}>
@@ -102,7 +98,7 @@ export default function Edit(props) {
 				<FormElement
 					{...props}
 					isEditor
-					autoComplete={autocompleteValue()}
+					autoComplete="new-password"
 					borderProps={borderProps}
 					colorProps={colorProps}
 					spacingProps={spacingProps}
