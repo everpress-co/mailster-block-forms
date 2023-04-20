@@ -313,6 +313,7 @@ html.mailster-form-active {
 		max-width: 100%;
 		width: 100%;
 		display: flex;
+		display: inline-flex;
 		flex-wrap: wrap;
 		position: relative;
 		align-self: baseline;
@@ -538,7 +539,10 @@ html.mailster-form-active {
 	.mailster-wrapper-is-vertical .mailster-group {
 		padding-left: inherit;
 		padding-right: inherit;
-		width: 100%;
+		_width: 100%;
+	}
+	.mailster-wrapper-is-vertical > fieldset {
+		display: flex;
 	}
 
 	.mailster-block-form-inner {
