@@ -20,28 +20,27 @@ import apiFetch from '@wordpress/api-fetch';
 		: window.addEventListener('DOMContentLoaded', app);
 
 	function app() {
-		let html = document.documentElement;
-		let forms = document.querySelectorAll('.mailster-block-form');
-		let events = window.mailsterBlockEvents || {};
+		const html = document.documentElement;
+		const forms = document.querySelectorAll('.mailster-block-form');
+		const events = window.mailsterBlockEvents || {};
 
 		Array.prototype.forEach.call(forms, (formEl, i) => {
-			let form = formEl.querySelector('.mailster-block-form-data');
-			form = JSON.parse(form.textContent);
-			let wrap = formEl.closest('.wp-block-mailster-form-outside-wrapper');
-			let closeButtons = wrap.querySelectorAll(
+			const form_el = formEl.querySelector('.mailster-block-form-data');
+			const form = JSON.parse(form_el.textContent);
+			const wrap = formEl.closest('.wp-block-mailster-form-outside-wrapper');
+			const closeButtons = wrap.querySelectorAll(
 				'.mailster-block-form-close, .mailster-block-form-inner-close'
 			);
-			let closeButton = closeButtons[closeButtons.length - 1];
-			let firstFocusable = wrap.querySelector(
+			const closeButton = closeButtons[closeButtons.length - 1];
+			const firstFocusable = wrap.querySelector(
 				'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
 			);
-			let info = formEl.querySelector('.mailster-block-form-info');
-			let countImpressionEvery = 3600;
-			let cooldown = (form.cooldown || 0) * 3600;
-			let scroll = {};
+			const info = formEl.querySelector('.mailster-block-form-info');
+			const countImpressionEvery = 3600;
+			const cooldown = (form.cooldown || 0) * 3600;
 			let delayTimeout = null;
 			let inactiveTimeout = null;
-			let triggerMethods = {
+			const triggerMethods = {
 				delay: () => {
 					delayTimeout = setTimeout(() => {
 						if (!show()) return;
@@ -61,7 +60,7 @@ import apiFetch from '@wordpress/api-fetch';
 					window.addEventListener('touchstart', _trigger_scroll);
 				},
 				click: () => {
-					let elements = document.querySelectorAll(form.trigger_click);
+					const elements = document.querySelectorAll(form.trigger_click);
 					Array.prototype.forEach.call(elements, (element, i) => {
 						element.addEventListener('click', openForm);
 					});
@@ -71,7 +70,7 @@ import apiFetch from '@wordpress/api-fetch';
 				},
 			};
 
-			let _trigger_inactive = debounce(_trigger_inactive_debounced, 100);
+			const _trigger_inactive = debounce(_trigger_inactive_debounced, 100);
 			function _trigger_inactive_debounced(event) {
 				clearTimeout(inactiveTimeout);
 				inactiveTimeout = setTimeout(() => {
@@ -79,7 +78,7 @@ import apiFetch from '@wordpress/api-fetch';
 					openForm();
 				}, form.trigger_inactive * 1000);
 			}
-			let _trigger_scroll = debounce(_trigger_scroll_debounced, 50);
+			const _trigger_scroll = debounce(_trigger_scroll_debounced, 50);
 			function _trigger_scroll_debounced(event) {
 				if (getScrollPercent() >= form.trigger_scroll / 100) {
 					if (!show()) return;
@@ -106,16 +105,14 @@ import apiFetch from '@wordpress/api-fetch';
 						)
 					);
 				} else {
-					let observer = new IntersectionObserver(
+					const observer = new IntersectionObserver(
 						(entries) => {
 							if (entries[0].isIntersecting) {
 								countImpression();
 								observer.unobserve(entries[0].target);
 							}
 						},
-						{
-							threshold: 1,
-						}
+						{ threshold: 1 }
 					);
 					observer.observe(formEl);
 					triggerEvent('load');
@@ -236,6 +233,7 @@ import apiFetch from '@wordpress/api-fetch';
 			});
 
 			function show() {
+				//always show on preview
 				if (form.isPreview) {
 					return true;
 				}
@@ -355,25 +353,15 @@ import apiFetch from '@wordpress/api-fetch';
 			}
 
 			function set(key, value) {
-				let data = get();
-				data[key] = value || +new Date();
-				localStorage.setItem(
-					'mailster-form-' + form.identifier,
-					JSON.stringify(data)
-				);
-				return true;
+				return storage(form.identifier, key, value || +new Date());
 			}
 
 			function get(key, fallback = null) {
-				let store = localStorage.getItem('mailster-form-' + form.identifier);
-				store = store ? JSON.parse(store) : {};
-				if (!key) {
-					return store;
+				let data = storage(form.identifier, key);
+				if (!data) {
+					return fallback;
 				}
-				if (store[key]) {
-					return store[key];
-				}
-				return fallback;
+				return data;
 			}
 
 			function countImpression() {
@@ -466,5 +454,52 @@ import apiFetch from '@wordpress/api-fetch';
 		);
 		let yiq = (c[1] * 299 + c[2] * 587 + c[3] * 114) / 1000;
 		return yiq >= 128 ? 'is-light-bg' : 'is-dark-bg';
+	}
+
+	function storageWithLocalStorage(identifier, key, value) {
+		const global_key = 'mailster-form-' + identifier;
+
+		if (typeof value !== 'undefined') {
+			const data = storageWithLocalStorage(identifier) || {};
+			data[key] = value;
+			localStorage.setItem(global_key, JSON.stringify(data));
+		} else {
+			const store = JSON.parse(localStorage.getItem(global_key));
+			if (!key) {
+				return store;
+			}
+			return store && store[key] ? store[key] : null;
+		}
+	}
+
+	function storageWithWindowVariables(identifier, key, value) {
+		const global_key = 'mailster_form_' + identifier;
+		const store = window[global_key] || {};
+
+		if (typeof value !== 'undefined') {
+			store[key] = value;
+			window[global_key] = store;
+		} else {
+			if (!key) {
+				return store;
+			}
+			return store[key];
+		}
+	}
+
+	function storage(identifier, key, value) {
+		try {
+			const test = '__test__';
+			// Try to access localStorage to see if it's available
+			localStorage.setItem(test, test);
+			localStorage.removeItem(test);
+			// throw new Error('localStorage is available');
+			storage = storageWithLocalStorage;
+		} catch (e) {
+			// If localStorage is not available, fallback to using variables
+			storage = storageWithWindowVariables;
+		}
+
+		return storage(identifier, key, value);
 	}
 })();
