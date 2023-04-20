@@ -8,7 +8,7 @@
 
 import { __ } from '@wordpress/i18n';
 
-import { useState } from '@wordpress/element';
+import { useState, createRoot } from '@wordpress/element';
 import { dispatch, useSelect } from '@wordpress/data';
 
 import { useEntityProp } from '@wordpress/core-data';
@@ -93,7 +93,8 @@ const getInlineStyles = () => {
 			'label.mailster-label': [],
 		};
 
-	wp.element.render(SAMPLEFORM, el);
+	const root = createRoot(el);
+	root.render(SAMPLEFORM);
 
 	return Object.keys(selectors)
 		.map((selector, i) => {
