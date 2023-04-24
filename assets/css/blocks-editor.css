@@ -59,24 +59,16 @@
 	padding: 4px;
 }
 
-.components-panel__body.with-panel {
-	_padding: 0;
-}
-.components-panel__body.with-panel.is-opened {
-	_border: none;
-}
-.components-panel__body.with-panel.is-opened > .components-panel__body-title {
-	_display: none;
-}
 .components-panel__body.with-panel.is-opened > .components-tools-panel {
 	padding: 0;
 	border-top: 0;
 }
 
-.placement-option:hover {
-	_box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--wp-admin-theme-color);
-	__outline: 2px solid transparent;
+.components-panel__body .block-editor-panel-color-gradient-settings {
+	padding: 0;
+	border-top: 0;
 }
+
 .placement-option .components-card-header {
 	padding: 0.6em;
 }
