@@ -3,8 +3,8 @@
 Contributors: everpress, xaverb  
 Tags: mailster, blocks, forms, mailsterblockforms  
 Requires at least: 6.0  
-Tested up to: 6.1  
-Stable tag: 0.1.8  
+Tested up to: 6.2
+Stable tag: 0.1.9  
 Requires PHP: 7.2.5+  
 License: GPLv2 or later  
 Author: EverPress  
@@ -43,61 +43,73 @@ No, Mailster 3.2.0 or above is required to use this plugin. Get it [here](https:
 
 ## Changelog
 
+### 0.1.9
+
+- improved: rendering of compontents
+- improved: css for latest WordPress version
+- improved: frontend script to make it more relyable
+- improved: frontend storage selector now working if localStorage is not available
+- improved: Form and Input styles panel is now collapsable again
+- improved: auto block recovery now works with nested blocks
+- fixed: CSS and Events code editor now working correctly
+- change: Form name is now a dedicate section and not collapsable
+- update: display Mailster admin header with Mailster 3.3.3
+
 ### 0.1.8
 
--   new filter `mailster_block_form_field_errors` for third parties
--   new `mailster_block_form` filter containing form html
--   new 'load' trigger on forms
--   fixed: check referrer to prevent errors if it's not defined
+- new filter `mailster_block_form_field_errors` for third parties
+- new `mailster_block_form` filter containing form html
+- new 'load' trigger on forms
+- fixed: check referrer to prevent errors if it's not defined
 
 ### 0.1.7
 
--   fixed: display issue of cover block in forms with WP 6.1 and Gutenberg 14.2+
--   fixed: message block are not added correctly with WP 6.1 and Gutenberg 14.2+
+- fixed: display issue of cover block in forms with WP 6.1 and Gutenberg 14.2+
+- fixed: message block are not added correctly with WP 6.1 and Gutenberg 14.2+
 
 ### 0.1.6
 
--   new: define custom JavaScript code to get triggered on certain form events.
--   fixed: unable to change the value of the scroll trigger threshold.
--   fixed: don't scroll to bottom of page in preview pane if form has not been saved for the first time.
--   fixed: excerpt was empty on archive page if form was used in content.
--   improved: accessibility on form submission messages (may require form updates).
--   improved: close button accessibility.
--   redirection after form submission now delayed for 150ms to complete all remote events.
--   updated: referrer is now the current page if no the referrer is from the same origin.
--   padding for popups in preview panel is not unset by default.
+- new: define custom JavaScript code to get triggered on certain form events.
+- fixed: unable to change the value of the scroll trigger threshold.
+- fixed: don't scroll to bottom of page in preview pane if form has not been saved for the first time.
+- fixed: excerpt was empty on archive page if form was used in content.
+- improved: accessibility on form submission messages (may require form updates).
+- improved: close button accessibility.
+- redirection after form submission now delayed for 150ms to complete all remote events.
+- updated: referrer is now the current page if no the referrer is from the same origin.
+- padding for popups in preview panel is not unset by default.
 
 ### 0.1.5
 
--   updated cool down method (Please update this settings in the Appearance menu)
--   using fieldsets for accessibility
--   use preventDefault on button click to prevent default behavior
--   preview improvements
+- updated cool down method (Please update this settings in the Appearance menu)
+- using fieldsets for accessibility
+- use preventDefault on button click to prevent default behavior
+- preview improvements
 
 ### 0.1.4
 
--   tab now iterates through elements for accessibility.
--   fixed: close button wasn't visible on some mobile devices
+- tab now iterates through elements for accessibility.
+- fixed: close button wasn't visible on some mobile devices
 
 ### 0.1.3
 
--   new block with a close link to close the popup
--   improved accessibility on close buttons
--   re-enabled kses filter on HTML output
+- new block with a close link to close the popup
+- improved accessibility on close buttons
+- re-enabled kses filter on HTML output
 
 ### 0.1.2
 
--   fixed: classic editor is shown if classic editor plugin is enabled
--   improved: validation of post message in preview modal
--   fixed: always load form data even on preview screen
+- fixed: classic editor is shown if classic editor plugin is enabled
+- improved: validation of post message in preview modal
+- fixed: always load form data even on preview screen
 
 ### 0.1.1
 
--   added option to change to alignment of form fields
+- added option to change to alignment of form fields
 
 ### 0.1.0
 
--   initial release
+- initial release
 
 ## Additional Info
 
