@@ -175,12 +175,17 @@ body::before {
 	.components-card {
 		cursor: pointer;
 		.components-card__body {
+			position: relative;
 			min-height: 15vw;
 			background: url('data:image/svg+xml,<svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 100 100" xml:space="preserve"><style>.st0{fill:%23fafafa}</style><path class="st0" d="M0 0h50v50H0zM50.5 49.5h50v50h-50z"/></svg>')
 				white !important;
 			background-repeat: repeat;
 			background-size: 10px !important;
+			padding: 0;
 			.block-editor-block-preview__container {
+				top: 50%;
+				transform: translateY(-50%);
+				position: absolute;
 				padding: 0;
 				margin: 0;
 				box-shadow: rgb(0 0 0 / 7%) 0px 1px 2px, rgb(0 0 0 / 7%) 0px 2px 4px,
