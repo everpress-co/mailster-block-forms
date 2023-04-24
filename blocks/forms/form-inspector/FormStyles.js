@@ -21,7 +21,6 @@ import { FormStylesPanel } from './FormStylesPanel';
 export default function Styles(props) {
 	return (
 		<PluginDocumentSettingPanel
-			className="with-panel"
 			name="form-styles"
 			title={__('Form Styles', 'mailster')}
 		>

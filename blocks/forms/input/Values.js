@@ -125,7 +125,8 @@ export default function Values(props) {
 						);
 					})}
 					<Button
-						variant="primary"
+						variant="secondary"
+						isSmall
 						onClick={addValue}
 						style={{ marginTop: '1em' }}
 					>

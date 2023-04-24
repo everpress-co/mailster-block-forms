@@ -71,27 +71,15 @@ function SettingsPanelPlugin() {
 		}
 	}, [blocks]);
 
-	if (!blockProps) {
-		return null;
-	}
-
 	return (
 		<>
 			<PluginPrePublishPanel
-				className="my-plugin-pre-publish-panel"
-				title="Panel title"
+				className="mailster-block-forms-pre-publish-panel"
 				initialOpen={true}
 			>
 				<PublishChecks meta={meta} setMeta={setMeta} />
 			</PluginPrePublishPanel>
-			<PluginPostPublishPanel
-				className="my-plugin-publish-panel"
-				title="Panel title"
-				initialOpen={true}
-			>
-				<PublishChecks meta={meta} setMeta={setMeta} />
-			</PluginPostPublishPanel>
-			<PluginPostStatusInfo className="my-plugin-post-status-info">
+			<PluginPostStatusInfo className="mailster-block-forms-post-status-info">
 				<PublishChecks meta={meta} setMeta={setMeta} />
 			</PluginPostStatusInfo>
 			<WelcomeGuide meta={meta} setMeta={setMeta} />
@@ -99,11 +87,15 @@ function SettingsPanelPlugin() {
 			<Options meta={meta} setMeta={setMeta} />
 			<Doubleoptin meta={meta} setMeta={setMeta} />
 			<Lists meta={meta} setMeta={setMeta} />
-			<FormStyles {...blockProps} />
-			<InputStyles {...blockProps} />
-			<Css {...blockProps} />
-			<Events {...blockProps} />
-			<Placement meta={meta} setMeta={setMeta} {...blockProps} />
+			{blockProps && (
+				<>
+					<FormStyles {...blockProps} />
+					<InputStyles {...blockProps} />
+					<Css {...blockProps} />
+					<Events {...blockProps} />
+					<Placement meta={meta} setMeta={setMeta} {...blockProps} />
+				</>
+			)}
 		</>
 	);
 }

@@ -21,7 +21,6 @@ import { InputStylesPanel, colorSettings } from './InputStylesPanel';
 export default function InputStyles(props) {
 	return (
 		<PluginDocumentSettingPanel
-			className="with-panel"
 			name="input-styles"
 			title={__('Input Styles', 'mailster')}
 		>
