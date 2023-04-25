@@ -7,13 +7,13 @@
 	"category": "widgets",
 	"icon": "email",
 	"supports": {
+		"multiple": false,
 		"html": false,
-		"anchor": true,
+		"anchor": false,
 		"align": true,
-		"spacing": {
-			"margin": true,
-			"padding": true
-		}
+		"className": false,
+		"customClassName": false,
+		"reusable": false
 	},
 	"attributes": {
 		"id": {
@@ -22,6 +22,9 @@
 		"height": {
 			"type": "integer"
 		}
+	},
+	"providesContext": {
+		"mailster-homepage-context/align": "align"
 	},
 	"textdomain": "mailster",
 	"editorScript": "file:./index.js",

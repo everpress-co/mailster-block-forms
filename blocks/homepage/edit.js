@@ -2,6 +2,8 @@
  * External dependencies
  */
 
+import classnames from 'classnames';
+
 /**
  * WordPress dependencies
  */
@@ -9,82 +11,107 @@ import { __ } from '@wordpress/i18n';
 
 import {
 	useBlockProps,
-	InspectorControls,
 	InnerBlocks,
-	BlockControls,
+	InspectorControls,
 } from '@wordpress/block-editor';
 import ServerSideRender from '@wordpress/server-side-render';
 import apiFetch from '@wordpress/api-fetch';
-import {
-	Panel,
-	PanelBody,
-	Placeholder,
-	Spinner,
-	Flex,
-	FlexItem,
-	FlexBlock,
-	Toolbar,
-	ToolbarGroup,
-	ToolbarItem,
-	ToolbarButton,
-	TabPanel,
-} from '@wordpress/components';
-import { Icons, email, screenoptions } from '@wordpress/components';
-import {
-	useSelect,
-	select,
-	useDispatch,
-	dispatch,
-	subscribe,
-} from '@wordpress/data';
-
-import {
-	Fragment,
-	useState,
-	Component,
-	useEffect,
-	useRef,
-} from '@wordpress/element';
-import { check, edit, tablet, mobile, update } from '@wordpress/icons';
-
-import {
-	Button,
-	ButtonGroup,
-	DropdownMenu,
-	SelectControl,
-} from '@wordpress/components';
+import { Flex, TabPanel } from '@wordpress/components';
+import { useSelect, select, useDispatch, dispatch } from '@wordpress/data';
+import { useEffect, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 
 import './editor.scss';
+import HomepageInspectorControls from './inspector';
+
+const BLOCK_TEMPLATE = [
+	['mailster/homepage-context', { type: 'form' }],
+	['mailster/homepage-context', { type: 'profile' }],
+	['mailster/homepage-context', { type: 'unsubscribe' }],
+];
+
+const TABS = [
+	{
+		name: 'form',
+		title: '/',
+		label: 'This is the homepage',
+	},
+	{
+		name: 'profile',
+		title: '/profile',
+		label: 'This is the profile page',
+	},
+	{
+		name: 'unsubscribe',
+		title: '/unsubscribe',
+		label: 'This is the unsubscribe page',
+	},
+];
 
 export default function Edit(props) {
 	const { attributes, setAttributes, isSelected } = props;
-	const blockProps = useBlockProps();
+
+	const { id, profile, unsubscribe } = attributes;
+
+	const className = ['mailster-homepage'];
+
+	const [current, setCurrent] = useState(location.hash.substring(1) ?? 'form');
+
+	console.log(current);
+
+	const onSelect = (tab) => {
+		setCurrent(tab);
+	};
+
+	useEffect(() => {
+		if (!current) return;
+		history.replaceState(undefined, undefined, '#' + current);
+
+		return () => {
+			history.pushState(
+				'',
+				document.title,
+				location.pathname + location.search
+			);
+		};
+	}, [current]);
+
+	const currentTab = TABS.find((tab) => tab.name === current);
+
+	className.push('tab-' + current);
+
+	const blockProps = useBlockProps({
+		className: classnames({}, className),
+	});
 
 	return (
 		<div {...blockProps}>
-			<TabPanel
-				className="my-tab-panel"
-				activeClass="active-tab"
-				//onSelect={onSelect}
-				tabs={[
-					{
-						name: 'tab1',
-						title: '/',
-						className: 'tab-one',
-					},
-					{
-						name: 'tab2',
-						title: '/unsubscribe',
-						className: 'tab-two',
-					},
-				]}
-			>
-				{(tab) => <InnerBlocks template={[['mailster/form', { id: 147 }]]} />}
-			</TabPanel>
+			<Flex className="mailster-homepage-tabs">
+				<TabPanel
+					activeClass="active-tab"
+					onSelect={onSelect}
+					initialTabName={current}
+					tabs={TABS}
+					disabled={true}
+				>
+					{(tab) => {
+						return (
+							<>
+								<HomepageInspectorControls
+									{...props}
+									tab={tab}
+									current={current}
+								/>
+							</>
+						);
+					}}
+				</TabPanel>
+				<span className="tab-explanation">{currentTab?.label}</span>
+			</Flex>
+			<InnerBlocks template={BLOCK_TEMPLATE} templateLock="all" />
 		</div>
 	);
 }

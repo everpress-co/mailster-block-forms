@@ -1,0 +1,48 @@
+.wp-block-mailster-homepage.is-selected {
+}
+.wp-block-mailster-homepage .mailster-homepage-tabs {
+	opacity: 0.3;
+}
+.wp-block-mailster-homepage.is-selected .mailster-homepage-tabs {
+	opacity: 1;
+}
+.mailster-homepage-tabs {
+	border-bottom: 1px solid;
+}
+.mailster-homepage-tabs button {
+	opacity: 0.5;
+}
+.mailster-homepage-tabs button.active-tab {
+	opacity: 1;
+}
+.mailster-homepage-tabs .tab-explanation {
+	position: absolute;
+	right: 0;
+	top: 10px;
+	opacity: 0.8;
+	font-size: 14px;
+}
+.wp-block-mailster-homepage {
+}
+.wp-block-mailster-homepage
+	> .block-editor-inner-blocks
+	> .block-editor-block-list__layout
+	.mailster-form-type {
+	display: none;
+}
+
+.wp-block-mailster-homepage.tab-form
+	.block-editor-block-list__layout
+	.mailster-form-type-form {
+	display: block;
+}
+.wp-block-mailster-homepage.tab-profile
+	.block-editor-block-list__layout
+	.mailster-form-type-profile {
+	display: block;
+}
+.wp-block-mailster-homepage.tab-unsubscribe
+	.block-editor-block-list__layout
+	.mailster-form-type-unsubscribe {
+	display: block;
+}

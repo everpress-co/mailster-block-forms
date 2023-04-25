@@ -159,8 +159,8 @@ import apiFetch from '@wordpress/api-fetch';
 				}
 
 				apiFetch({
-					path: 'mailster/v1/subscribe',
-					method: 'POST',
+					path: 'mailster/v1/forms/' + form.id + '/submission',
+					method: form.type == 'form' ? 'POST' : 'UPDATE',
 					data: data,
 				})
 					.then((response) => {

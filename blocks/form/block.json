@@ -20,10 +20,18 @@
 		"id": {
 			"type": "integer"
 		},
+		"type": {
+			"type": "string",
+			"enum": ["form", "profile", "unsubscribe"]
+		},
 		"height": {
 			"type": "integer"
 		}
 	},
+	"usesContext": [
+		"mailster-homepage-context/type",
+		"mailster-homepage-context/align"
+	],
 	"textdomain": "mailster",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",

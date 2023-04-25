@@ -2,6 +2,8 @@
  * External dependencies
  */
 
+import classnames from 'classnames';
+
 /**
  * WordPress dependencies
  */
@@ -75,8 +77,15 @@ function MailsterFormSelector(props) {
 }
 
 export default function Edit(props) {
-	const { attributes, setAttributes, isSelected } = props;
+	const { attributes, setAttributes, isSelected, context } = props;
 	const { id = false, height = 200 } = attributes;
+
+	const type = context['mailster-homepage-context/type'] || 'form';
+	const contextAlign = context['mailster-homepage-context/align'];
+
+	useEffect(() => {
+		setAttributes({ align: contextAlign });
+	}, [contextAlign]);
 
 	const [displayForm, setDisplayForm] = useState(false);
 
@@ -117,9 +126,10 @@ export default function Edit(props) {
 						'mailster-block-form-editor-wrap-inner'
 					)
 				) {
-					setAttributes({
-						height: entry.addedNodes[0].offsetHeight,
-					});
+					entry.addedNodes[0].offsetHeight &&
+						setAttributes({
+							height: entry.addedNodes[0].offsetHeight,
+						});
 				}
 			});
 		});
@@ -144,18 +154,18 @@ export default function Edit(props) {
 		window.open('post.php?post=' + id + '&action=edit', 'edit_form_' + id);
 	};
 
+	const className = [];
+
+	const blockProps = useBlockProps({
+		className: classnames({}, className),
+	});
+
 	return (
 		<>
-			<div {...useBlockProps()}>
+			<div {...blockProps}>
 				{id ? (
-					<div
-						className="mailster-block-form-editor-wrap"
-						ref={blockRef}
-					>
-						<Flex
-							className="update-form-button"
-							justify="space-evenly"
-						>
+					<div className="mailster-block-form-editor-wrap" ref={blockRef}>
+						<Flex className="update-form-button" justify="space-evenly">
 							<strong className="align-center">
 								{__(
 									'Please click on the edit button in the toolbar to edit this form.',
@@ -166,7 +176,10 @@ export default function Edit(props) {
 						<ServerSideRender
 							className="mailster-block-form-editor-wrap-inner"
 							block="mailster/form"
-							attributes={attributes}
+							attributes={{
+								...attributes,
+								...{ type: type },
+							}}
 							EmptyResponsePlaceholder={EmptyPlaceholder}
 							LoadingResponsePlaceholder={EmptyPlaceholder}
 						/>
@@ -211,10 +224,7 @@ export default function Edit(props) {
 			</BlockControls>
 			<InspectorControls>
 				<Panel>
-					<PanelBody
-						title={__('Settings', 'mailster')}
-						initialOpen={true}
-					>
+					<PanelBody title={__('Settings', 'mailster')} initialOpen={true}>
 						<MailsterFormSelector {...props} />
 					</PanelBody>
 				</Panel>

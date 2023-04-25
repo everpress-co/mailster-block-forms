@@ -40,7 +40,7 @@ export default function FormName(props) {
 	};
 
 	return (
-		<PluginDocumentSettingPanel name="form-name" initialOpen={true}>
+		<PluginDocumentSettingPanel initialOpen={true} title=" ">
 			<PanelRow>
 				<TextControl
 					label={__('Form Name', 'mailster')}
