@@ -110,6 +110,45 @@ export function searchBlock(blockName, clientId) {
 	return false;
 }
 
+export function searchBlocks(blockName, clientId = null, deep = true) {
+	const blocks = select('core/block-editor').getBlocks(clientId);
+
+	const matchingBlocks = blocks.filter((block) => block.name === blockName);
+
+	for (const block of blocks) {
+		if (deep && block.innerBlocks.length > 0) {
+			for (const innerblock of block.innerBlocks) {
+				matchingBlocks.push(
+					...searchBlocks(blockName, innerblock.clientId, deep)
+				);
+			}
+		}
+	}
+
+	return matchingBlocks;
+}
+
+export function searchBlocks__(blockName, clientId = null, deep = true) {
+	const all = select('core/block-editor').getBlocks(clientId);
+
+	var found = all.filter((block) => {
+		return new RegExp('^' + blockName + '$', 'g').test(block.name);
+	});
+
+	if (found.length) {
+		return found;
+	} else if (deep) {
+		for (var i = 0; i < all.length; i++) {
+			found = searchBlocks(blockName, all[i].clientId, deep);
+			if (found.length) {
+				return found;
+			}
+		}
+	}
+
+	return false;
+}
+
 export function whenEditorIsReady() {
 	return new Promise((resolve) => {
 		const unsubscribe = subscribe(() => {

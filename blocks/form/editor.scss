@@ -17,6 +17,9 @@
 	.mailster-block-form-editor-wrap {
 		min-height: 200px;
 	}
+	.mailster-block-form-editor-wrap > div > div {
+		opacity: 1 !important;
+	}
 	.mailster-block-form-editor-wrap::before {
 		content: '';
 		display: none;

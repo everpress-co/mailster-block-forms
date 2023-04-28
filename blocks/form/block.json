@@ -22,15 +22,15 @@
 		},
 		"type": {
 			"type": "string",
-			"enum": ["form", "profile", "unsubscribe"]
-		},
-		"height": {
-			"type": "integer"
+			"enum": ["submission", "profile", "unsubscribe"]
 		}
 	},
 	"usesContext": [
 		"mailster-homepage-context/type",
-		"mailster-homepage-context/align"
+		"mailster-homepage-context/align",
+		"mailster-homepage-context/submission",
+		"mailster-homepage-context/profile",
+		"mailster-homepage-context/unsubscribe"
 	],
 	"textdomain": "mailster",
 	"editorScript": "file:./index.js",

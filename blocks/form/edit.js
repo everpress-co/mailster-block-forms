@@ -7,7 +7,7 @@ import classnames from 'classnames';
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 
 import {
 	useBlockProps,
@@ -26,21 +26,28 @@ import {
 	email,
 	Button,
 	SelectControl,
+	PanelRow,
+	TextControl,
+	FlexItem,
+	FlexBlock,
 } from '@wordpress/components';
-import { useSelect, select } from '@wordpress/data';
+import { useSelect, select, dispatch } from '@wordpress/data';
+import { useDebounce } from '@wordpress/compose';
 
 import { useState, useEffect, useRef } from '@wordpress/element';
-import { edit, update } from '@wordpress/icons';
+import { edit, plus, update } from '@wordpress/icons';
 
 /**
  * Internal dependencies
  */
 
 import './editor.scss';
+import HomepageInspectorControls from '../homepage/inspector';
+import { searchBlock, searchBlocks } from '../util';
+import { TABS } from '../homepage/constants';
 
 function MailsterFormSelector(props) {
-	const { attributes, setAttributes, isSelected } = props;
-	const { id } = attributes;
+	const { attributes, setAttributes, isSelected, selectForm, formId } = props;
 
 	const forms = useSelect((select) => {
 		return select('core').getEntityRecords('postType', 'newsletter_form');
@@ -56,93 +63,100 @@ function MailsterFormSelector(props) {
 	if (isLoading) return <Spinner />;
 
 	return (
-		<>
-			{forms && (
-				<SelectControl
-					value={id}
-					onChange={(val) => setAttributes({ id: parseInt(val, 10) })}
-				>
-					<option value={0}>{__('Choose a form', 'mailster')}</option>
-					{forms.map((form) => {
-						return (
-							<option key={form.id} value={form.id}>
-								{form.title.rendered}
-							</option>
-						);
-					})}
-				</SelectControl>
-			)}
-		</>
+		forms && (
+			<SelectControl
+				value={formId}
+				onChange={(val) => selectForm(parseInt(val, 10))}
+			>
+				<option value="">{__('Choose an existing form', 'mailster')}</option>
+				{forms.map((form) => (
+					<option key={form.id} value={form.id}>
+						{form.title.rendered}
+					</option>
+				))}
+			</SelectControl>
+		)
 	);
 }
 
 export default function Edit(props) {
-	const { attributes, setAttributes, isSelected, context } = props;
-	const { id = false, height = 200 } = attributes;
+	const { attributes, isSelected, setAttributes, context, clientId } = props;
+	const { id = false } = attributes;
 
-	const type = context['mailster-homepage-context/type'] || 'form';
+	const [contextType, setContextType] = useState(
+		context['mailster-homepage-context/type']
+	);
+
 	const contextAlign = context['mailster-homepage-context/align'];
-
-	useEffect(() => {
-		setAttributes({ align: contextAlign });
-	}, [contextAlign]);
+	const contextId = context['mailster-homepage-context/' + contextType];
+	const formId = contextId || id;
 
 	const [displayForm, setDisplayForm] = useState(false);
+	const [displayHeight, setDisplayHeight] = useState(undefined);
 
 	const blockRef = useRef();
 
-	function EmptyPlaceholder({ children }) {
-		return (
-			<div
-				style={{
-					minHeight: height + 'px',
-					zIndex: 10,
-				}}
-			>
-				{(!children || !displayForm) && (
-					<Flex
-						justify="center"
-						style={{
-							minHeight: height + 'px',
-							backgroundColor: '#fafafa44',
-						}}
-					>
-						<Spinner />
-					</Flex>
-				)}
-				{displayForm && children}
-			</div>
-		);
-	}
+	useEffect(() => {
+		contextAlign && setAttributes({ align: contextAlign });
+	}, [contextAlign]);
 
+	const selectForm = (id) => {
+		// if we are in context of the homepage block
+		if (contextType) {
+			const homepage = searchBlock('mailster/homepage');
+			const blockAttributes = select('core/block-editor').getBlockAttributes(
+				homepage.clientId
+			);
+
+			dispatch('core/block-editor').updateBlockAttributes(homepage.clientId, {
+				[contextType]: id,
+			});
+		} else {
+			setAttributes({ id: id });
+		}
+	};
+
+	//set height of the block
 	useEffect(() => {
 		if (!blockRef.current) return;
 		const observer = new MutationObserver((entries) => {
 			entries.forEach((entry) => {
+				const node = entry.addedNodes.length > 0 ? entry.addedNodes[0] : null;
 				if (
-					entry.addedNodes.length > 0 &&
-					height != entry.addedNodes[0].offsetHeight &&
-					entry.addedNodes[0].classList.contains(
-						'mailster-block-form-editor-wrap-inner'
-					)
+					node &&
+					displayHeight != node.offsetHeight &&
+					node.classList.contains('mailster-block-form-editor-wrap-inner')
 				) {
-					entry.addedNodes[0].offsetHeight &&
-						setAttributes({
-							height: entry.addedNodes[0].offsetHeight,
-						});
+					node.offsetHeight && setDisplayHeight(node.offsetHeight);
 				}
 			});
 		});
-
 		observer.observe(blockRef.current, {
 			childList: true,
 		});
-	}, [blockRef, id]);
+
+		return () => observer.disconnect();
+	}, [blockRef.current]);
 
 	useEffect(() => {
 		setDisplayForm(!!id);
 	}, [id]);
 
+	const EmptyPlaceholder = ({ children }) => (
+		<div
+			style={{
+				minHeight: displayHeight ? displayHeight + 'px' : undefined,
+				zIndex: 10,
+			}}
+		>
+			{(!children || !displayForm) && (
+				<Flex justify="center">
+					<Spinner />
+				</Flex>
+			)}
+			{displayForm && children}
+		</div>
+	);
 	const reloadForm = () => {
 		setDisplayForm(false);
 		setTimeout(() => {
@@ -150,59 +164,101 @@ export default function Edit(props) {
 		}, 0);
 	};
 
-	const editForm = () => {
-		window.open('post.php?post=' + id + '&action=edit', 'edit_form_' + id);
+	const onSelect = (type, index) => {
+		location.hash = '#mailster-' + type;
+		setContextType(type);
+
+		//select current block
+
+		//select the active block
+		//setTimeout(() => {
+		//const formBlocks = searchBlocks('mailster/form');
+		//	dispatch('core/block-editor').selectBlock(formBlocks[index].clientId);
+		//setContextType(type);
+		//}, 3000);
+		//console.log('form', type, index, formBlocks);
 	};
 
-	const className = [];
+	const editForm = () => {
+		window.open(
+			'post.php?post=' + formId + '&action=edit',
+			'edit_form_' + formId
+		);
+	};
+
+	const currentTab = TABS.find((tab) => tab.id === contextType);
+
+	const getPlaceholderLabel = () => {
+		if (contextType) {
+			return sprintf(
+				__('Newsletter Homepage: %s', 'mailster'),
+				currentTab.name
+			);
+		}
+
+		return __('Mailster Subscription Form', 'mailster');
+	};
 
 	const blockProps = useBlockProps({
-		className: classnames({}, className),
+		style: { minHeight: displayHeight ? displayHeight + 'px' : undefined },
 	});
+
+	const ServerSideRenderAttributes = {
+		...attributes,
+		...{
+			type: contextType,
+			id: formId,
+		},
+	};
+	console.log(ServerSideRenderAttributes, contextType, contextId, currentTab);
 
 	return (
 		<>
 			<div {...blockProps}>
-				{id ? (
+				{formId ? (
 					<div className="mailster-block-form-editor-wrap" ref={blockRef}>
-						<Flex className="update-form-button" justify="space-evenly">
-							<strong className="align-center">
-								{__(
-									'Please click on the edit button in the toolbar to edit this form.',
-									'mailster'
-								)}
-							</strong>
+						<Flex className="update-form-button" justify="center">
+							<Button
+								variant="primary"
+								icon={edit}
+								onClick={editForm}
+								text={__('Edit form', 'mailster')}
+							/>
+							<Button
+								variant="secondary"
+								icon={update}
+								onClick={reloadForm}
+								text={__('Reload Form', 'mailster')}
+							/>
 						</Flex>
 						<ServerSideRender
 							className="mailster-block-form-editor-wrap-inner"
 							block="mailster/form"
-							attributes={{
-								...attributes,
-								...{ type: type },
-							}}
+							attributes={ServerSideRenderAttributes}
 							EmptyResponsePlaceholder={EmptyPlaceholder}
-							LoadingResponsePlaceholder={EmptyPlaceholder}
+							XLoadingResponsePlaceholder={EmptyPlaceholder}
 						/>
 					</div>
 				) : (
-					<Placeholder
-						icon={email}
-						label={__('Mailster Subscription Form', 'mailster')}
-					>
-						<MailsterFormSelector {...props} />
+					<Placeholder icon={email} label={getPlaceholderLabel()}>
+						<MailsterFormSelector
+							{...props}
+							selectForm={selectForm}
+							formId={formId}
+						/>
 						<div className="placeholder-buttons-wrap">
 							<Button
-								variant="tertiary"
+								variant="secondary"
+								icon={plus}
 								href={'post-new.php?post_type=newsletter_form'}
 								target={'edit_form_new'}
-								text={__('create new form', 'mailster')}
+								text={__('Create new form', 'mailster')}
 							/>
 							<Button
-								variant="primary"
-								icon={email}
-								className="is-primary"
+								variant="tertiary"
+								icon={update}
 								onClick={reloadForm}
-								text={__('Update Forms', 'mailster')}
+								text={__('Reload Forms', 'mailster')}
 							/>
 						</div>
 					</Placeholder>
@@ -211,21 +267,28 @@ export default function Edit(props) {
 			<BlockControls>
 				<ToolbarGroup>
 					<ToolbarButton
-						label={__('Reload Form', 'mailster')}
-						icon={update}
-						onClick={reloadForm}
-					/>
-					<ToolbarButton
 						label={__('Edit Form', 'mailster')}
 						icon={edit}
 						onClick={editForm}
 					/>
+					<ToolbarButton
+						label={__('Reload Form', 'mailster')}
+						icon={update}
+						onClick={reloadForm}
+					/>
 				</ToolbarGroup>
 			</BlockControls>
+			{contextType && (
+				<HomepageInspectorControls current={contextType} onSelect={onSelect} />
+			)}
 			<InspectorControls>
 				<Panel>
-					<PanelBody title={__('Settings', 'mailster')} initialOpen={true}>
-						<MailsterFormSelector {...props} />
+					<PanelBody title={__('Form Selector', 'mailster')} initialOpen={true}>
+						<MailsterFormSelector
+							{...props}
+							selectForm={selectForm}
+							formId={formId}
+						/>
 					</PanelBody>
 				</Panel>
 			</InspectorControls>

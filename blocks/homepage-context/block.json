@@ -3,9 +3,9 @@
 	"apiVersion": 2,
 	"name": "mailster/homepage-context",
 	"version": "0.1.5",
-	"title": "Mailster Homepage Context",
+	"title": "Mailster Homepage Section",
+	"description": "Use this block to add content to certain sections only.",
 	"category": "widgets",
-	"icon": "email",
 	"parent": ["mailster/homepage"],
 	"example": {},
 	"supports": {
@@ -13,7 +13,6 @@
 		"inserter": false,
 		"className": false,
 		"customClassName": false,
-		"align": true,
 		"reusable": false,
 		"lock": false,
 		"spacing": false
@@ -28,7 +27,7 @@
 		},
 		"type": {
 			"type": "string",
-			"enum": ["form", "profile", "unsubscribe"]
+			"enum": ["submission", "profile", "unsubscribe", "subscribe"]
 		}
 	},
 	"usesContext": ["mailster-homepage-context/align"],

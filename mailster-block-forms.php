@@ -134,7 +134,7 @@ function mailster_block_forms_filter( $content, $template, $subscriber, $options
 	$form_id = mailster( 'subscribers' )->meta( $subscriber->ID, 'form' );
 	$form    = get_post( $form_id );
 
-	if ( $form->post_type != 'newsletter_form' ) {
+	if ( ! $form && $form->post_type != 'newsletter_form' ) {
 		return $content;
 	}
 

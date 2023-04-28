@@ -1,26 +1,33 @@
 .wp-block-mailster-homepage.is-selected {
 }
-.wp-block-mailster-homepage .mailster-homepage-tabs {
-	opacity: 0.3;
-}
-.wp-block-mailster-homepage.is-selected .mailster-homepage-tabs {
-	opacity: 1;
-}
-.mailster-homepage-tabs {
-	border-bottom: 1px solid;
-}
-.mailster-homepage-tabs button {
-	opacity: 0.5;
-}
-.mailster-homepage-tabs button.active-tab {
-	opacity: 1;
-}
-.mailster-homepage-tabs .tab-explanation {
+
+.wp-block-mailster-homepage .context-explanation {
 	position: absolute;
 	right: 0;
-	top: 10px;
+	top: 0;
 	opacity: 0.8;
-	font-size: 14px;
+	font-size: 12px;
+	padding: 0.3em 0.6em;
+	opacity: 0;
+	z-index: 10;
+	background-color: var(--wp-admin-theme-color);
+	color: var(--wp-components-color-accent-inverted, #fff);
+}
+.wp-block-mailster-homepage:hover .context-explanation,
+.wp-block-mailster-homepage.is-selected .context-explanation {
+	opacity: 1;
+}
+.wp-block-mailster-homepage .section-info {
+	color: gray;
+	position: absolute;
+	right: 0;
+	transform: translateY(-100%);
+	font-size: 12px;
+	_display: none;
+	cursor: default;
+}
+.wp-block-mailster-homepage:hover .section-info {
+	display: block;
 }
 .wp-block-mailster-homepage {
 }
@@ -31,9 +38,9 @@
 	display: none;
 }
 
-.wp-block-mailster-homepage.tab-form
+.wp-block-mailster-homepage.tab-submission
 	.block-editor-block-list__layout
-	.mailster-form-type-form {
+	.mailster-form-type-submission {
 	display: block;
 }
 .wp-block-mailster-homepage.tab-profile
@@ -44,5 +51,10 @@
 .wp-block-mailster-homepage.tab-unsubscribe
 	.block-editor-block-list__layout
 	.mailster-form-type-unsubscribe {
+	display: block;
+}
+.wp-block-mailster-homepage.tab-subscribe
+	.block-editor-block-list__layout
+	.mailster-form-type-subscribe {
 	display: block;
 }

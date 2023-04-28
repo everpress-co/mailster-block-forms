@@ -5,7 +5,6 @@
 	"version": "0.1.5",
 	"title": "Mailster Homepage",
 	"category": "widgets",
-	"icon": "email",
 	"supports": {
 		"multiple": false,
 		"html": false,
@@ -19,12 +18,27 @@
 		"id": {
 			"type": "integer"
 		},
-		"height": {
+		"submission": {
 			"type": "integer"
+		},
+		"profile": {
+			"type": "integer"
+		},
+		"unsubscribe": {
+			"type": "integer"
+		},
+		"profile_button": {
+			"type": "string"
+		},
+		"unsubscribe_button": {
+			"type": "string"
 		}
 	},
 	"providesContext": {
-		"mailster-homepage-context/align": "align"
+		"mailster-homepage-context/align": "align",
+		"mailster-homepage-context/submission": "submission",
+		"mailster-homepage-context/profile": "profile",
+		"mailster-homepage-context/unsubscribe": "unsubscribe"
 	},
 	"textdomain": "mailster",
 	"editorScript": "file:./index.js",

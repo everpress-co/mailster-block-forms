@@ -678,14 +678,14 @@ html.mailster-form-active {
 }
 .mailster-block-form.completed .mailster-block-form-inner {
 	.mailster-wrapper:not(.wp-block-mailster-messages) {
-		opacity: 0.4;
+		opacity: 0.8;
 		pointer-events: none;
 	}
 }
 .mailster-block-form.wp-block-mailster-form-wrapper {
 	transition: transform 0.1s;
 }
-.mailster-block-form.wp-block-mailster-form-wrapper.loading {
+.mailster-block-form.wp-block-mailster-form-wrapper.loading:not(.silent) {
 	transform: scale(0.98);
 	opacity: 0.8;
 }
