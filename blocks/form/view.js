@@ -14,10 +14,20 @@ import apiFetch from '@wordpress/api-fetch';
 (function () {
 	'use strict';
 
+	const addEvent = (el, type, handler) => {
+		if (el.attachEvent) el.attachEvent('on' + type, handler);
+		else el.addEventListener(type, handler);
+	};
+
+	const removeEvent = (el, type, handler) => {
+		if (el.detachEvent) el.detachEvent('on' + type, handler);
+		else el.removeEventListener(type, handler);
+	};
+
 	// initialize instant or wait if the DOM is not loaded yet
 	document.readyState === 'complete'
 		? app()
-		: window.addEventListener('DOMContentLoaded', app);
+		: addEvent(window, 'DOMContentLoaded', app);
 
 	function app() {
 		const html = document.documentElement;
@@ -38,6 +48,7 @@ import apiFetch from '@wordpress/api-fetch';
 			const info = formEl.querySelector('.mailster-block-form-info');
 			const countImpressionEvery = 3600;
 			const cooldown = (form.cooldown || 0) * 3600;
+			const isSubmission = form.type == 'submission';
 			let delayTimeout = null;
 			let inactiveTimeout = null;
 			const triggerMethods = {
@@ -48,16 +59,16 @@ import apiFetch from '@wordpress/api-fetch';
 					}, form.trigger_delay * 1000);
 				},
 				inactive: () => {
-					window.addEventListener('mousedown', _trigger_inactive);
-					window.addEventListener('mousemove', _trigger_inactive);
-					window.addEventListener('keypress', _trigger_inactive);
-					window.addEventListener('mousemove', _trigger_inactive);
-					window.addEventListener('scroll', _trigger_inactive);
-					window.addEventListener('touchstart', _trigger_inactive);
+					addEvent(window, 'mousedown', _trigger_inactive);
+					addEvent(window, 'mousemove', _trigger_inactive);
+					addEvent(window, 'keypress', _trigger_inactive);
+					addEvent(window, 'mousemove', _trigger_inactive);
+					addEvent(window, 'scroll', _trigger_inactive);
+					addEvent(window, 'touchstart', _trigger_inactive);
 				},
 				scroll: function () {
-					window.addEventListener('scroll', _trigger_scroll);
-					window.addEventListener('touchstart', _trigger_scroll);
+					addEvent(window, 'scroll', _trigger_scroll);
+					addEvent(window, 'touchstart', _trigger_scroll);
 				},
 				click: () => {
 					const elements = document.querySelectorAll(form.trigger_click);
@@ -66,7 +77,7 @@ import apiFetch from '@wordpress/api-fetch';
 					});
 				},
 				exit: () => {
-					document.addEventListener('mouseout', _trigger_exit);
+					addEvent(document, 'mouseout', _trigger_exit);
 				},
 			};
 
@@ -117,21 +128,65 @@ import apiFetch from '@wordpress/api-fetch';
 					observer.observe(formEl);
 					triggerEvent('load');
 				}
+				if (!isSubmission) {
+					formEl.classList.add('loading', 'silent');
+					formEl.setAttribute('disabled', true);
+
+					apiFetch({
+						path: 'mailster/v1/forms/' + form.id + '/data',
+						method: 'GET',
+					})
+						.then((response) => {
+							for (const property in response.data) {
+								const el = formEl.querySelector('[name="' + property + '"]');
+								const val = response.data[property];
+								if (el && val) {
+									switch (el.type) {
+										case 'checkbox':
+											el.checked = !!val;
+											break;
+										case 'radio':
+											const rel = formEl.querySelectorAll(
+												'[name="' + property + '"]'
+											);
+											for (let i = 0; i < rel.length; i++) {
+												rel[i].checked = rel[i].value == val;
+											}
+											break;
+
+										default:
+											el.value = val;
+											break;
+									}
+								}
+							}
+
+							const lists = formEl.querySelectorAll('[name="_lists[]"]');
+
+							if (response.lists) {
+								for (let i = 0; i < lists.length; i++) {
+									lists[i].checked = response.lists.includes(lists[i].value);
+								}
+							}
+						})
+						.catch((error) => {})
+						.finally(() => {
+							formEl.classList.remove('loading', 'silent');
+							formEl.removeAttribute('disabled');
+							info.setAttribute('aria-hidden', 'false');
+						});
+				}
 			}
 
-			formEl.addEventListener('submit', (event) => {
+			addEvent(formEl, 'submit', (event) => {
 				event.preventDefault();
 
 				let formData = new FormData(formEl),
 					data = {},
 					message = [],
 					submit = formEl.querySelector('.submit-button'),
-					infoSuccess = info.querySelector(
-						'.mailster-block-form-info-success .mailster-block-form-info-extra'
-					),
-					infoError = info.querySelector(
-						'.mailster-block-form-info-error .mailster-block-form-info-extra'
-					);
+					infoSuccess = info.querySelector('.mailster-block-form-info-success'),
+					infoError = info.querySelector('.mailster-block-form-info-error');
 
 				formEl.classList.remove('has-errors');
 				formEl.classList.remove('completed');
@@ -155,12 +210,16 @@ import apiFetch from '@wordpress/api-fetch';
 				}
 
 				for (let key of formData.keys()) {
-					data[key] = formData.get(key);
+					let v = formData.getAll(key);
+					if (v.length == 1) {
+						v = v.pop();
+					}
+					data[key.replace('[]', '')] = v;
 				}
 
 				apiFetch({
-					path: 'mailster/v1/forms/' + form.id + '/submission',
-					method: form.type == 'form' ? 'POST' : 'UPDATE',
+					path: 'mailster/v1/forms/' + form.id + '/' + form.type,
+					method: isSubmission ? 'POST' : 'PATCH',
 					data: data,
 				})
 					.then((response) => {
@@ -172,20 +231,32 @@ import apiFetch from '@wordpress/api-fetch';
 
 						info.classList.remove('is-error');
 
-						if (response.data.redirect) {
+						if (isSubmission && response.data.redirect) {
 							setTimeout(() => (location.href = response.data.redirect), 150);
 							return;
 						}
 
-						infoSuccess.innerHTML = message.join('<br>');
+						if (response.message) {
+							message.push(response.message);
+						}
+
+						if (message.length) infoSuccess.innerHTML = message.join('<br>');
 						info.setAttribute('role', 'alert');
 						info.classList.add('is-success');
 
-						if (!formEl.classList.contains('is-profile')) {
+						if (isSubmission) {
 							formEl.classList.add('completed');
 							formEl.reset();
 							document.activeElement.blur();
-							form.triggers && setTimeout(() => closeForm(), 3000);
+
+							triggerEvent('complete', {
+								...response.data,
+								formdata: data,
+							});
+
+							setTimeout(() => {
+								form.triggers && closeForm();
+							}, 3000);
 						}
 					})
 					.catch((error) => {
@@ -211,7 +282,7 @@ import apiFetch from '@wordpress/api-fetch';
 
 								console.error('[' + fieldid + ']', m);
 								message.push(
-									'<span id="' + hintid + '" role="alert">' + m + '</span>'
+									'<div id="' + hintid + '" role="alert">' + m + '</div>'
 								);
 							});
 						}
@@ -263,17 +334,14 @@ import apiFetch from '@wordpress/api-fetch';
 					clearTimeout(inactiveTimeout);
 					removeEventListeners();
 
-					document.addEventListener('keyup', closeOnEsc);
-					document.addEventListener('keydown', handleTab);
-					setTimeout(
-						() => wrap.addEventListener('click', closeFormExplicit),
-						1500
-					);
+					addEvent(document, 'keyup', closeOnEsc);
+					addEvent(document, 'keydown', handleTab);
+					setTimeout(() => addEvent(wrap, 'click', closeFormExplicit), 1500);
 
 					closeButtons.forEach((btn) =>
-						btn.addEventListener('click', closeFormExplicit)
+						addEvent(btn, 'click', closeFormExplicit)
 					);
-					formEl.addEventListener('click', stopPropagation);
+					addEvent(formEl, 'click', stopPropagation);
 
 					wrap.classList.add('active');
 					info.classList.remove('is-success');
@@ -292,26 +360,26 @@ import apiFetch from '@wordpress/api-fetch';
 			}
 
 			function removeEventListeners() {
-				document.removeEventListener('mouseout', _trigger_exit);
-				window.removeEventListener('scroll', _trigger_scroll);
-				window.removeEventListener('touchstart', _trigger_scroll);
-				window.removeEventListener('mousedown', _trigger_inactive);
-				window.removeEventListener('mousemove', _trigger_inactive);
-				window.removeEventListener('keypress', _trigger_inactive);
-				window.removeEventListener('mousemove', _trigger_inactive);
-				window.removeEventListener('scroll', _trigger_inactive);
-				window.removeEventListener('touchstart', _trigger_inactive);
+				removeEvent(document, 'mouseout', _trigger_exit);
+				removeEvent(window, 'scroll', _trigger_scroll);
+				removeEvent(window, 'touchstart', _trigger_scroll);
+				removeEvent(window, 'mousedown', _trigger_inactive);
+				removeEvent(window, 'mousemove', _trigger_inactive);
+				removeEvent(window, 'keypress', _trigger_inactive);
+				removeEvent(window, 'mousemove', _trigger_inactive);
+				removeEvent(window, 'scroll', _trigger_inactive);
+				removeEvent(window, 'touchstart', _trigger_inactive);
 			}
 
 			function closeForm() {
-				document.removeEventListener('keyup', closeOnEsc);
-				document.removeEventListener('keydown', handleTab);
-				wrap.removeEventListener('click', closeForm);
-				wrap.removeEventListener('click', closeFormExplicit);
+				removeEvent(document, 'keyup', closeOnEsc);
+				removeEvent(document, 'keydown', handleTab);
+				removeEvent(wrap, 'click', closeForm);
+				removeEvent(wrap, 'click', closeFormExplicit);
 				closeButtons.forEach((btn) =>
-					btn.removeEventListener('click', closeFormExplicit)
+					removeEvent(btn, 'click', closeFormExplicit)
 				);
-				formEl.removeEventListener('click', stopPropagation);
+				removeEvent(formEl, 'click', stopPropagation);
 
 				wrap.classList.add('closing');
 				html.classList.remove('mailster-form-active');
@@ -353,10 +421,12 @@ import apiFetch from '@wordpress/api-fetch';
 			}
 
 			function set(key, value) {
+				if (!isSubmission) return null;
 				return storage(form.identifier, key, value || +new Date());
 			}
 
 			function get(key, fallback = null) {
+				if (!isSubmission) return null;
 				let data = storage(form.identifier, key);
 				if (!data) {
 					return fallback;
