@@ -1478,7 +1478,7 @@ class MailsterBlockForms {
 		$inject .= '<script class="mailster-block-form-data" type="application/json">' . json_encode( $form_args ) . '</script>';
 		$inject .= '<input name="_timestamp" type="hidden" value="' . esc_attr( time() ) . '" />' . "\n";
 		if ( $type !== 'submission' ) {
-			$inject .= '<input name="_hash" type="shidden" value="" />' . "\n";
+			$inject .= '<input name="_hash" type="hidden" value="" />' . "\n";
 		}
 		$inject .= '<button class="mailster-block-form-close"  aria-label="' . esc_attr__( 'close', 'mailster' ) . '" tabindex="0"><svg viewbox="0 0 100 100"><path d="M100 10.71 89.29 0 50 39.29 10.71 0 0 10.71 39.29 50 0 89.29 10.71 100 50 60.71 89.29 100 100 89.29 60.71 50z"/></svg></button>';
 
