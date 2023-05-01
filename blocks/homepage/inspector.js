@@ -75,31 +75,7 @@ export default function HomepageInspectorControls(props) {
 	};
 
 	const getHelp = () => {
-		switch (current) {
-			case 'submission':
-				return __(
-					'This form is displayed if users visits the newsletter homepage.',
-					'mailster'
-				);
-				break;
-			case 'profile':
-				return __(
-					'This form is displayed if users visits the profile page. People can update their subscription on this page.',
-					'mailster'
-				);
-				break;
-			case 'unsubscribe':
-				return __(
-					'This form is displayed on the unsubscribe page. If the user clicks an unsubscribe link in a newsletter, he will be redirected to this page.',
-					'mailster'
-				);
-			case 'subscribe':
-				return __(
-					'Use this section to define the content when people click on the link in the confirmation email.',
-					'mailster'
-				);
-				break;
-		}
+		if (TABS[current]) return TABS[current].help;
 
 		return __(
 			'You have to define a form for each section. You can use the same form as well.',
@@ -112,19 +88,30 @@ export default function HomepageInspectorControls(props) {
 			<Panel>
 				<PanelBody initialOpen={true}>
 					<PanelRow>
-						<BaseControl
-							label={__(
-								'Setup your newsletter homepage by defining a form for each section.',
-								'mailster'
-							)}
-							help={getHelp()}
-						>
-							<div className="components-dropdown-menu__menu">
+						<BaseControl label={__('Newsletter Homepage Sections', 'mailster')}>
+							<div className="components-dropdown-menu__menu context-buttons">
 								<ContextButtons />
 							</div>
 						</BaseControl>
 					</PanelRow>
 				</PanelBody>
+				<PanelBody initialOpen={true}>
+					<PanelRow>
+						<Tip>{getHelp()}</Tip>
+					</PanelRow>
+				</PanelBody>
+				{(current == 'profile' || current == 'unsubscribe') && (
+					<PanelBody initialOpen={true}>
+						<PanelRow>
+							<ExternalLink href="edit.php?post_type=newsletter&page=mailster_settings#texts">
+								{__(
+									'Change the text of the button on the Texts tab in the settings.',
+									'mailster'
+								)}
+							</ExternalLink>
+						</PanelRow>
+					</PanelBody>
+				)}
 			</Panel>
 		</InspectorControls>
 	);

@@ -187,9 +187,8 @@ import apiFetch from '@wordpress/api-fetch';
 								}
 							}
 
-							const lists = querySelectorAll(formEl, '[name="_lists[]"]');
-
 							if (response.lists) {
+								const lists = querySelectorAll(formEl, '[name="_lists[]"]');
 								for (let i = 0; i < lists.length; i++) {
 									lists[i].checked = response.lists.includes(lists[i].value);
 								}

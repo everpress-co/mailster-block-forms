@@ -120,8 +120,9 @@ class Mailster_REST_Form_Controller extends WP_REST_Controller {
 		$lists = mailster( 'subscribers' )->get_lists( $subscriber_id, true );
 
 		if ( ! empty( $data ) ) {
-			$data['_hash'] = $data['hash'];
-			$data          = array_diff_key( (array) $data, array( 'ID', 'hash' ) );
+			$data['_hash']   = $data['hash'];
+			$data['_status'] = $data['status'];
+			$data            = array_diff_key( (array) $data, array( 'ID', 'hash' ) );
 		}
 
 		$response = array(
@@ -144,12 +145,19 @@ class Mailster_REST_Form_Controller extends WP_REST_Controller {
 		$form_id = (int) $url_params['id'];
 		$type    = $url_params['type'];
 
-		$_gdpr      = $request->get_param( '_gdpr' );
-		$_timestamp = (int) $request->get_param( '_timestamp' );
-		$_lists     = (array) $request->get_param( '_lists' );
-		$_referer   = $request->get_param( '_referer' );
-		$_hash      = $request->get_param( '_hash' );
-
+		$_gdpr           = $request->get_param( '_gdpr' );
+		$_timestamp      = (int) $request->get_param( '_timestamp' );
+		$_lists          = (array) $request->get_param( '_lists' );
+		$_referer        = $request->get_param( '_referer' );
+		$_hash           = $request->get_param( '_hash' );
+		$_status         = $request->get_param( '_status' );
+		$_campaign_id    = $request->get_param( '_campaign_id' );
+		$_campaign_index = 0;
+		// get the campaign index
+		if ( false !== strpos( $_campaign_id, '-' ) ) {
+			$_campaign_index = absint( strrchr( $_campaign_id, '-' ) );
+			$_campaign_id    = absint( $_campaign_id );
+		}
 		$gdpr        = get_post_meta( $form_id, 'gdpr', true );
 		$overwrite   = get_post_meta( $form_id, 'overwrite', true );
 		$doubleoptin = get_post_meta( $form_id, 'doubleoptin', true );
@@ -178,6 +186,7 @@ class Mailster_REST_Form_Controller extends WP_REST_Controller {
 		if ( $type == 'unsubscribe' ) {
 			$required_fields = array( 'email' );
 		}
+
 		foreach ( $required_fields as $field ) {
 			if ( ! isset( $data[ $field ] ) || empty( $data[ $field ] ) ) {
 				$fields_errors[ $field ] = sprintf( esc_html__( '%s is missing or wrong', 'mailster' ), $custom_fields[ $field ]['name'] );
@@ -207,6 +216,15 @@ class Mailster_REST_Form_Controller extends WP_REST_Controller {
 		* @param object $request the request
 		*/
 		$fields_errors = apply_filters( 'mailster_block_form_field_errors', $fields_errors, $entry, $request );
+
+		// check honeypot, only if all fields are correct.
+		if ( empty( $fields_errors ) && apply_filters( 'mailster_honeypot', mailster_option( 'check_honeypot' ), $form_id ) ) {
+			$honeypot = $request->get_param( 'n_' . $form_id . '_email' );
+
+			if ( ! empty( $honeypot ) ) {
+				$fields_errors['_honeypot'] = esc_html__( 'Honeypot is for bears only!', 'mailster' );
+			}
+		}
 
 		if ( ! empty( $fields_errors ) ) {
 			return new WP_Error( 'rest_forbidden', mailster_text( 'error' ), $this->response_data( array( 'fields' => $fields_errors ) ) );
@@ -241,6 +259,7 @@ class Mailster_REST_Form_Controller extends WP_REST_Controller {
 					'status'  => $doubleoptin ? 0 : 1,
 					'lang'    => mailster_get_lang(),
 					'referer' => $_referer,
+					'form'    => $form_id,
 				),
 				$entry
 			);
@@ -282,11 +301,18 @@ class Mailster_REST_Form_Controller extends WP_REST_Controller {
 		}
 
 		if ( $type == 'profile' ) {
-			$exists        = mailster( 'subscribers' )->get_by_hash( $_hash );
-			$entry['ID']   = $exists->ID;
+
+			$exists      = mailster( 'subscribers' )->get_by_hash( $_hash );
+			$entry['ID'] = $exists->ID;
+			if ( $_status == 2 ) {
+				mailster( 'subscribers' )->unsubscribe( $exists->ID, $_campaign_id, 'Homepage', $_campaign_index );
+				$message = mailster_text( 'unsubscribe' );
+			} else {
+				$entry   = wp_parse_args( array( 'status' => (int) $_status ), $entry );
+				$message = mailster_text( 'profile_update' );
+			}
 			$subscriber_id = mailster( 'subscribers' )->update( $entry, true );
 			$subscriber    = mailster( 'subscribers' )->get( $subscriber_id );
-			$message       = mailster_text( 'profile_update' );
 		}
 
 		if ( $type == 'unsubscribe' ) {
@@ -302,7 +328,7 @@ class Mailster_REST_Form_Controller extends WP_REST_Controller {
 
 		if ( $type == 'submission' ) {
 			$post_id = url_to_postid( wp_get_referer() );
-			mailster( 'block-forms' )->conversion( $entry['form'], $post_id, $subscriber_id, $doubleoptin ? 2 : 3 );
+			mailster( 'block-forms' )->conversion( $form_id, $post_id, $subscriber_id, $doubleoptin ? 2 : 3 );
 		}
 
 		$response = array(

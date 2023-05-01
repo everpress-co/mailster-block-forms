@@ -4,6 +4,18 @@
 	"name": "mailster/homepage",
 	"version": "0.1.5",
 	"title": "Mailster Homepage",
+	"keywords": [
+		"form",
+		"newsletter",
+		"mailster",
+		"subscribe",
+		"signup",
+		"optin",
+		"opt-in",
+		"opt in",
+		"email",
+		"mail"
+	],
 	"category": "widgets",
 	"supports": {
 		"multiple": false,

@@ -76,9 +76,10 @@ export default function Options(props) {
 				<TextControl
 					label={__('Redirect after submit', 'mailster')}
 					help={__(
-						'Redirect subscribers after they submit the form',
+						'Redirect subscribers after they submit the form. Keep empty to stay on the same page and show a success message.',
 						'mailster'
 					)}
+					placeholder="https://example.com/please-confirm"
 					value={redirect}
 					onChange={(value) => setMeta({ redirect: value })}
 					type="url"

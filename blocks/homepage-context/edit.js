@@ -9,7 +9,11 @@ import classnames from 'classnames';
  */
 import { __ } from '@wordpress/i18n';
 
-import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
+import {
+	useBlockProps,
+	InnerBlocks,
+	InspectorControls,
+} from '@wordpress/block-editor';
 import ServerSideRender from '@wordpress/server-side-render';
 import apiFetch from '@wordpress/api-fetch';
 import { TabPanel } from '@wordpress/components';
@@ -20,7 +24,7 @@ import { useEffect, useState } from '@wordpress/element';
  * Internal dependencies
  */
 
-import HomepageInspectorControls from '../homepage/inspector';
+import HomepageContextInspectorControls from './inspector';
 
 const SUBSCRIBE_TEMPLATE = [
 	['core/heading', { content: __('Thanks for your interest!', 'mailster') }],
@@ -54,15 +58,6 @@ export default function Edit(props) {
 		className: classnames({}, className),
 	});
 
-	const onSelect = (type, index) => {
-		location.hash = '#mailster-' + type;
-
-		//select current block
-		//const formBlocks = searchBlocks('mailster/homepage-context');
-		//select the active block
-		//dispatch('core/block-editor').selectBlock(formBlocks[index].clientId);
-	};
-
 	const template =
 		type != 'subscribe' ? [['mailster/form']] : SUBSCRIBE_TEMPLATE;
 
@@ -71,7 +66,8 @@ export default function Edit(props) {
 			<div {...blockProps} data-align="full">
 				<InnerBlocks templateLock={false} template={template} />
 			</div>
-			<HomepageInspectorControls current={type} onSelect={onSelect} />
+			<InspectorControls></InspectorControls>
+			<HomepageContextInspectorControls {...props} />
 		</>
 	);
 }

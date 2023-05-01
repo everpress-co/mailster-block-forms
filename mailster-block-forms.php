@@ -115,11 +115,10 @@ function mailster_block_forms_register_settings() {
 	);
 
 }
-add_action( 'admin_init', 'mailster_block_forms_register_settings' );
 add_action( 'rest_api_init', 'mailster_block_forms_register_settings' );
 
-function mailster_block_forms_verify_subscriber( $entry ) {
 
+function mailster_block_forms_verify_subscriber( $entry ) {
 	return $entry;
 }
 add_filter( 'mailster_verify_subscriber', 'mailster_block_forms_verify_subscriber' );
@@ -134,7 +133,7 @@ function mailster_block_forms_filter( $content, $template, $subscriber, $options
 	$form_id = mailster( 'subscribers' )->meta( $subscriber->ID, 'form' );
 	$form    = get_post( $form_id );
 
-	if ( ! $form && $form->post_type != 'newsletter_form' ) {
+	if ( ! $form || $form->post_type != 'newsletter_form' ) {
 		return $content;
 	}
 
@@ -195,9 +194,10 @@ add_filter( 'mailster_confirm_target', 'mailster_block_forms_confirm_target', 10
 function mailster_block_forms_subscriber_subscribed( $subscriber_id ) {
 
 	$form_id = mailster( 'subscribers' )->meta( $subscriber_id, 'form' );
-	$form    = get_post( $form_id );
 
-	if ( $form->post_type === 'newsletter_form' ) {
+	$form = get_post( $form_id );
+
+	if ( $form && $form->post_type === 'newsletter_form' ) {
 		mailster( 'block-forms' )->conversion( $form_id, null, $subscriber_id );
 	}
 

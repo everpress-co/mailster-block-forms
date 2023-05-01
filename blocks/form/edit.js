@@ -104,9 +104,6 @@ export default function Edit(props) {
 		// if we are in context of the homepage block
 		if (contextType) {
 			const homepage = searchBlock('mailster/homepage');
-			const blockAttributes = select('core/block-editor').getBlockAttributes(
-				homepage.clientId
-			);
 
 			dispatch('core/block-editor').updateBlockAttributes(homepage.clientId, {
 				[contextType]: id,
@@ -169,14 +166,9 @@ export default function Edit(props) {
 		setContextType(type);
 
 		//select current block
-
-		//select the active block
-		//setTimeout(() => {
 		//const formBlocks = searchBlocks('mailster/form');
-		//	dispatch('core/block-editor').selectBlock(formBlocks[index].clientId);
-		//setContextType(type);
-		//}, 3000);
-		//console.log('form', type, index, formBlocks);
+		//select the active block
+		//dispatch('core/block-editor').selectBlock(formBlocks[index].clientId);
 	};
 
 	const editForm = () => {
@@ -198,6 +190,13 @@ export default function Edit(props) {
 
 		return __('Mailster Subscription Form', 'mailster');
 	};
+	const getPlaceholderInstructions = () => {
+		if (contextType) {
+			return currentTab.help;
+		}
+
+		return __('Select a form you like to display on this page.', 'mailster');
+	};
 
 	const blockProps = useBlockProps({
 		style: { minHeight: displayHeight ? displayHeight + 'px' : undefined },
@@ -210,7 +209,6 @@ export default function Edit(props) {
 			id: formId,
 		},
 	};
-	console.log(ServerSideRenderAttributes, contextType, contextId, currentTab);
 
 	return (
 		<>
@@ -240,7 +238,11 @@ export default function Edit(props) {
 						/>
 					</div>
 				) : (
-					<Placeholder icon={email} label={getPlaceholderLabel()}>
+					<Placeholder
+						icon={email}
+						label={getPlaceholderLabel()}
+						instructions={getPlaceholderInstructions()}
+					>
 						<MailsterFormSelector
 							{...props}
 							selectForm={selectForm}
@@ -281,17 +283,22 @@ export default function Edit(props) {
 			{contextType && (
 				<HomepageInspectorControls current={contextType} onSelect={onSelect} />
 			)}
-			<InspectorControls>
-				<Panel>
-					<PanelBody title={__('Form Selector', 'mailster')} initialOpen={true}>
-						<MailsterFormSelector
-							{...props}
-							selectForm={selectForm}
-							formId={formId}
-						/>
-					</PanelBody>
-				</Panel>
-			</InspectorControls>
+			{contextType !== 'subscribe' && (
+				<InspectorControls>
+					<Panel>
+						<PanelBody
+							title={__('Form Selector', 'mailster')}
+							initialOpen={true}
+						>
+							<MailsterFormSelector
+								{...props}
+								selectForm={selectForm}
+								formId={formId}
+							/>
+						</PanelBody>
+					</Panel>
+				</InspectorControls>
+			)}
 		</>
 	);
 }

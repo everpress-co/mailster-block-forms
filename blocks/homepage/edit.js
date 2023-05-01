@@ -7,7 +7,7 @@ import classnames from 'classnames';
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 
 import {
 	useBlockProps,
@@ -109,13 +109,22 @@ export default function Edit(props) {
 			<div {...blockProps}>
 				{currentTab && (
 					<Tooltip text={currentTab.label}>
-						<span className="section-info">{currentTab.name}</span>
+						<span className="section-info">
+							{sprintf(__('[Mailster]: %s', 'mailster'), currentTab.name)}
+						</span>
 					</Tooltip>
 				)}
 				<InnerBlocks template={BLOCK_TEMPLATE} templateLock="all" />
-				<HomepageInspectorControls current={current} onSelect={onSelect} />
 			</div>
-			<HomepageBlockControls {...props} current={current} onSelect={onSelect} />
+			<HomepageInspectorControls
+				current={current || 'submission'}
+				onSelect={onSelect}
+			/>
+			<HomepageBlockControls
+				{...props}
+				current={current || 'submission'}
+				onSelect={onSelect}
+			/>
 		</>
 	);
 }

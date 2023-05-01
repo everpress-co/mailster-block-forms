@@ -185,7 +185,6 @@ html.mailster-form-active {
 		font-weight: normal;
 		overflow-wrap: break-word;
 		width: 100%;
-		color: initial;
 	}
 
 	ol,
@@ -663,7 +662,7 @@ html.mailster-form-active {
 		}
 	}
 }
-.mailster-block-form.has-errors .mailster-block-form-inner .mailster-wrapper {
+.mailster-block-form.has-errors .mailster-block-form-inner .is-error {
 	animation: mailster-shake 0.3s 1 linear;
 }
 

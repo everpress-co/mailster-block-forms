@@ -62,3 +62,13 @@
 	.mailster-form-type-subscribe {
 	display: block;
 }
+.edit-post-sidebar .context-buttons .is-pressed {
+	background-color: unset !important;
+	color: var(--wp-admin-theme-color, #007cba);
+	box-shadow: 0 0 0 var(--wp-admin-border-width-focus)
+		var(--wp-components-color-accent, var(--wp-admin-theme-color, #007cba));
+	outline: 3px solid transparent;
+}
+.edit-post-sidebar .context-buttons .is-pressed:hover {
+	color: var(--wp-admin-theme-color, #007cba);
+}

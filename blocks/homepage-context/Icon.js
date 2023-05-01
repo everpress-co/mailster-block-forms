@@ -8,7 +8,6 @@ export default (
 			<path id="a" d="M0 0h24v24H0z"></path>
 		</defs>
 		<g fill="none">
-			<use xlinkHref="#a"></use>
 			<path
 				stroke="#323232"
 				strokeLinecap="round"
@@ -23,7 +22,6 @@ export default (
 				strokeWidth="1.5"
 				d="M9.5 16L14.5 16"
 			></path>
-			<use xlinkHref="#a"></use>
 		</g>
 	</svg>
 );
