@@ -1615,8 +1615,6 @@ class MailsterBlockForms {
 
 		}
 
-		error_log( print_r( $post, true ) );
-
 	}
 
 	public function clear_cache( $post_id ) {
@@ -1631,52 +1629,83 @@ class MailsterBlockForms {
 	}
 
 
-	public function impression( $form_id, $post_id = null, $subscriber_id = null ) {
+	public function impression( $form_id, $subscriber_id = null, $post_id = null ) {
 
-		$current_user = get_current_user_id();
-		if ( $current_user && $current_user == get_post( $form_id )->post_author ) {
-			return new WP_Error( 'no_impression', 'no impression for author of the form', array( 'status' => 406 ) );
-		}
-
-		global $wpdb;
-
-		$sql = "INSERT INTO {$wpdb->prefix}mailster_form_actions (`form_id`, `post_id`, `subscriber_id`, `timestamp`, `type`)";
-
-		$sql .= 'VALUES (%d, %d, %d, %d, %d)';
-
-		if ( false !== $wpdb->query( $wpdb->prepare( $sql, $form_id, $post_id, $subscriber_id, time(), 1 ) ) ) {
-
-			do_action( 'impression', $form_id, $post_id, $subscriber_id, $type );
-
-			return true;
-		}
-
-		return false;
+		return $this->action( 'impression', $form_id, $subscriber_id, $post_id );
 
 	}
 
-	public function conversion( $form_id, $post_id = null, $subscriber_id = null, $type = 3 ) {
+	public function signup( $form_id, $subscriber_id = null, $post_id = null ) {
 
-		// TODO maybe not useful.
+		return $this->action( 'signup', $form_id, $subscriber_id, $post_id );
 
-		// $current_user = get_current_user_id();
-		// if ( $current_user && $current_user == get_post( $form_id )->post_author ) {
-		// return new WP_Error( 'no_conversion', 'no conversion for author of the form', array( 'status' => 406 ) );
-		// }
+	}
+
+	public function conversion( $form_id, $subscriber_id = null, $post_id = null ) {
+
+		return $this->action( 'conversion', $form_id, $subscriber_id, $post_id );
+
+	}
+
+
+	private function action( $type, $form_id, $subscriber_id, $post_id ) {
 
 		global $wpdb;
 
-		$sql = "INSERT INTO {$wpdb->prefix}mailster_form_actions (`form_id`, `post_id`, `subscriber_id`, `timestamp`, `type`)";
+		$actions = array(
+			'impression' => 1,
+			'signup'     => 2,
+			'conversion' => 3,
+		);
 
-		$sql .= 'VALUES (%d, %d, %d, %d, %d)';
+		if ( ! isset( $actions[ $type ] ) ) {
+			return new WP_Error( 'invalid_action', 'There is no such action' );
+		}
 
-		if ( false !== $wpdb->query( $wpdb->prepare( $sql, $form_id, $post_id, $subscriber_id, time(), absint( $type ) ) ) ) {
+		// TODO maybe not useful.
+		$current_user = get_current_user_id();
+		if ( $current_user && $current_user == get_post( $form_id )->post_author ) {
+			// return new WP_Error( 'no_action', 'no action for author of the form', array( 'status' => 406 ) );
+		}
 
-			do_action( 'mailster_form_conversion', $form_id, $post_id, $subscriber_id, $type );
+		$action_type = $actions[ $type ];
+
+		$data = array(
+			'timestamp' => time(),
+			'type'      => $action_type,
+		);
+
+		// always create a new entry on impression
+		if ( $action_type == 1 ) {
+			$entry = false;
+		} else {
+			$entry = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mailster_form_actions WHERE form_id = %d AND subscriber_id = %d AND subscriber_id != 0", $form_id, $subscriber_id ) );
+		}
+
+		// entry exists
+		if ( $entry ) {
+
+			if ( false !== $wpdb->update( "{$wpdb->prefix}mailster_form_actions", $data, array( 'ID' => $entry->ID ) ) ) {
+				do_action( 'mailster_form_' . $type, $form_id, $post_id, $subscriber_id, $type );
+			}
 
 			return true;
 		}
-		return false;
+
+		$data = wp_parse_args(
+			$data,
+			array(
+				'form_id'       => $form_id,
+				'post_id'       => $post_id,
+				'subscriber_id' => $subscriber_id,
+			)
+		);
+
+		if ( false !== $wpdb->insert( "{$wpdb->prefix}mailster_form_actions", $data ) ) {
+			do_action( 'mailster_form_' . $type, $form_id, $post_id, $subscriber_id );
+		}
+
+		return true;
 
 	}
 

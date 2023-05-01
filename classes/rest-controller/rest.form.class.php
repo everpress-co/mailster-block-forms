@@ -86,10 +86,11 @@ class Mailster_REST_Form_Controller extends WP_REST_Controller {
 
 		$url_params = $request->get_url_params();
 
-		$form_id = (int) $url_params['id'];
-		$post_id = url_to_postid( wp_get_referer() );
+		$form_id       = (int) $url_params['id'];
+		$post_id       = url_to_postid( wp_get_referer() );
+		$subscriber_id = mailster_get_current_user_id();
 
-		$impression = mailster( 'block-forms' )->impression( $form_id, $post_id );
+		$impression = mailster( 'block-forms' )->impression( $form_id, $subscriber_id, $post_id );
 
 		if ( is_wp_error( $impression ) ) {
 			return $impression;
@@ -328,7 +329,13 @@ class Mailster_REST_Form_Controller extends WP_REST_Controller {
 
 		if ( $type == 'submission' ) {
 			$post_id = url_to_postid( wp_get_referer() );
-			mailster( 'block-forms' )->conversion( $form_id, $post_id, $subscriber_id, $doubleoptin ? 2 : 3 );
+
+			mailster( 'block-forms' )->signup( $form_id, $subscriber_id, $post_id );
+
+			// no opt in => conversion
+			if ( ! $doubleoptin ) {
+				mailster( 'block-forms' )->conversion( $form_id, $subscriber_id, $post_id );
+			}
 		}
 
 		$response = array(

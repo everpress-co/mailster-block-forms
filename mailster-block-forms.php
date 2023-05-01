@@ -198,7 +198,7 @@ function mailster_block_forms_subscriber_subscribed( $subscriber_id ) {
 	$form = get_post( $form_id );
 
 	if ( $form && $form->post_type === 'newsletter_form' ) {
-		mailster( 'block-forms' )->conversion( $form_id, null, $subscriber_id );
+		mailster( 'block-forms' )->conversion( $form_id, $subscriber_id );
 	}
 
 }
