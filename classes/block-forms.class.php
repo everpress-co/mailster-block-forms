@@ -782,6 +782,20 @@ class MailsterBlockForms {
 	}
 
 
+	public function get_all( $args = array() ) {
+
+		$defaults = array(
+			'post_type'      => 'newsletter_form',
+			'posts_per_page' => -1,
+		);
+
+		$args = wp_parse_args( $args, $defaults );
+
+		return get_posts( $args );
+
+	}
+
+
 
 	public function block_init() {
 
