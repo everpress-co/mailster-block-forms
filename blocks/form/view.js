@@ -274,7 +274,7 @@ import apiFetch from '@wordpress/api-fetch';
 
 						if (isSubmission) {
 							formEl.classList.add('completed');
-							formEl.reset();
+							//formEl.reset();
 							document.activeElement.blur();
 
 							triggerEvent('complete', {
@@ -282,9 +282,7 @@ import apiFetch from '@wordpress/api-fetch';
 								formdata: data,
 							});
 
-							setTimeout(() => {
-								form.triggers && closeForm();
-							}, 3000);
+							form.triggers && setTimeout(closeForm, 3000);
 						}
 					})
 					.catch((error) => {
@@ -464,7 +462,7 @@ import apiFetch from '@wordpress/api-fetch';
 			}
 
 			function countImpression() {
-				if (form.isPreview) {
+				if (form.isPreview || !isSubmission) {
 					return false;
 				}
 				if (!inTimeFrame('impression', countImpressionEvery)) {
