@@ -258,6 +258,9 @@ export default function Edit(props) {
 
 			if (block && !meta.gdpr) {
 				console.warn('Remove gdpr block');
+				//remove lock
+				block.attributes.lock.remove = false;
+
 				dispatch('core/block-editor').removeBlock(block.clientId);
 				dispatch('core/edit-post').openGeneralSidebar('edit-post/document');
 			} else if (!block && meta.gdpr) {
@@ -285,6 +288,7 @@ export default function Edit(props) {
 			const block = searchBlock('mailster/lists', clientId);
 
 			if (block && !meta.userschoice) {
+				//remove lock
 				block.attributes.lock.remove = false;
 				dispatch('core/block-editor').removeBlock(block.clientId);
 				dispatch('core/edit-post').openGeneralSidebar('edit-post/document');
