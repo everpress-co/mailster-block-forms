@@ -23,6 +23,7 @@ import { useDebounce } from '@wordpress/compose';
 import { useState, useEffect, useMemo } from '@wordpress/element';
 
 import { external } from '@wordpress/icons';
+import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -33,7 +34,7 @@ input, select {
     border: 1px solid;
     border-radius: 3px;
     padding: .6em;
-	font: inherit;
+/*	font: inherit;*/
 }
 .submit-button{
     border: initial;
@@ -46,6 +47,9 @@ const CSS_TAB_NAMES = {
 	mobile: __('Mobile', 'mailster'),
 	basic: __('Basic', 'mailster'),
 };
+
+//some themes which should come with basic css enabled
+const BASIC_CSS_THEMES = ['twentytwentythree', 'twentytwentytwo', 'wabi'];
 
 function getSelectors() {
 	const custom = window.mailster_fields.filter((el) => el.id != 'submit');
@@ -136,6 +140,8 @@ export function CssPanel(props) {
 
 	const { css = {}, basiccss } = attributes;
 
+	const theme = useSelect((select) => select('core').getCurrentTheme());
+
 	useEffect(() => {
 		var newCss = { ...css };
 		if (basiccss) {
@@ -146,9 +152,17 @@ export function CssPanel(props) {
 		setAttributes({ css: newCss });
 	}, [basiccss]);
 
+	useEffect(() => {
+		if (!theme) return;
+		// if basiccss is undefined and theme is one of the BASIC_CSS_THEMES
+		if (basiccss == undefined && BASIC_CSS_THEMES.includes(theme.stylesheet)) {
+			setAttributes({ basiccss: true });
+		}
+	}, [theme]);
+
 	const selectors = useMemo(() => {
 		return getSelectors();
-	}, [window.mailster_fields]);
+	}, []);
 
 	const addSelector = (selector) => {
 		if (!selector) return;

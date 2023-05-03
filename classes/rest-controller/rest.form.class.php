@@ -167,7 +167,6 @@ class Mailster_REST_Form_Controller extends WP_REST_Controller {
 		$redirect    = get_post_meta( $form_id, 'redirect', true );
 
 		$fields_errors   = array();
-		$entry           = $data;
 		$required_fields = mailster( 'block-forms' )->get_required_fields( $form_id );
 		$custom_fields   = mailster( 'block-forms' )->get_fields();
 
@@ -189,7 +188,7 @@ class Mailster_REST_Form_Controller extends WP_REST_Controller {
 		}
 
 		foreach ( $required_fields as $field ) {
-			if ( ! isset( $data[ $field ] ) || empty( $data[ $field ] ) ) {
+			if ( ! isset( $entry[ $field ] ) || empty( $entry[ $field ] ) ) {
 				$fields_errors[ $field ] = sprintf( esc_html__( '%s is missing or wrong', 'mailster' ), $custom_fields[ $field ]['name'] );
 			}
 		}
@@ -231,10 +230,6 @@ class Mailster_REST_Form_Controller extends WP_REST_Controller {
 			return new WP_Error( 'rest_forbidden', mailster_text( 'error' ), $this->response_data( array( 'fields' => $fields_errors ) ) );
 		}
 
-		if ( $gdpr ) {
-			$data['_gdpr'] = time();
-		}
-
 		if ( empty( $_referer ) ) {
 			 $_referer = $request->get_header( 'referer' );
 		}
@@ -245,25 +240,23 @@ class Mailster_REST_Form_Controller extends WP_REST_Controller {
 			$lists = array_values( array_intersect( $lists, $_lists ) );
 		}
 
-		$entry = wp_parse_args(
-			array(
-				'lang'   => mailster_get_lang(),
-				'_lists' => $lists,
-			),
-			$entry
-		);
+		// add the language
+		$entry['lang'] = mailster_get_lang();
 
 		if ( $type == 'submission' ) {
-			$entry         = wp_parse_args(
+			$entry = wp_parse_args(
 				array(
 					'confirm' => $doubleoptin ? 0 : time(),
 					'status'  => $doubleoptin ? 0 : 1,
-					'lang'    => mailster_get_lang(),
 					'referer' => $_referer,
 					'form'    => $form_id,
+					'_lists'  => $lists,
 				),
 				$entry
 			);
+			if ( $gdpr ) {
+				$entry['_gdpr'] = time();
+			}
 			$subscriber_id = mailster( 'subscribers' )->add( $entry, $overwrite );
 
 			// handle subscriber updates
@@ -303,13 +296,21 @@ class Mailster_REST_Form_Controller extends WP_REST_Controller {
 
 		if ( $type == 'profile' ) {
 
-			$exists      = mailster( 'subscribers' )->get_by_hash( $_hash );
+			$exists = mailster( 'subscribers' )->get_by_hash( $_hash );
+
+			$lists        = mailster( 'subscribers' )->get_lists( $exists->ID, true );
+			$remove_lists = array_diff( $lists, $_lists );
+			$add_lists    = array_diff( $_lists, $lists );
+
+			mailster( 'subscribers' )->unassign_lists( $exists->ID, $remove_lists );
+			mailster( 'subscribers' )->assign_lists( $exists->ID, $add_lists, false, true );
+
 			$entry['ID'] = $exists->ID;
 			if ( $_status == 2 ) {
 				mailster( 'subscribers' )->unsubscribe( $exists->ID, $_campaign_id, 'Homepage', $_campaign_index );
 				$message = mailster_text( 'unsubscribe' );
 			} else {
-				$entry   = wp_parse_args( array( 'status' => (int) $_status ), $entry );
+				$entry   = wp_parse_args( array( 'status' => 1 ), $entry );
 				$message = mailster_text( 'profile_update' );
 			}
 			$subscriber_id = mailster( 'subscribers' )->update( $entry, true );
@@ -318,7 +319,7 @@ class Mailster_REST_Form_Controller extends WP_REST_Controller {
 
 		if ( $type == 'unsubscribe' ) {
 			$exists        = mailster( 'subscribers' )->get_by_hash( $_hash );
-			$subscriber_id = mailster( 'subscribers' )->unsubscribe( $exists->ID, true );
+			$subscriber_id = mailster( 'subscribers' )->unsubscribe( $exists->ID, $_campaign_id, 'Homepage', $_campaign_index );
 			$subscriber    = mailster( 'subscribers' )->get( $subscriber_id );
 			$message       = mailster_text( 'unsubscribe' );
 		}
@@ -341,7 +342,7 @@ class Mailster_REST_Form_Controller extends WP_REST_Controller {
 		$response = array(
 			'data'    => array(
 				'status'            => 200,
-				'subscriber_status' => $subscriber->status,
+				'subscriber_status' => $subscriber ? $subscriber->status : null,
 				'redirect'          => $redirect ? $redirect : null,
 			),
 			'message' => $message,

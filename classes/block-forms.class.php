@@ -27,6 +27,7 @@ class MailsterBlockForms {
 		add_action( 'enqueue_block_editor_assets', array( &$this, 'block_script_styles' ), 1 );
 
 		add_filter( 'allowed_block_types_all', array( &$this, 'allowed_block_types' ), 9999, 2 );
+		add_filter( 'block_editor_settings_all', array( &$this, 'block_editor_settings' ), PHP_INT_MAX, 2 );
 		add_filter( 'block_categories_all', array( &$this, 'block_categories' ) );
 
 		add_filter( 'manage_newsletter_form_posts_columns', array( &$this, 'columns' ), 1 );
@@ -782,6 +783,20 @@ class MailsterBlockForms {
 	}
 
 
+	public function get_all( $args = array() ) {
+
+		$defaults = array(
+			'post_type'      => 'newsletter_form',
+			'posts_per_page' => -1,
+		);
+
+		$args = wp_parse_args( $args, $defaults );
+
+		return get_posts( $args );
+
+	}
+
+
 
 	public function block_init() {
 
@@ -962,6 +977,19 @@ class MailsterBlockForms {
 		}
 
 		return apply_filters( 'mailster_forms_allowed_block_types', array_values( $types ) );
+
+	}
+
+	public function block_editor_settings( $editor_settings, $block_editor_context ) {
+
+		// remove all third party styles (as mutch as possible)
+		// $editor_settings['defaultEditorStyles'] = array();
+		// $editor_settings['styles']              = array();
+
+		// disable code editor
+		// $editor_settings['codeEditingEnabled'] = false;
+
+		return $editor_settings;
 
 	}
 
@@ -1686,7 +1714,7 @@ class MailsterBlockForms {
 		if ( $entry ) {
 
 			if ( false !== $wpdb->update( "{$wpdb->prefix}mailster_form_actions", $data, array( 'ID' => $entry->ID ) ) ) {
-				do_action( 'mailster_form_' . $type, $form_id, $post_id, $subscriber_id, $type );
+				do_action( 'mailster_form_' . $type, $form_id, $subscriber_id, $entry->post_id );
 			}
 
 			return true;
@@ -1702,7 +1730,7 @@ class MailsterBlockForms {
 		);
 
 		if ( false !== $wpdb->insert( "{$wpdb->prefix}mailster_form_actions", $data ) ) {
-			do_action( 'mailster_form_' . $type, $form_id, $post_id, $subscriber_id );
+			do_action( 'mailster_form_' . $type, $form_id, $subscriber_id, $post_id );
 		}
 
 		return true;

@@ -236,13 +236,21 @@ import apiFetch from '@wordpress/api-fetch';
 				} else {
 					formData.append('_referer', document.location.href);
 				}
+				let lists = formData.getAll('_lists[]');
+				if (!lists.length) {
+					formData.append('_lists[]', []);
+				}
 
+				let v;
 				for (let key of formData.keys()) {
-					let v = formData.getAll(key);
-					if (v.length == 1) {
-						v = v.pop();
+					if (key == '_lists[]') {
+						v = lists;
+						key = key.replace('[]', '');
+					} else {
+						v = formData.get(key);
 					}
-					data[key.replace('[]', '')] = v;
+
+					data[key] = v;
 				}
 
 				apiFetch({
@@ -274,7 +282,6 @@ import apiFetch from '@wordpress/api-fetch';
 
 						if (isSubmission) {
 							formEl.classList.add('completed');
-							//formEl.reset();
 							document.activeElement.blur();
 
 							triggerEvent('complete', {
@@ -282,7 +289,11 @@ import apiFetch from '@wordpress/api-fetch';
 								formdata: data,
 							});
 
-							form.triggers && setTimeout(closeForm, 3000);
+							form.triggers &&
+								setTimeout(() => {
+									closeForm();
+									formEl.reset();
+								}, 3000);
 						}
 					})
 					.catch((error) => {
