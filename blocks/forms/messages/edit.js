@@ -37,7 +37,7 @@ export default function Edit(props) {
 		: __('Thanks for your interest!', 'mailster');
 
 	const errorMessageDefault = __(
-		'Following fields are missing or incorrect:',
+		'Some fields are missing or inccorrect!',
 		'mailster'
 	);
 

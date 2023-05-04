@@ -130,6 +130,14 @@ export default function Edit(props) {
 							</div>
 						);
 					})}
+					{!lists.length && (
+						<i>
+							{__(
+								'Please select at least one list or disable user choice.',
+								'mailster'
+							)}
+						</i>
+					)}
 				</fieldset>
 			)}
 

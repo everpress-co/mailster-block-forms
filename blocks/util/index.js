@@ -13,6 +13,28 @@ import { select, subscribe } from '@wordpress/data';
  * Internal dependencies
  */
 
+export function HelpBeacon({ id, align }) {
+	const href = new URL('https://kb.mailster.co/' + id);
+	href.searchParams.set('utm_campaign', 'plugin');
+	href.searchParams.set('utm_medium', 'link');
+	href.searchParams.set('utm_source', 'Mailster Plugin');
+	href.searchParams.set('utm_term', 'workflow');
+
+	var styles = {};
+
+	if (align) {
+		styles['float'] = align;
+	}
+
+	return (
+		<a
+			className="mailster-help"
+			href={href.toString()}
+			data-article={id}
+			style={styles}
+		></a>
+	);
+}
 export function useUpdateEffectCustom(callback, dependencies) {
 	const firstRenderRef = useRef(true);
 
@@ -108,6 +130,24 @@ export function searchBlock(blockName, clientId) {
 	}
 
 	return false;
+}
+
+export function searchBlocks(blockName, clientId = null, deep = true) {
+	const blocks = select('core/block-editor').getBlocks(clientId);
+
+	const matchingBlocks = blocks.filter((block) => block.name === blockName);
+
+	for (const block of blocks) {
+		if (deep && block.innerBlocks.length > 0) {
+			for (const innerblock of block.innerBlocks) {
+				matchingBlocks.push(
+					...searchBlocks(blockName, innerblock.clientId, deep)
+				);
+			}
+		}
+	}
+
+	return matchingBlocks;
 }
 
 export function whenEditorIsReady() {

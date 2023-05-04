@@ -51,18 +51,22 @@ export default function Doubleoptin(props) {
 					<TextControl
 						label={__('Subject', 'mailster')}
 						value={subject}
-						help="Helptext"
+						help={__('Subject for the confirmation message.', 'mailster')}
 						onChange={(value) => setMeta({ subject: value })}
 					/>
 					<TextControl
 						label={__('Headline', 'mailster')}
 						value={headline}
-						help="Helptext"
+						help={__(
+							'The headline is part of the confirmation message. If empty the subject line will be used.',
+							'mailster'
+						)}
 						onChange={(value) => setMeta({ headline: value })}
 					/>
 					<TextareaControl
 						label={__('Content', 'mailster')}
 						className={!isValidContent && 'error-message'}
+						rows={10}
 						value={content}
 						help={
 							!isValidContent && 'Make sure this field contain a {link} tag.'
@@ -72,15 +76,19 @@ export default function Doubleoptin(props) {
 					<TextControl
 						label={__('Linktext', 'mailster')}
 						value={link}
-						help="Helptext"
+						help={__(
+							'This is the text of the link subscribers have to click to confirm their email address.',
+							'mailster'
+						)}
 						onChange={(value) => setMeta({ link: value })}
 					/>
 					<TextControl
 						label={__('Redirect after confirm', 'mailster')}
 						help={__(
-							'Redirect subscribers after they have confirmed their subscription',
+							'Redirect subscribers after they clicked the link.',
 							'mailster'
 						)}
+						placeholder="https://example.com/thank-you"
 						value={confirmredirect}
 						onChange={(value) => setMeta({ confirmredirect: value })}
 						type="url"

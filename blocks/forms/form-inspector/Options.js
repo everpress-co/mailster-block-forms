@@ -29,6 +29,12 @@ export default function Options(props) {
 	const { meta, setMeta } = props;
 	const { redirect, overwrite, gdpr, doubleoptin } = meta;
 
+	const [title, setTitle] = useEntityProp(
+		'postType',
+		'newsletter_form',
+		'title'
+	);
+
 	const editMessages = () => {
 		const mblock = searchBlock('mailster/messages');
 		if (mblock) dispatch('core/block-editor').selectBlock(mblock.clientId);
@@ -39,6 +45,15 @@ export default function Options(props) {
 			name="options"
 			title={__('Options', 'mailster')}
 		>
+			<PanelRow>
+				<TextControl
+					label={__('Form Name', 'mailster')}
+					value={title}
+					onChange={(value) => setTitle(value)}
+					help={__('Define a name for your form.', 'mailster')}
+					placeholder={__('Add title', 'mailster')}
+				/>
+			</PanelRow>
 			<PanelRow>
 				<CheckboxControl
 					label={__('Enable double opt in', 'mailster')}
@@ -76,9 +91,10 @@ export default function Options(props) {
 				<TextControl
 					label={__('Redirect after submit', 'mailster')}
 					help={__(
-						'Redirect subscribers after they submit the form',
+						'Redirect subscribers after they submit the form. Keep empty to stay on the same page and show a success message.',
 						'mailster'
 					)}
+					placeholder="https://example.com/please-confirm"
 					value={redirect}
 					onChange={(value) => setMeta({ redirect: value })}
 					type="url"
