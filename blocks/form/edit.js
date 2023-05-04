@@ -60,7 +60,23 @@ function MailsterFormSelector(props) {
 		]);
 	});
 
-	if (isLoading) return <Spinner />;
+	if (isLoading)
+		return (
+			<p>
+				<Spinner />
+			</p>
+		);
+
+	if (forms && forms.length === 0) {
+		return (
+			<p>
+				{__(
+					'You currently have no forms. Please create a new form.',
+					'mailster'
+				)}
+			</p>
+		);
+	}
 
 	return (
 		forms && (
@@ -156,9 +172,16 @@ export default function Edit(props) {
 	);
 	const reloadForm = () => {
 		setDisplayForm(false);
+		dispatch('core').receiveEntityRecords(
+			'postType',
+			'newsletter_form',
+			[],
+			{},
+			true
+		);
 		setTimeout(() => {
 			setDisplayForm(true);
-		}, 0);
+		}, 1);
 	};
 
 	const onSelect = (type, index) => {
@@ -271,6 +294,7 @@ export default function Edit(props) {
 					<ToolbarButton
 						label={__('Edit Form', 'mailster')}
 						icon={edit}
+						disabled={!formId}
 						onClick={editForm}
 					/>
 					<ToolbarButton
