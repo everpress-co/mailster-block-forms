@@ -1524,7 +1524,7 @@ class MailsterBlockForms {
 		}
 		$output = str_replace( '</form>', $inject . '</form>', $output );
 
-		return apply_filters( 'mailster_block_form', $output, $form_args );
+		return apply_filters( 'mailster_block_form', $output, $form->ID, $form_args );
 
 	}
 
