@@ -5,6 +5,18 @@
 	"version": "0.1.9",
 	"title": "Mailster Form",
 	"category": "widgets",
+	"keywords": [
+		"form",
+		"newsletter",
+		"mailster",
+		"subscribe",
+		"signup",
+		"optin",
+		"opt-in",
+		"opt in",
+		"email",
+		"mail"
+	],
 	"icon": "email",
 	"description": "Use a Mailster Block Form on your page",
 	"supports": {
@@ -20,10 +32,18 @@
 		"id": {
 			"type": "integer"
 		},
-		"height": {
-			"type": "integer"
+		"type": {
+			"type": "string",
+			"enum": ["submission", "profile", "unsubscribe"]
 		}
 	},
+	"usesContext": [
+		"mailster-homepage-context/type",
+		"mailster-homepage-context/align",
+		"mailster-homepage-context/submission",
+		"mailster-homepage-context/profile",
+		"mailster-homepage-context/unsubscribe"
+	],
 	"textdomain": "mailster",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",

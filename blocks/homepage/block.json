@@ -4,24 +4,53 @@
 	"name": "mailster/homepage",
 	"version": "0.1.5",
 	"title": "Mailster Homepage",
+	"keywords": [
+		"form",
+		"newsletter",
+		"mailster",
+		"subscribe",
+		"signup",
+		"optin",
+		"opt-in",
+		"opt in",
+		"email",
+		"mail"
+	],
 	"category": "widgets",
-	"icon": "email",
 	"supports": {
+		"multiple": false,
 		"html": false,
-		"anchor": true,
+		"anchor": false,
 		"align": true,
-		"spacing": {
-			"margin": true,
-			"padding": true
-		}
+		"className": false,
+		"customClassName": false,
+		"reusable": false
 	},
 	"attributes": {
 		"id": {
 			"type": "integer"
 		},
-		"height": {
+		"submission": {
 			"type": "integer"
+		},
+		"profile": {
+			"type": "integer"
+		},
+		"unsubscribe": {
+			"type": "integer"
+		},
+		"profile_button": {
+			"type": "string"
+		},
+		"unsubscribe_button": {
+			"type": "string"
 		}
+	},
+	"providesContext": {
+		"mailster-homepage-context/align": "align",
+		"mailster-homepage-context/submission": "submission",
+		"mailster-homepage-context/profile": "profile",
+		"mailster-homepage-context/unsubscribe": "unsubscribe"
 	},
 	"textdomain": "mailster",
 	"editorScript": "file:./index.js",

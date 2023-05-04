@@ -29,6 +29,7 @@ const SAMPLEFORM = (
 		<input type="email" className="input" />
 		<input type="date" className="input" />
 		<input type="submit" className="wp-block-button__link" />
+		<p>This is a paragraph</p>
 	</form>
 );
 

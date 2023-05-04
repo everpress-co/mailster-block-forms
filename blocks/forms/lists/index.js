@@ -22,13 +22,6 @@ const { name, ...settings } = json;
 registerBlockType(name, {
 	...settings,
 	icon,
-	/**
-	 * @see ./edit.js
-	 */
 	edit,
-
-	/**
-	 * @see ./save.js
-	 */
 	save,
 });

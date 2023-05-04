@@ -15,15 +15,17 @@
 			1px 1px 0 #ddd;
 	}
 	.mailster-block-form-editor-wrap {
-		min-height: 200px;
+		min-height: 100px;
+	}
+	.mailster-block-form-editor-wrap > div > div {
+		opacity: 1 !important;
 	}
 	.mailster-block-form-editor-wrap::before {
 		content: '';
-		display: block;
+		display: none;
 		height: 100%;
 		width: 100%;
 		position: absolute;
-		opacity: 0;
 		background-color: rgba(255, 255, 255, 0.95);
 		z-index: 10;
 		top: 0;
@@ -58,6 +60,6 @@
 		opacity: 0.3;
 	}
 	.mailster-block-form-editor-wrap::before {
-		opacity: 1;
+		display: block;
 	}
 }
