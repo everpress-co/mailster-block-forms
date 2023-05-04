@@ -97,11 +97,6 @@ class MailsterBlockForms {
 		$controller = new Mailster_REST_List_Controller();
 		$controller->register_routes();
 
-		include MAILSTER_FORM_BLOCK_DIR . 'classes/rest-controller/rest.susbcribe.class.php';
-
-		$controller = new Mailster_REST_Subscribe_Controller();
-		$controller->register_routes();
-
 		include MAILSTER_FORM_BLOCK_DIR . 'classes/rest-controller/rest.form.class.php';
 
 		$controller = new Mailster_REST_Form_Controller();
@@ -843,6 +838,9 @@ class MailsterBlockForms {
 				unregister_block_type( 'mailster/homepage' );
 				unregister_block_type( 'mailster/homepage-context' );
 			} else {
+
+				do_action( 'mailster_admin_header' );
+
 				wp_add_inline_script( 'wp-blocks', 'var mailster_homepage_slugs = ' . json_encode( mailster_option( 'slugs' ) ) . ';' );
 			}
 		}

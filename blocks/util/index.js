@@ -13,6 +13,28 @@ import { select, subscribe } from '@wordpress/data';
  * Internal dependencies
  */
 
+export function HelpBeacon({ id, align }) {
+	const href = new URL('https://kb.mailster.co/' + id);
+	href.searchParams.set('utm_campaign', 'plugin');
+	href.searchParams.set('utm_medium', 'link');
+	href.searchParams.set('utm_source', 'Mailster Plugin');
+	href.searchParams.set('utm_term', 'workflow');
+
+	var styles = {};
+
+	if (align) {
+		styles['float'] = align;
+	}
+
+	return (
+		<a
+			className="mailster-help"
+			href={href.toString()}
+			data-article={id}
+			style={styles}
+		></a>
+	);
+}
 export function useUpdateEffectCustom(callback, dependencies) {
 	const firstRenderRef = useRef(true);
 

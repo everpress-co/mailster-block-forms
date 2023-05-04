@@ -27,7 +27,7 @@ import { useEffect, useState } from '@wordpress/element';
 import './editor.scss';
 import HomepageInspectorControls from './inspector';
 import { TABS } from './constants';
-import HomepageBlockControls from './BockControls';
+import HomepageBlockControls from './BlockControls';
 import { searchBlocks } from '../util';
 
 const BLOCK_TEMPLATE = [

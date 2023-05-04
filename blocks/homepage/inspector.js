@@ -34,7 +34,7 @@ import { external } from '@wordpress/icons';
  * Internal dependencies
  */
 import { TABS } from './constants';
-import { searchBlock } from '../util';
+import { HelpBeacon, searchBlock } from '../util';
 
 export default function HomepageInspectorControls(props) {
 	const { current, onSelect } = props;
@@ -89,6 +89,7 @@ export default function HomepageInspectorControls(props) {
 				<PanelBody initialOpen={true}>
 					<PanelRow>
 						<BaseControl label={__('Newsletter Homepage Sections', 'mailster')}>
+							<HelpBeacon id="6453abdab9f4b70821b98a1b" align="right" />
 							<div className="components-dropdown-menu__menu context-buttons">
 								<ContextButtons />
 							</div>
