@@ -1,7 +1,6 @@
 document.documentElement.setAttribute('hidden', true);
 jQuery(document).ready(function ($) {
 	'use strict';
-
 	var oldUrl,
 		lastanimation = '',
 		form = $('.wp-block-mailster-form-outside-wrapper-placeholder');
@@ -74,8 +73,7 @@ jQuery(document).ready(function ($) {
 		params.set('context', 'edit');
 		params.set('_locale', 'user');
 		params.set('attributes[id]', data.form_id);
-		data.options.align &&
-			params.set('attributes[align]', data.options.align);
+		data.options.align && params.set('attributes[align]', data.options.align);
 
 		var args = {
 			width: data.options.width,
@@ -101,8 +99,7 @@ jQuery(document).ready(function ($) {
 			})
 				.then(function (post) {
 					$(
-						'.wp-block-mailster-form-outside-wrapper-' +
-							data.form_id
+						'.wp-block-mailster-form-outside-wrapper-' + data.form_id
 					).replaceWith(post.rendered);
 
 					updateForm();
@@ -150,15 +147,11 @@ jQuery(document).ready(function ($) {
 		}
 
 		function updateForm() {
-			var form = $(
-				'.wp-block-mailster-form-outside-wrapper-' + data.form_id
-			);
+			var form = $('.wp-block-mailster-form-outside-wrapper-' + data.form_id);
 			form.removeClass('has-animation animation-' + lastanimation);
 
 			if (data.options.animation) {
-				form.addClass(
-					'has-animation animation-' + data.options.animation
-				);
+				form.addClass('has-animation animation-' + data.options.animation);
 				lastanimation = data.options.animation;
 			}
 
@@ -187,9 +180,7 @@ jQuery(document).ready(function ($) {
 	}
 
 	function getScrollPosition() {
-		return (
-			document.documentElement['scrollTop'] || document.body['scrollTop']
-		);
+		return document.documentElement['scrollTop'] || document.body['scrollTop'];
 	}
 
 	function info() {
@@ -204,9 +195,7 @@ jQuery(document).ready(function ($) {
 
 		var form = $('.wp-block-mailster-form-outside-wrapper-placeholder');
 
-		var siblings = form
-			.siblings('h2, p')
-			.css({ outline: '1px dotted red' });
+		var siblings = form.siblings('h2, p').css({ outline: '1px dotted red' });
 
 		['scroll', 'touchstart'].forEach(function (name) {
 			window.addEventListener(

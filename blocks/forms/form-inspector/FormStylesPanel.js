@@ -39,16 +39,17 @@ export const FormStylesPanel = (props) => {
 
 	const { color, backgroundColor, borderRadius, background, style } =
 		attributes;
-	const { image, position, opacity, scale, size, fixed, repeat } = background;
+	const { image, position, opacity, scale, size, fixed, repeat, fullscreen } =
+		background;
 
 	function setBackground(prop, data) {
-		var newBackground = { ...background };
+		let newBackground = { ...background };
 		newBackground[prop] = data;
 		setAttributes({ background: newBackground });
 	}
 
 	function setStyle(prop, value) {
-		var newStyle = { ...style };
+		let newStyle = { ...style };
 		newStyle[prop] = {
 			...newStyle[prop],
 			...value,
@@ -146,6 +147,15 @@ export const FormStylesPanel = (props) => {
 					</PanelRow>
 					<PanelRow>
 						<ToggleControl
+							label="Fullscreen Background"
+							checked={fullscreen}
+							onChange={(value) => {
+								setBackground('fullscreen', value);
+							}}
+						/>
+					</PanelRow>
+					<PanelRow>
+						<ToggleControl
 							label="Repeated Background"
 							checked={repeat}
 							onChange={(value) => {
@@ -153,7 +163,7 @@ export const FormStylesPanel = (props) => {
 							}}
 						/>
 					</PanelRow>
-					{!fixed && (
+					{!fixed && !fullscreen && (
 						<PanelRow>
 							<FocalPointPicker
 								url={image}
@@ -176,7 +186,7 @@ export const FormStylesPanel = (props) => {
 					</PanelRow>
 					<PanelRow>
 						<Button
-							variant="secondary"
+							letiant="secondary"
 							isSmall
 							className="block-library-cover__reset-button"
 							onClick={() => {
@@ -193,9 +203,11 @@ export const FormStylesPanel = (props) => {
 					<MediaPlaceholder
 						onSelect={(el) => {
 							// prefer first image between a threshold and fallback to the original
-							const image = Object.values(el.sizes).filter(
-								(size) => size.width > 300 && size.width < 1200
-							)[0];
+							const image =
+								el.sizes &&
+								Object.values(el.sizes).filter(
+									(size) => size.width > 300 && size.width < 1200
+								)[0];
 							setBackground('image', image?.url || el.url);
 						}}
 						allowedTypes={['image']}

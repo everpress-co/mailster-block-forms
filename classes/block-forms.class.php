@@ -1090,6 +1090,21 @@ class MailsterBlockForms {
 		$tags['a']['aria-role']    = true;
 		$tags['div']['tabindex']   = true;
 		$tags['div']['aria-modal'] = true;
+		$tags['div']['hidden']     = true;
+		$tags['dialog']            = array(
+			'id'            => true,
+			'class'         => true,
+			'name'          => true,
+			'type'          => true,
+			'value'         => true,
+			'spellcheck'    => true,
+			'autocomplete'  => true,
+			'aria-required' => true,
+			'aria-label'    => true,
+			'required'      => true,
+			'placeholder'   => true,
+			'checked'       => true,
+		);
 		$tags['input']             = array(
 			'id'            => true,
 			'class'         => true,
@@ -1338,14 +1353,21 @@ class MailsterBlockForms {
 			$background = $form_block['attrs']['background'];
 
 			$custom_styles['::before'] = array(
-				'content:"";position:absolute;top:0;left:0;bottom:0;right:0;',
+				'content:"";top:0;left:0;bottom:0;right:0;',
 				'background-image:url(' . $background['image'] . ')',
 				'opacity:' . $background['opacity'] . '%',
-				'background-size:' . ( ! is_numeric( $background['size'] ) ? $background['size'] : $background['size'] . '%' ),
-				'background-position:' . ( $background['position']['x'] * 200 - 50 ) . '% ' . ( $background['position']['y'] * 100 ) . '%',
 			);
 			if ( $background['fixed'] ) {
 				$custom_styles['::before'][] = 'background-attachment:fixed';
+			}
+			if ( $background['fullscreen'] ) {
+				$args['classes'][]           = 'mailster-form-is-fullscreen';
+				$custom_styles['::before'][] = 'position:fixed';
+				$custom_styles['::before'][] = 'background-size:cover';
+			} else {
+				$custom_styles['::before'][] = 'position:absolute';
+				$custom_styles['::before'][] = 'background-size:' . ( ! is_numeric( $background['size'] ) ? $background['size'] : $background['size'] . '%' );
+				$custom_styles['::before'][] = 'background-position:' . ( $background['position']['x'] * 200 - 50 ) . '% ' . ( $background['position']['y'] * 100 ) . '%';
 			}
 			if ( $background['repeat'] ) {
 				$custom_styles['::before'][] = 'background-repeat:repeat';
@@ -1477,7 +1499,7 @@ class MailsterBlockForms {
 		}
 
 		if ( $is_popup ) {
-			$output = '<div class="' . implode( ' ', $args['classes'] ) . '" aria-modal="true" aria-label="' . esc_attr__( 'Newsletter Signup Form', 'mailster' ) . '" role="dialog" aria-hidden="true" tabindex="-1">' . $output . '</div>';
+			$output = '<div class="' . implode( ' ', $args['classes'] ) . '" aria-modal="true" aria-label="' . esc_attr__( 'Newsletter Signup Form', 'mailster' ) . '" role="div" aria-hidden="true" tabindex="-1" hidden>' . $output . '</div>';
 		} else {
 			$output = '<div class="' . implode( ' ', $args['classes'] ) . '">' . $output . '</div>';
 		}

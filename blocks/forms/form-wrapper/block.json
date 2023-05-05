@@ -22,7 +22,8 @@
 		"spacing": {
 			"margin": true,
 			"padding": true
-		}
+		},
+		"lock": false
 	},
 	"attributes": {
 		"lock": {
@@ -36,6 +37,7 @@
 			"type": "object",
 			"default": {
 				"opacity": 100,
+				"fullscreen": false,
 				"fixed": false,
 				"repeat": false,
 				"size": "cover",

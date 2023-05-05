@@ -38,24 +38,30 @@ export default function Values(props) {
 	function updateValue(i, val) {
 		var newValues = [...values];
 		newValues[i] = val;
-		setAttributes({ values: newValues });
+		setValues(newValues);
 	}
 	function moveValue(i, delta) {
 		var newValues = [...values];
 		var element = newValues[i];
 		newValues.splice(i, 1);
 		newValues.splice(i + delta, 0, element);
-		setAttributes({ values: newValues });
+		setValues(newValues);
 	}
 	function removeValue(i) {
 		var newValues = [...values];
 		newValues.splice(i, 1);
-		setAttributes({ values: newValues });
+		setValues(newValues);
 	}
 	function addValue() {
 		var newValues = [...values];
 		newValues.push(sprintf(__('Value #%d', 'mailster'), values.length + 1));
-		setAttributes({ values: newValues });
+		setValues(newValues);
+	}
+
+	function setValues(values) {
+		setAttributes({
+			values: Object.keys(values).length ? values : undefined,
+		});
 	}
 
 	return (

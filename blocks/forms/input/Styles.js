@@ -21,7 +21,7 @@ import { StylesContent } from '../shared/StylesContent';
 
 export default function Styles(props) {
 	const { attributes, setAttributes, isSelected, clientId } = props;
-	const { style = {}, type, hasLabel } = attributes;
+	const { style, type, hasLabel } = attributes;
 
 	function applyStyle() {
 		const root = select('core/block-editor').getBlocks();

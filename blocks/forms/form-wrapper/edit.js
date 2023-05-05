@@ -145,11 +145,12 @@ export default function Edit(props) {
 			s += 'background-image: url(' + background.image + ');';
 			if (background.fixed) s += 'background-attachment:fixed;';
 			if (background.repeat) s += 'background-repeat:repeat;';
+			if (background.fullscreen) s += 'position:fixed;inset:0;';
 			s +=
 				'background-size:' +
 				(isNaN(background.size) ? background.size : background.size + '%') +
 				';';
-			if (background.position)
+			if (!background.fixed && !background.fullscreen && background.position)
 				s += 'background-position:' + mediaPosition(background.position) + ';';
 			s += 'opacity:' + background.opacity + '%;';
 			if (attributes.borderRadius) {
