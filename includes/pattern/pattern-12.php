@@ -15,16 +15,16 @@
 <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
 <!-- /wp:spacer -->
 
-<!-- wp:mailster/field-firstname {"id":"8e743c","inline":true} -->
-<div class="wp-block-mailster-field-firstname mailster-wrapper mailster-wrapper-type-text mailster-wrapper-inline"><input name="firstname" id="mailster-input-8e743c" type="text" aria-required="false" aria-label="Name" spellcheck="false" value="" class="input" autocomplete="name" placeholder=" "/><label for="mailster-input-8e743c" class="mailster-label">Name</label></div>
+<!-- wp:mailster/field-firstname {"inline":true} -->
+<div class="wp-block-mailster-field-firstname mailster-wrapper mailster-wrapper-type-text mailster-wrapper-inline"><input name="firstname" id="mailster-id-8c89d5" type="text" aria-required="false" aria-label="Name" spellcheck="false" value="" class="input" autocomplete="name" placeholder=" "/><label for="mailster-id-8c89d5" class="mailster-label">Name</label></div>
 <!-- /wp:mailster/field-firstname -->
 
-<!-- wp:mailster/field-email {"id":"d2eb5e","inline":true} -->
-<div class="wp-block-mailster-field-email mailster-wrapper mailster-wrapper-required mailster-wrapper-type-email mailster-wrapper-inline mailster-wrapper-asterisk"><input name="email" id="mailster-input-d2eb5e" type="email" aria-required="true" aria-label="Email" spellcheck="false" required value="" class="input" autocomplete="email" placeholder=" "/><label for="mailster-input-d2eb5e" class="mailster-label">Email</label></div>
+<!-- wp:mailster/field-email {"inline":true} -->
+<div class="wp-block-mailster-field-email mailster-wrapper mailster-wrapper-required mailster-wrapper-type-email mailster-wrapper-inline mailster-wrapper-asterisk"><input name="email" id="mailster-id-a7f9af" type="email" aria-required="true" aria-label="Email" spellcheck="false" required value="" class="input" autocomplete="email" placeholder=" "/><label for="mailster-id-a7f9af" class="mailster-label">Email</label></div>
 <!-- /wp:mailster/field-email -->
 
-<!-- wp:mailster/field-submit {"id":"149c10","style":{"typography":{"textTransform":"uppercase"},"spacing":{"padding":{"top":"var:preset|spacing|40","right":"var:preset|spacing|small","bottom":"var:preset|spacing|40","left":"var:preset|spacing|small"}}},"className":"mailster-wrapper-asterisk","fontSize":"large"} -->
-<div class="wp-block-mailster-field-submit mailster-wrapper mailster-wrapper-type-submit wp-block-button mailster-wrapper-asterisk has-large-font-size"><input name="submit" id="mailster-input-149c10" type="submit" style="padding-top:var(--wp--preset--spacing--40);padding-right:var(--wp--preset--spacing--small);padding-bottom:var(--wp--preset--spacing--40);padding-left:var(--wp--preset--spacing--small);text-transform:uppercase" value="Sign up" class="wp-block-button__link submit-button"/></div>
+<!-- wp:mailster/field-submit {"style":{"typography":{"textTransform":"uppercase"},"spacing":{"padding":{"top":"var:preset|spacing|40","right":"var:preset|spacing|small","bottom":"var:preset|spacing|40","left":"var:preset|spacing|small"}}},"className":"mailster-wrapper-asterisk","fontSize":"large"} -->
+<div class="wp-block-mailster-field-submit mailster-wrapper mailster-wrapper-type-submit wp-block-button mailster-wrapper-asterisk has-large-font-size"><input name="submit" id="mailster-id-fbac35" type="submit" style="padding-top:var(--wp--preset--spacing--40);padding-right:var(--wp--preset--spacing--small);padding-bottom:var(--wp--preset--spacing--40);padding-left:var(--wp--preset--spacing--small);text-transform:uppercase" value="Sign up" class="wp-block-button__link submit-button"/></div>
 <!-- /wp:mailster/field-submit -->
 
 <!-- wp:spacer {"height":"50px"} -->
@@ -32,7 +32,7 @@
 <!-- /wp:spacer -->
 
 <!-- wp:paragraph {"style":{"typography":{"fontSize":"0.8rem"},"color":{"text":"#444444"}}} -->
-<p class="has-text-color" style="color:#444444;font-size:0.8rem">By subscribing you consent to receive malls about our collection, exclusive offers and special events. You may revoke your consent at any time by clicking on the unsubscribe link in the email.</p>
+<p class="has-text-color" style="color:#444444;font-size:0.8rem">When you subscribe, you give us permission to send you emails about our products, exclusive promotions, and special events. However, you have the option to withdraw your consent at any point by clicking on the unsubscribe link provided in the emails.</p>
 <!-- /wp:paragraph --></div>
 <!-- /wp:column -->
 

@@ -31,7 +31,10 @@
 			"type": "boolean"
 		},
 		"id": {
-			"type": "string"
+			"type": "string",
+			"source": "attribute",
+			"selector": "input",
+			"attribute": "id"
 		},
 		"lists": {
 			"type": "array",

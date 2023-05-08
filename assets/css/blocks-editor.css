@@ -8,7 +8,7 @@
 	outline-offset: -1px;
 }
 .block-editor-block-preview__content-iframe .mailster-block-form {
-	border: 3px solid red;
+	_border: 3px solid red;
 }
 .post-type-newsletter_form .edit-post-layout__metaboxes {
 	_display: none;

@@ -32,7 +32,8 @@ export default function Edit(props) {
 	const [meta, setMeta] = useEntityProp('postType', 'newsletter_form', 'meta');
 
 	useEffect(() => {
-		if (!attributes.id) setAttributes({ id: clientId.substring(30) });
+		if (!attributes.id)
+			setAttributes({ id: 'mailster-id-' + clientId.substring(30) });
 		if (!content)
 			setAttributes({
 				content: __('I agree to the privacy policy and terms.', 'mailster'),

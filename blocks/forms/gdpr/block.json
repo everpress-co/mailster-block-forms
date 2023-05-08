@@ -29,7 +29,10 @@
 			"selector": "label"
 		},
 		"id": {
-			"type": "string"
+			"type": "string",
+			"source": "attribute",
+			"selector": "input",
+			"attribute": "id"
 		},
 		"align": {
 			"type": "string"

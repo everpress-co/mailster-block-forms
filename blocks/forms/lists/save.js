@@ -30,7 +30,7 @@ export default function save(props) {
 	return (
 		<div {...blockProps}>
 			{dropdown ? (
-				<select name="_lists[]" className="input">
+				<select name="_lists[]" className="input" id={attributes.id}>
 					{lists.map((list, i) => {
 						return (
 							<option key={i} value={list.ID}>
@@ -43,7 +43,7 @@ export default function save(props) {
 				<fieldset>
 					<legend>{__('Lists', 'mailster')}</legend>
 					{lists.map((list, i) => {
-						const fieldid = cleanForSlug(list.name) + '-' + attributes.id;
+						const fieldid = attributes.id + (i ? '-' + i : '');
 						return (
 							<div key={i} className="mailster-group mailster-group-checkbox">
 								<input

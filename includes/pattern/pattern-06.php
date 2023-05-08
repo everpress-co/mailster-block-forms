@@ -7,11 +7,11 @@
 <p class="has-text-color" style="color:#ffffff">Stay up to date with the latest news and relevant updates from us.</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:mailster/field-email {"id":"607641","inline":true} -->
-<div class="wp-block-mailster-field-email mailster-wrapper mailster-wrapper-required mailster-wrapper-type-email mailster-wrapper-inline mailster-wrapper-asterisk"><input name="email" id="mailster-input-607641" type="email" aria-required="true" aria-label="Enter your email address" spellcheck="false" required value="" class="input" autocomplete="email" placeholder=" "/><label for="mailster-input-607641" class="mailster-label">Enter your email address</label></div>
+<!-- wp:mailster/field-email {"inline":true} -->
+<div class="wp-block-mailster-field-email mailster-wrapper mailster-wrapper-required mailster-wrapper-type-email mailster-wrapper-inline mailster-wrapper-asterisk"><input name="email" id="mailster-id-ec3db6" type="email" aria-required="true" aria-label="Enter your email address" spellcheck="false" required value="" class="input" autocomplete="email" placeholder=" "/><label for="mailster-id-ec3db6" class="mailster-label">Enter your email address</label></div>
 <!-- /wp:mailster/field-email -->
 
-<!-- wp:mailster/field-submit {"id":"e4edc9","style":{"width":33}} -->
-<div class="wp-block-mailster-field-submit mailster-wrapper mailster-wrapper-type-submit wp-block-button" style="width:33%"><input name="submit" id="mailster-input-e4edc9" type="submit" value="Subscribe" class="wp-block-button__link submit-button"/></div>
+<!-- wp:mailster/field-submit {"style":{"width":33}} -->
+<div class="wp-block-mailster-field-submit mailster-wrapper mailster-wrapper-type-submit wp-block-button" style="width:33%"><input name="submit" id="mailster-id-89dca5" type="submit" value="Subscribe" class="wp-block-button__link submit-button"/></div>
 <!-- /wp:mailster/field-submit --></div></form>
 <!-- /wp:mailster/form-wrapper -->

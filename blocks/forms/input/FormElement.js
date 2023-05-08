@@ -46,7 +46,7 @@ export default function FormElement(props) {
 
 	const elem = classnames(colorProps.className, borderProps.className);
 
-	const id = 'mailster-input-' + attributes.id;
+	const id = attributes.id;
 
 	const inputStyle = {
 		...borderProps.style,
@@ -71,7 +71,7 @@ export default function FormElement(props) {
 					{values.map((value, i) => {
 						const fieldid = isEditor
 							? null
-							: cleanForSlug(value) + '-' + attributes.id;
+							: attributes.id + (i ? '-' + i : '');
 						return (
 							<div
 								className="mailster-group mailster-group-radio"
@@ -102,9 +102,7 @@ export default function FormElement(props) {
 				</fieldset>
 			);
 		case 'checkbox':
-			const fieldid = isEditor
-				? null
-				: cleanForSlug(name) + '-' + attributes.id;
+			const fieldid = isEditor ? null : attributes.id;
 			return (
 				<fieldset
 					className="mailster-group mailster-group-checkbox"

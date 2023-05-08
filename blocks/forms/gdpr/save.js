@@ -20,7 +20,7 @@ export default function save(props) {
 	const className = ['mailster-wrapper'];
 
 	if (align) className.push('mailster-wrapper-label-align-' + align);
-	const fieldid = 'gdpr-' + attributes.id;
+	const fieldid = attributes.id;
 
 	const blockProps = useBlockProps.save({
 		className: classnames({}, className),

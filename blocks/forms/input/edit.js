@@ -79,7 +79,8 @@ export default function Edit(props) {
 	if (inline) labelStyle = { ...labelStyle, ...innerStyle };
 
 	useEffect(() => {
-		if (!attributes.id) setAttributes({ id: clientId.substring(30) });
+		if (!attributes.id)
+			setAttributes({ id: 'mailster-id-' + clientId.substring(30) });
 	});
 
 	return (

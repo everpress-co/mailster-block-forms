@@ -15,16 +15,17 @@
 <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
 <!-- /wp:spacer -->
 
-<!-- wp:mailster/field-firstname {"id":"d39fd9"} -->
-<div class="wp-block-mailster-field-firstname mailster-wrapper mailster-wrapper-required mailster-wrapper-type-text mailster-wrapper-asterisk"><label for="mailster-input-d39fd9" class="mailster-label">Name</label><input name="firstname" id="mailster-input-d39fd9" type="text" aria-required="true" aria-label="Name" spellcheck="false" required value="" class="input" autocomplete="name" placeholder=" "/></div>
+
+<!-- wp:mailster/field-firstname -->
+<div class="wp-block-mailster-field-firstname mailster-wrapper mailster-wrapper-required mailster-wrapper-type-text mailster-wrapper-asterisk"><label for="mailster-id-e58fe6" class="mailster-label">Name</label><input name="firstname" id="mailster-id-e58fe6" type="text" aria-required="true" aria-label="Name" spellcheck="false" required value="" class="input" autocomplete="name" placeholder=" "/></div>
 <!-- /wp:mailster/field-firstname -->
 
-<!-- wp:mailster/field-email {"id":"711ee3"} -->
-<div class="wp-block-mailster-field-email mailster-wrapper mailster-wrapper-required mailster-wrapper-type-email mailster-wrapper-asterisk"><label for="mailster-input-711ee3" class="mailster-label">Email</label><input name="email" id="mailster-input-711ee3" type="email" aria-required="true" aria-label="Email" spellcheck="false" required value="" class="input" autocomplete="email" placeholder=" "/></div>
+<!-- wp:mailster/field-email -->
+<div class="wp-block-mailster-field-email mailster-wrapper mailster-wrapper-required mailster-wrapper-type-email mailster-wrapper-asterisk"><label for="mailster-id-e32919" class="mailster-label">Email</label><input name="email" id="mailster-id-e32919" type="email" aria-required="true" aria-label="Email" spellcheck="false" required value="" class="input" autocomplete="email" placeholder=" "/></div>
 <!-- /wp:mailster/field-email -->
 
-<!-- wp:mailster/field-submit {"id":"31314d"} -->
-<div class="wp-block-mailster-field-submit mailster-wrapper mailster-wrapper-type-submit wp-block-button"><input name="submit" id="mailster-input-31314d" type="submit" value="Sign up" class="wp-block-button__link submit-button"/></div>
+<!-- wp:mailster/field-submit -->
+<div class="wp-block-mailster-field-submit mailster-wrapper mailster-wrapper-type-submit wp-block-button"><input name="submit" id="mailster-id-9620b7" type="submit" value="Sign up" class="wp-block-button__link submit-button"/></div>
 <!-- /wp:mailster/field-submit -->
 
 <!-- wp:spacer {"height":"50px"} -->
@@ -32,7 +33,7 @@
 <!-- /wp:spacer -->
 
 <!-- wp:paragraph {"style":{"typography":{"fontSize":"0.8rem"}}} -->
-<p style="font-size:0.8rem">By subscribing you consent to receive malls about our collection, exclusive offers and special events. You may revoke your consent at any time by clicking on the unsubscribe link in the email.</p>
+<p style="font-size:0.8rem">When you subscribe, you give us permission to send you emails about our products, exclusive promotions, and special events. However, you have the option to withdraw your consent at any point by clicking on the unsubscribe link provided in the emails.</p>
 <!-- /wp:paragraph --></div>
 <!-- /wp:column -->
 

@@ -65,7 +65,8 @@ export default function Edit(props) {
 	}, [meta.lists, allLists]);
 
 	useEffect(() => {
-		if (!attributes.id) setAttributes({ id: clientId.substring(30) });
+		if (!attributes.id)
+			setAttributes({ id: 'mailster-id-' + clientId.substring(30) });
 	});
 
 	const getFromListId = (list_id) => {

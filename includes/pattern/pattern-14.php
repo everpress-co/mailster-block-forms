@@ -12,12 +12,12 @@
 <div style="height:40px" aria-hidden="true" class="wp-block-spacer"></div>
 <!-- /wp:spacer -->
 
-<!-- wp:mailster/field-email {"id":"aaf05a","inline":true} -->
-<div class="wp-block-mailster-field-email mailster-wrapper mailster-wrapper-required mailster-wrapper-type-email mailster-wrapper-inline mailster-wrapper-asterisk"><input name="email" id="mailster-input-aaf05a" type="email" aria-required="true" aria-label="Your Email address" spellcheck="false" required value="" class="input" autocomplete="email" placeholder=" "/><label for="mailster-input-aaf05a" class="mailster-label">Your Email address</label></div>
+<!-- wp:mailster/field-email {"inline":true} -->
+<div class="wp-block-mailster-field-email mailster-wrapper mailster-wrapper-required mailster-wrapper-type-email mailster-wrapper-inline mailster-wrapper-asterisk"><input name="email" id="mailster-id-0126fd" type="email" aria-required="true" aria-label="Your Email address" spellcheck="false" required value="" class="input" autocomplete="email" placeholder=" "/><label for="mailster-id-0126fd" class="mailster-label">Your Email address</label></div>
 <!-- /wp:mailster/field-email -->
 
-<!-- wp:mailster/field-submit {"id":"2a7037"} -->
-<div class="wp-block-mailster-field-submit mailster-wrapper mailster-wrapper-type-submit wp-block-button"><input name="submit" id="mailster-input-2a7037" type="submit" value="Get 20% now" class="wp-block-button__link submit-button"/></div>
+<!-- wp:mailster/field-submit -->
+<div class="wp-block-mailster-field-submit mailster-wrapper mailster-wrapper-type-submit wp-block-button"><input name="submit" id="mailster-id-988ab4" type="submit" value="Get 20% now" class="wp-block-button__link submit-button"/></div>
 <!-- /wp:mailster/field-submit --></div>
 <!-- /wp:group --></div></form>
 <!-- /wp:mailster/form-wrapper -->

@@ -69,7 +69,7 @@ export default function save(props) {
 
 	if (inline) labelStyle = { ...labelStyle, ...innerStyle };
 
-	const id = 'mailster-input-' + attributes.id;
+	const id = attributes.id;
 
 	const labelElement = (
 		<RichText.Content

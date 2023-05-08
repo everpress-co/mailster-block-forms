@@ -198,7 +198,7 @@ html.mailster-form-active {
 		max-height: 98vh;
 		max-width: 98vw;
 		_overflow: auto;
-		_overflow-y: auto;
+		overflow-y: auto;
 		_-ms-overflow-style: none;
 		scrollbar-width: none;
 	}

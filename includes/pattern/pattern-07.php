@@ -17,20 +17,25 @@
 <p>Enter your email address to join our newsletter.</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:mailster/field-firstname {"id":"d39fd9","inline":true} -->
-<div class="wp-block-mailster-field-firstname mailster-wrapper mailster-wrapper-type-text mailster-wrapper-inline"><input name="firstname" id="mailster-input-d39fd9" type="text" aria-required="false" aria-label="Name" spellcheck="false" value="" class="input" autocomplete="name" placeholder=" "/><label for="mailster-input-d39fd9" class="mailster-label">Name</label></div>
+
+<!-- wp:mailster/messages -->
+<div class="wp-block-mailster-messages mailster-block-form-info mailster-wrapper" aria-hidden="true"><div class="mailster-block-form-info-success" style="width:100%;color:#ffffff;background:#6fbf4d"><div>Please confirm your subscription!</div><div class="mailster-block-form-info-extra"></div></div><div class="mailster-block-form-info-error" style="width:100%;color:#ffffff;background:#bf4d4d"><div>Some fields are missing or inccorrect!</div><div class="mailster-block-form-info-extra"></div></div></div>
+<!-- /wp:mailster/messages -->
+
+<!-- wp:mailster/field-firstname {"inline":true} -->
+<div class="wp-block-mailster-field-firstname mailster-wrapper mailster-wrapper-type-text mailster-wrapper-inline"><input name="firstname" id="mailster-id-098aba" type="text" aria-required="false" aria-label="Name" spellcheck="false" value="" class="input" autocomplete="name" placeholder=" "/><label for="mailster-id-098aba" class="mailster-label">Name</label></div>
 <!-- /wp:mailster/field-firstname -->
 
-<!-- wp:mailster/field-email {"id":"711ee3","inline":true} -->
-<div class="wp-block-mailster-field-email mailster-wrapper mailster-wrapper-required mailster-wrapper-type-email mailster-wrapper-inline mailster-wrapper-asterisk"><input name="email" id="mailster-input-711ee3" type="email" aria-required="true" aria-label="Email" spellcheck="false" required value="" class="input" autocomplete="email" placeholder=" "/><label for="mailster-input-711ee3" class="mailster-label">Email</label></div>
+<!-- wp:mailster/field-email {"inline":true} -->
+<div class="wp-block-mailster-field-email mailster-wrapper mailster-wrapper-required mailster-wrapper-type-email mailster-wrapper-inline mailster-wrapper-asterisk"><input name="email" id="mailster-id-87a584" type="email" aria-required="true" aria-label="Email" spellcheck="false" required value="" class="input" autocomplete="email" placeholder=" "/><label for="mailster-id-87a584" class="mailster-label">Email</label></div>
 <!-- /wp:mailster/field-email -->
 
-<!-- wp:mailster/field-submit {"id":"149c10"} -->
-<div class="wp-block-mailster-field-submit mailster-wrapper mailster-wrapper-type-submit wp-block-button"><input name="submit" id="mailster-input-149c10" type="submit" value="Subscribe" class="wp-block-button__link submit-button"/></div>
+<!-- wp:mailster/field-submit -->
+<div class="wp-block-mailster-field-submit mailster-wrapper mailster-wrapper-type-submit wp-block-button"><input name="submit" id="mailster-id-61bce0" type="submit" value="Subscribe" class="wp-block-button__link submit-button"/></div>
 <!-- /wp:mailster/field-submit -->
 
-<!-- wp:mailster/close {"align":"center","fontSize":"extra-small"} -->
-<div class="wp-block-mailster-close mailster-wrapper mailster-wrapper-label-align-center has-extra-small-font-size"><a href="" class="mailster-block-form-inner-close" aria-label="I'm not interested" tabindex="0">I'm not interested</a></div>
+<!-- wp:mailster/close {"align":"center","style":{"typography":{"fontSize":"15px"}}} -->
+<div class="wp-block-mailster-close mailster-wrapper mailster-wrapper-label-align-center" style="font-size:15px"><a href="" class="mailster-block-form-inner-close" aria-label="I'm not interested" tabindex="0">I'm not interested</a></div>
 <!-- /wp:mailster/close --></div>
 <!-- /wp:column --></div>
 <!-- /wp:columns --></div></form>

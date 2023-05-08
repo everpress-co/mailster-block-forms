@@ -17,20 +17,24 @@
 <div style="height:22px" aria-hidden="true" class="wp-block-spacer"></div>
 <!-- /wp:spacer -->
 
-<!-- wp:mailster/field-firstname {"id":"3ea56b","inline":true,"style":{"width":49}} -->
-<div class="wp-block-mailster-field-firstname mailster-wrapper mailster-wrapper-type-text mailster-wrapper-inline" style="width:49%"><input name="firstname" id="mailster-input-3ea56b" type="text" aria-required="false" aria-label="Name" spellcheck="false" value="" class="input" autocomplete="name" placeholder=" "/><label for="mailster-input-3ea56b" class="mailster-label">Name</label></div>
+<!-- wp:mailster/messages -->
+<div class="wp-block-mailster-messages mailster-block-form-info mailster-wrapper" aria-hidden="true"><div class="mailster-block-form-info-success" style="width:100%;color:#ffffff;background:#6fbf4d"><div>Please confirm your subscription!</div><div class="mailster-block-form-info-extra"></div></div><div class="mailster-block-form-info-error" style="width:100%;color:#ffffff;background:#bf4d4d"><div>Some fields are missing or inccorrect!</div><div class="mailster-block-form-info-extra"></div></div></div>
+<!-- /wp:mailster/messages -->
+
+<!-- wp:mailster/field-firstname {"inline":true,"style":{"width":49}} -->
+<div class="wp-block-mailster-field-firstname mailster-wrapper mailster-wrapper-type-text mailster-wrapper-inline" style="width:49%"><input name="firstname" id="mailster-id-ca8c16" type="text" aria-required="false" aria-label="Name" spellcheck="false" value="" class="input" autocomplete="name" placeholder=" "/><label for="mailster-id-ca8c16" class="mailster-label">Name</label></div>
 <!-- /wp:mailster/field-firstname -->
 
-<!-- wp:mailster/field-lastname {"id":"986800","inline":true,"style":{"width":49}} -->
-<div class="wp-block-mailster-field-lastname mailster-wrapper mailster-wrapper-type-text mailster-wrapper-inline" style="width:49%"><input name="lastname" id="mailster-input-986800" type="text" aria-required="false" aria-label="Last Name" spellcheck="false" value="" class="input" autocomplete="family-name" placeholder=" "/><label for="mailster-input-986800" class="mailster-label">Last Name</label></div>
+<!-- wp:mailster/field-lastname {"inline":true,"style":{"width":49}} -->
+<div class="wp-block-mailster-field-lastname mailster-wrapper mailster-wrapper-type-text mailster-wrapper-inline" style="width:49%"><input name="lastname" id="mailster-id-767934" type="text" aria-required="false" aria-label="Last Name" spellcheck="false" value="" class="input" autocomplete="family-name" placeholder=" "/><label for="mailster-id-767934" class="mailster-label">Last Name</label></div>
 <!-- /wp:mailster/field-lastname -->
 
-<!-- wp:mailster/field-email {"id":"31761e","inline":true} -->
-<div class="wp-block-mailster-field-email mailster-wrapper mailster-wrapper-required mailster-wrapper-type-email mailster-wrapper-inline mailster-wrapper-asterisk"><input name="email" id="mailster-input-31761e" type="email" aria-required="true" aria-label="Email" spellcheck="false" required value="" class="input" autocomplete="email" placeholder=" "/><label for="mailster-input-31761e" class="mailster-label">Email</label></div>
+<!-- wp:mailster/field-email {"inline":true} -->
+<div class="wp-block-mailster-field-email mailster-wrapper mailster-wrapper-required mailster-wrapper-type-email mailster-wrapper-inline mailster-wrapper-asterisk"><input name="email" id="mailster-id-954db1" type="email" aria-required="true" aria-label="Email" spellcheck="false" required value="" class="input" autocomplete="email" placeholder=" "/><label for="mailster-id-954db1" class="mailster-label">Email</label></div>
 <!-- /wp:mailster/field-email -->
 
-<!-- wp:mailster/field-submit {"id":"3f4beb","style":{"width":100,"backgroundColor":"#ce19b3","inputColor":"#f8f8f8","borderWidth":"0px","borderRadius":"0px"}} -->
-<div class="wp-block-mailster-field-submit mailster-wrapper mailster-wrapper-type-submit wp-block-button" style="width:100%"><input name="submit" id="mailster-input-3f4beb" type="submit" style="color:#f8f8f8;background-color:#ce19b3;border-width:0px;border-radius:0px" value="Subscribe" class="wp-block-button__link submit-button"/></div>
+<!-- wp:mailster/field-submit {"style":{"backgroundColor":"#ce19b3","inputColor":"#f8f8f8","borderWidth":"0px","borderRadius":"0px"}} -->
+<div class="wp-block-mailster-field-submit mailster-wrapper mailster-wrapper-type-submit wp-block-button"><input name="submit" id="mailster-id-bd35fe" type="submit" style="color:#f8f8f8;background-color:#ce19b3;border-width:0px;border-radius:0px" value="Subscribe" class="wp-block-button__link submit-button"/></div>
 <!-- /wp:mailster/field-submit --></div>
 <!-- /wp:column --></div>
 <!-- /wp:columns --></div></form>
