@@ -1,4 +1,4 @@
-<!-- wp:mailster/form-wrapper {"css":{"general":".mailster-wrapper{\n    margin-bottom:1em;\n}\n","tablet":"","mobile":""}} -->
+<!-- wp:mailster/form-wrapper {"css":{"general":".mailster-wrapper{\n    margin-bottom:1em;\n}\n"}} -->
 <form method="post" novalidate class="wp-block-mailster-form-wrapper mailster-block-form"><div class="mailster-block-form-inner">
 
 <!-- wp:mailster/field-firstname {"inline":true,"style":{"width":49}} -->

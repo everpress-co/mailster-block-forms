@@ -44,11 +44,11 @@ export default function Edit(props) {
 		(select) => select('mailster/form').getLists(),
 		[]
 	);
-	useEffect(() => {
-		return () => {
-			setMeta({ userschoice: false });
-		};
-	}, []);
+	// useEffect(() => {
+	// 	return () => {
+	// 		setMeta({ userschoice: false });
+	// 	};
+	// }, []);
 
 	useEffect(() => {
 		if (!meta.lists || !allLists) return;

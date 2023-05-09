@@ -189,7 +189,7 @@ export default function Edit(props) {
 	}, [style]);
 
 	const prefixedCss = useMemo(() => {
-		return Object.keys(css).map((name, b) => {
+		return Object.keys(css || {}).map((name, b) => {
 			return prefixCss(
 				css[name],
 				'.editor-styles-wrapper div.wp-block-mailster-form-wrapper.mailster-block-form-' +

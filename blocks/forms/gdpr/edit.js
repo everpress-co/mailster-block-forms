@@ -56,6 +56,7 @@ export default function Edit(props) {
 							className="disabled-input"
 						/>
 						<RichText
+							style={blockProps.style}
 							tagName="label"
 							className="mailster-label"
 							value={content}

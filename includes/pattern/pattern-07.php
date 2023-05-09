@@ -18,10 +18,6 @@
 <!-- /wp:paragraph -->
 
 
-<!-- wp:mailster/messages -->
-<div class="wp-block-mailster-messages mailster-block-form-info mailster-wrapper" aria-hidden="true"><div class="mailster-block-form-info-success" style="width:100%;color:#ffffff;background:#6fbf4d"><div>Please confirm your subscription!</div><div class="mailster-block-form-info-extra"></div></div><div class="mailster-block-form-info-error" style="width:100%;color:#ffffff;background:#bf4d4d"><div>Some fields are missing or inccorrect!</div><div class="mailster-block-form-info-extra"></div></div></div>
-<!-- /wp:mailster/messages -->
-
 <!-- wp:mailster/field-firstname {"inline":true} -->
 <div class="wp-block-mailster-field-firstname mailster-wrapper mailster-wrapper-type-text mailster-wrapper-inline"><input name="firstname" id="mailster-id-098aba" type="text" aria-required="false" aria-label="Name" spellcheck="false" value="" class="input" autocomplete="name" placeholder=" "/><label for="mailster-id-098aba" class="mailster-label">Name</label></div>
 <!-- /wp:mailster/field-firstname -->

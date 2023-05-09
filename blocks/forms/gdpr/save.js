@@ -32,6 +32,7 @@ export default function save(props) {
 				<input id={fieldid} type="checkbox" name="_gdpr" value="1" />
 
 				<RichText.Content
+					style={blockProps.style}
 					htmlFor={fieldid}
 					tagName="label"
 					className="mailster-label"

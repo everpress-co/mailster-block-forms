@@ -34,7 +34,7 @@ input, select {
     border: 1px solid;
     border-radius: 3px;
     padding: .6em;
-/*	font: inherit;*/
+	font: inherit;
 }
 .submit-button{
     border: initial;
@@ -191,6 +191,10 @@ export function CssPanel(props) {
 
 	const [isCSSModal, setCSSModal] = useState(false);
 
+	const tabs = Object.keys(CSS_TAB_NAMES).filter((tab) => {
+		return basiccss || tab != 'basic';
+	});
+
 	return (
 		<>
 			<PanelRow>
@@ -222,7 +226,7 @@ export function CssPanel(props) {
 						className="custom-css-tabs"
 						activeClass="is-active"
 						orientation="horizontal"
-						tabs={Object.keys(css).map((tab) => {
+						tabs={tabs.map((tab) => {
 							return {
 								name: tab,
 								title: CSS_TAB_NAMES[tab],
@@ -269,7 +273,7 @@ const EditTextArea = (props) => {
 
 	function setCss(name, data) {
 		var newCss = { ...css };
-		newCss[name] = data;
+		newCss[name] = data || undefined;
 		setAttributes({ css: newCss });
 	}
 

@@ -123,7 +123,8 @@ class Mailster_REST_Form_Controller extends WP_REST_Controller {
 		if ( ! empty( $data ) ) {
 			$data['_hash']   = $data['hash'];
 			$data['_status'] = $data['status'];
-			$data            = array_diff_key( (array) $data, array( 'ID', 'hash' ) );
+			// TODO remove unsused properties
+			$data = array_diff_key( (array) $data, array( 'ID', 'hash' ) );
 		}
 
 		$response = array(

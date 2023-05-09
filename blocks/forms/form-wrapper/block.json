@@ -52,12 +52,7 @@
 			"type": "string"
 		},
 		"css": {
-			"type": "object",
-			"default": {
-				"general": "",
-				"tablet": "",
-				"mobile": ""
-			}
+			"type": "object"
 		},
 		"events": {
 			"type": "object",
@@ -70,7 +65,8 @@
 			}
 		},
 		"basiccss": {
-			"type": "boolean"
+			"type": "boolean",
+			"default": false
 		}
 	},
 	"textdomain": "mailster",
