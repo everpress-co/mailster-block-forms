@@ -225,7 +225,7 @@ export default function Edit(props) {
 		}, []);
 
 	inEditor &&
-		whenEditorIsReady().then(() => {
+		useEffect(() => {
 			const messagesBlock = searchBlock('mailster/messages', clientId);
 
 			if (!messagesBlock) {
