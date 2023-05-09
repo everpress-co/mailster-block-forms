@@ -4,6 +4,38 @@ html.mailster-form-active {
 		overflow: hidden;
 	}
 }
+body.single-newsletter_form * {
+	visibility: hidden;
+}
+body.single-newsletter_form::after,
+body.single-newsletter_form::before {
+	display: none;
+}
+
+body.single-newsletter_form {
+	overflow: hidden;
+	.mailster-block-form-type-content:not(.foo) {
+		position: absolute;
+		inset: 0;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		margin: 0 !important;
+		width: 100% !important;
+		height: 100% !important;
+		max-width: 100% !important;
+		max-height: 100% !important;
+		z-index: 100000;
+		position: fixed;
+		overflow: hidden;
+		visibility: visible;
+		overflow: auto;
+	}
+	.mailster-block-form-type-content * {
+		visibility: visible;
+	}
+}
 
 .mailster-block-form-type-popup,
 .mailster-block-form-type-bar,
