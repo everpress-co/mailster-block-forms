@@ -3,7 +3,7 @@
 Plugin Name: Mailster Block Forms
 Plugin URI: https://mailster.co/?utm_campaign=wporg&utm_source=wordpress.org&utm_medium=plugin&utm_term=Mailster+Block+Forms
 Description: Create Mailster forms with the block editor
-Version: 0.2.1
+Version: 0.2.2
 Author: EverPress
 Author URI: https://mailster.co
 Text Domain: mailster-block-forms
@@ -208,7 +208,7 @@ add_action( 'mailster_subscriber_subscribed', 'mailster_block_forms_subscriber_s
 
 function mailster_block_forms_shortcode( $atts, $content ) {
 
-	return mailster( 'block-forms' )->render_form_with_options( $atts['id'], array(), false );
+	return mailster( 'block-forms' )->render_form( $atts['id'], array(), false );
 
 }
 add_shortcode( 'newsletter_block_form', 'mailster_block_forms_shortcode' );
