@@ -61,7 +61,7 @@ class Elementor_Mailster_Form extends Widget_Base {
 		if ( ! $form ) {
 			return;
 		}
-		echo mailster( 'block-forms' )->render_form_with_options( $form, array(), false );
+		echo mailster( 'block-forms' )->render_form( $form, array(), false );
 
 	}
 }
