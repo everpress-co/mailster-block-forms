@@ -114,6 +114,9 @@ window.mailster_fields &&
 				},
 				id: {
 					type: 'string',
+					source: 'attribute',
+					selector: field.id == 'dropdown' ? 'select' : 'input',
+					attribute: 'id',
 				},
 				required: {
 					type: 'boolean',
@@ -142,7 +145,7 @@ window.mailster_fields &&
 				},
 				values: {
 					type: 'array',
-					default: field.values || [],
+					default: field.values,
 				},
 				selected: {
 					type: 'string',

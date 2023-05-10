@@ -46,15 +46,18 @@ export default function Edit(props) {
 	} = attributes;
 	const className = ['mailster-wrapper'];
 
-	if (required) className.push('mailster-wrapper-required');
+	const isSubmit = 'submit' == type;
+
+	if (!isSubmit && required) className.push('mailster-wrapper-required');
 	if (type) className.push('mailster-wrapper-type-' + type);
 	if (align) className.push('mailster-wrapper-align-' + align);
 	if (justify) className.push('mailster-wrapper-justify-' + justify);
 	if (vertical) className.push('mailster-wrapper-is-vertical');
 	if (labelAlign) className.push('mailster-wrapper-label-align-' + labelAlign);
 	if (inline) className.push('mailster-wrapper-inline');
-	if (required && asterisk) className.push('mailster-wrapper-asterisk');
-	if ('submit' == type) className.push('wp-block-button');
+	if (!isSubmit && required && asterisk)
+		className.push('mailster-wrapper-asterisk');
+	if (isSubmit) className.push('wp-block-button');
 
 	const borderProps = useBorderProps(attributes);
 	const colorProps = useColorProps(attributes);
@@ -76,7 +79,8 @@ export default function Edit(props) {
 	if (inline) labelStyle = { ...labelStyle, ...innerStyle };
 
 	useEffect(() => {
-		if (!attributes.id) setAttributes({ id: clientId.substring(30) });
+		if (!attributes.id)
+			setAttributes({ id: 'mailster-id-' + clientId.substring(30) });
 	});
 
 	return (

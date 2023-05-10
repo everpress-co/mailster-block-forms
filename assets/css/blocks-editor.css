@@ -7,6 +7,9 @@
 	outline: 1px solid #e0e0e0;
 	outline-offset: -1px;
 }
+.block-editor-block-preview__content-iframe .mailster-block-form {
+	_border: 3px solid red;
+}
 .post-type-newsletter_form .edit-post-layout__metaboxes {
 	_display: none;
 }

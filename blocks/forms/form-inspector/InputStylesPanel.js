@@ -38,10 +38,16 @@ export const InputStylesPanel = (props) => {
 
 	const { style = {} } = attributes;
 
-	function setStyle(prop, value) {
-		var newStyle = { ...style };
-		newStyle[prop] = value;
-		setAttributes({ style: newStyle });
+	function setStyle(prop, data) {
+		let newStyle = { ...style };
+		if (data === undefined) {
+			delete newStyle[prop];
+		} else {
+			newStyle[prop] = data;
+		}
+		setAttributes({
+			style: Object.keys(newStyle).length ? newStyle : undefined,
+		});
 	}
 
 	return (

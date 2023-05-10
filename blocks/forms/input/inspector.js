@@ -48,19 +48,23 @@ export default function InputFieldInspectorControls(props) {
 		hasLabel,
 	} = attributes;
 
-	const [width, setWidth] = useState(100);
-
 	function setStyle(prop, data) {
-		var newStyle = { ...style };
-		newStyle[prop] = data;
-		setAttributes({ style: newStyle });
+		let newStyle = { ...style };
+		if (data === undefined) {
+			delete newStyle[prop];
+		} else {
+			newStyle[prop] = data;
+		}
+		setAttributes({
+			style: Object.keys(newStyle).length ? newStyle : undefined,
+		});
 	}
 
 	function applyStyle() {
 		const root = select('core/block-editor').getBlocks();
 		const { width, ...newStyle } = style;
 		root.map((block) => {
-			var style = {
+			let style = {
 				...select('core/block-editor').getBlockAttributes(block.clientId).style,
 			};
 

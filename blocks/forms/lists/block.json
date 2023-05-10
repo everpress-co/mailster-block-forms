@@ -23,15 +23,14 @@
 				"remove": true
 			}
 		},
-		"dropdown": {
-			"type": "boolean",
-			"default": false
-		},
 		"vertical": {
 			"type": "boolean"
 		},
 		"id": {
-			"type": "string"
+			"type": "string",
+			"source": "attribute",
+			"selector": "input",
+			"attribute": "id"
 		},
 		"lists": {
 			"type": "array",
@@ -40,7 +39,7 @@
 			"default": [],
 			"query": {
 				"id": {
-					"type": "string",
+					"type": "integer",
 					"source": "attribute",
 					"attribute": "value"
 				},
@@ -50,7 +49,7 @@
 					"attribute": "aria-label"
 				},
 				"checked": {
-					"type": "string",
+					"type": "boolean",
 					"source": "attribute",
 					"attribute": "checked"
 				}

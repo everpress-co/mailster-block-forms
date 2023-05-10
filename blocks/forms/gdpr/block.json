@@ -14,7 +14,15 @@
 		"reusable": false,
 		"multiple": false,
 		"inserter": false,
-		"color": true
+		"color": true,
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true,
+			"__experimentalFontStyle": true,
+			"__experimentalFontWeight": true,
+			"__experimentalLetterSpacing": true,
+			"__experimentalTextTransform": true
+		}
 	},
 	"attributes": {
 		"lock": {
@@ -29,7 +37,10 @@
 			"selector": "label"
 		},
 		"id": {
-			"type": "string"
+			"type": "string",
+			"source": "attribute",
+			"selector": "input",
+			"attribute": "id"
 		},
 		"align": {
 			"type": "string"

@@ -19,7 +19,7 @@ import {
 	__experimentalGrid as Grid,
 } from '@wordpress/components';
 
-import { useState, useEffect } from '@wordpress/element';
+import { useState, useEffect, useRef } from '@wordpress/element';
 import { useSelect, select, dispatch, subscribe } from '@wordpress/data';
 import { useEntityProp } from '@wordpress/core-data';
 
@@ -47,17 +47,11 @@ const EmptyEditor = () => {
 	return true;
 };
 
-const ModalContent = ({ setOpen, patterns }) => {
+const ModalContent = (props) => {
+	const { setOpen, patterns } = props;
 	if (!patterns) {
 		return <></>;
 	}
-	const setPattern = (pattern, block) => {
-		if (!title) {
-			setTitle(pattern.title);
-		}
-		dispatch('core/block-editor').resetBlocks(block);
-		setOpen(false);
-	};
 
 	const [title, setTitle] = useEntityProp(
 		'postType',
@@ -78,35 +72,74 @@ const ModalContent = ({ setOpen, patterns }) => {
 
 			<Grid columns={3}>
 				{patterns.map((pattern, i) => {
-					const block = wp.blocks.parse(pattern.content);
-					return (
-						<Card
-							key={i}
-							onClick={() => setPattern(pattern, block)}
-							className="form-pattern-card"
-							style={{ displays: 'flex' }}
-							isRounded={false}
-							//isBorderless
-							size="xSmall"
-							title={pattern.description ?? pattern.title}
-						>
-							<CardBody size="large">
-								<BlockPreview
-									blocks={block}
-									viewportWidth={pattern.viewportWidth}
-								/>
-							</CardBody>
-							<CardFooter className="form-pattern-title">
-								{pattern.title}
-							</CardFooter>
-						</Card>
-					);
+					return <FormPattern key={i} pattern={pattern} {...props} />;
 				})}
 			</Grid>
 			<InlineStyles />
 		</>
 	);
 };
+
+function FormPattern({ pattern, setOpen }) {
+	const { content } = pattern;
+	const block = wp.blocks.parse(content);
+
+	const [title, setTitle] = useEntityProp(
+		'postType',
+		'newsletter_form',
+		'title'
+	);
+
+	const attributes = block[0].attributes;
+
+	const { background } = attributes;
+
+	const setPattern = (pattern, block) => {
+		if (!title) {
+			setTitle(pattern.title);
+		}
+		dispatch('core/block-editor').resetBlocks(block);
+		setOpen(false);
+	};
+
+	const ref = useRef(null);
+
+	const [visible, setVisible] = useState(false);
+
+	useEffect(() => {
+		if (!ref.current) return;
+		const observer = new IntersectionObserver(
+			(entries) => {
+				if (entries[0].isIntersecting) {
+					setVisible(true);
+					observer.unobserve(ref.current);
+				}
+			},
+			{ threshold: [0] }
+		);
+		observer.observe(ref.current);
+	}, [ref.current]);
+
+	return (
+		<Card
+			ref={ref}
+			onClick={() => setPattern(pattern, block)}
+			className="form-pattern-card"
+			style={{ displays: 'flex' }}
+			isRounded={false}
+			//isBorderless
+			size="xSmall"
+			title={pattern.description ?? pattern.title}
+		>
+			<CardBody size="large">
+				{visible && (
+					<BlockPreview blocks={block} viewportWidth={pattern.viewportWidth} />
+				)}
+			</CardBody>
+			<CardFooter className="form-pattern-title">{pattern.title}</CardFooter>
+		</Card>
+	);
+}
 
 export default function FormModal(props) {
 	const { meta, setMeta } = props;
