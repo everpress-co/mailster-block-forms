@@ -226,6 +226,24 @@ function mailster_block_forms_enable_on_classic_editor( $settings ) {
 add_filter( 'classic_editor_plugin_settings', 'mailster_block_forms_enable_on_classic_editor' );
 
 
+/**
+ * Register oEmbed Widget.
+ *
+ * Include widget file and register widget class.
+ *
+ * @since 1.0.0
+ * @param \Elementor\Widgets_Manager $widgets_manager Elementor widgets manager.
+ * @return void
+ */
+function register_oembed_widget( $widgets_manager ) {
+
+	require_once __DIR__ . '/classes/elementor.class.php';
+
+	$widgets_manager->register( new Elementor_Mailster_Form() );
+
+}
+add_action( 'elementor/widgets/register', 'register_oembed_widget' );
+
 global $mailster_block_forms;
 require_once MAILSTER_FORM_BLOCK_DIR . 'classes/block-forms.class.php';
 $mailster_block_forms = new MailsterBlockForms();
