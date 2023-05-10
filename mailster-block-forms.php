@@ -208,7 +208,7 @@ add_action( 'mailster_subscriber_subscribed', 'mailster_block_forms_subscriber_s
 
 function mailster_block_forms_shortcode( $atts, $content ) {
 
-	return mailster( 'block-forms' )->render_form_with_options( $atts['id'], array(), false );
+	return mailster( 'block-forms' )->render_form( $atts['id'], array(), false );
 
 }
 add_shortcode( 'newsletter_block_form', 'mailster_block_forms_shortcode' );
