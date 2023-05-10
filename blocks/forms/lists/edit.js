@@ -29,7 +29,7 @@ import InputBlockControls from './InputBlockControls';
 
 export default function Edit(props) {
 	const { attributes, setAttributes, isSelected, clientId } = props;
-	const { lists, dropdown, vertical } = attributes;
+	const { lists, vertical } = attributes;
 	const className = ['mailster-wrapper mailster-wrapper-_lists'];
 
 	const [meta, setMeta] = useEntityProp('postType', 'newsletter_form', 'meta');
@@ -44,11 +44,11 @@ export default function Edit(props) {
 		(select) => select('mailster/form').getLists(),
 		[]
 	);
-	// useEffect(() => {
-	// 	return () => {
-	// 		setMeta({ userschoice: false });
-	// 	};
-	// }, []);
+
+	const updateLists = (newLists, force) => {
+		if (force || JSON.stringify(lists) !== JSON.stringify(newLists))
+			setAttributes({ lists: newLists });
+	};
 
 	useEffect(() => {
 		if (!meta.lists || !allLists) return;
@@ -61,8 +61,8 @@ export default function Edit(props) {
 			};
 		});
 
-		setAttributes({ lists: newLists });
-	}, [meta.lists, allLists]);
+		updateLists(newLists);
+	}, [meta.lists]);
 
 	useEffect(() => {
 		if (!attributes.id)
@@ -86,62 +86,49 @@ export default function Edit(props) {
 	const setLabel = (label, i) => {
 		var newLists = [...lists];
 		newLists[i].name = label;
-		setAttributes({ lists: newLists });
+		updateLists(newLists, true);
 	};
 
-	const setChecked = (label, i) => {
+	const setChecked = (isChecked, i) => {
 		var newLists = [...lists];
-		newLists[i].checked = label;
-		setAttributes({ lists: newLists });
+		newLists[i].checked = isChecked;
+		updateLists(newLists, true);
 	};
 
 	return (
 		<div {...blockProps}>
-			{dropdown ? (
-				<select className="input">
-					{lists.map((list, i) => {
-						return (
-							<option key={i} value={list.ID}>
-								{list.name}
-							</option>
-						);
-					})}
-				</select>
-			) : (
-				<fieldset>
-					<legend>{__('Lists', 'mailster')}</legend>
-					{lists.map((list, i) => {
-						return (
-							<div key={i} className="mailster-group mailster-group-checkbox">
-								<input
-									type="checkbox"
-									value={list.id}
-									checked={list.checked || false}
-									aria-label={list.name}
-									onChange={() => setChecked(!list.checked, i)}
-								/>
-								<RichText
-									tagName="label"
-									value={list.name}
-									onChange={(val) => setLabel(val, i)}
-									allowedFormats={[]}
-									className="mailster-label"
-									placeholder={__('Enter Label', 'mailster')}
-								/>
-							</div>
-						);
-					})}
-					{!lists.length && (
-						<i>
-							{__(
-								'Please select at least one list or disable user choice.',
-								'mailster'
-							)}
-						</i>
-					)}
-				</fieldset>
-			)}
-
+			<fieldset>
+				<legend>{__('Lists', 'mailster')}</legend>
+				{lists.map((list, i) => {
+					return (
+						<div key={i} className="mailster-group mailster-group-checkbox">
+							<input
+								type="checkbox"
+								value={list.id}
+								checked={list.checked || false}
+								aria-label={list.name}
+								onChange={() => setChecked(!list.checked, i)}
+							/>
+							<RichText
+								tagName="label"
+								value={list.name}
+								onChange={(val) => setLabel(val, i)}
+								allowedFormats={[]}
+								className="mailster-label"
+								placeholder={__('Enter Label', 'mailster')}
+							/>
+						</div>
+					);
+				})}
+				{!lists.length && (
+					<i>
+						{__(
+							'Please select at least one list or disable user choice.',
+							'mailster'
+						)}
+					</i>
+				)}
+			</fieldset>
 			<InputBlockControls {...props} />
 			<InputFieldInspectorControls
 				meta={meta}

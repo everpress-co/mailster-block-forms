@@ -23,10 +23,6 @@
 				"remove": true
 			}
 		},
-		"dropdown": {
-			"type": "boolean",
-			"default": false
-		},
 		"vertical": {
 			"type": "boolean"
 		},
@@ -43,7 +39,7 @@
 			"default": [],
 			"query": {
 				"id": {
-					"type": "string",
+					"type": "integer",
 					"source": "attribute",
 					"attribute": "value"
 				},
@@ -53,7 +49,7 @@
 					"attribute": "aria-label"
 				},
 				"checked": {
-					"type": "string",
+					"type": "boolean",
 					"source": "attribute",
 					"attribute": "checked"
 				}
