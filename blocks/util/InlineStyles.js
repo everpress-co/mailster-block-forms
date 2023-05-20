@@ -31,6 +31,7 @@ const SAMPLEFORM = (
 			<input type="email" className="input" />
 			<input type="date" className="input" />
 			<input type="submit" className="wp-block-button__link" />
+			<textarea>Sample Content</textarea>
 		</form>
 	</>
 );
@@ -101,6 +102,7 @@ const getInlineStyles = (el) => {
 			'input[type="submit"]': ['border', 'outline', 'color'],
 			select: [],
 			'label.mailster-label': [],
+			textarea: [],
 		};
 
 	return Object.keys(selectors)
