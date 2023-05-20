@@ -10,7 +10,7 @@
 .block-editor-block-preview__content-iframe .mailster-block-form {
 	_border: 3px solid red;
 }
-.post-type-newsletter_form .edit-post-layout__metaboxes {
+.post-type-mailster-form .edit-post-layout__metaboxes {
 	_display: none;
 }
 .edit-post-visual-editor__post-title-wrapper {
@@ -21,22 +21,22 @@
 	max-width: 800px;
 	height: auto;
 }
-.post-type-newsletter_form .edit-post-visual-editor {
+.post-type-mailster-form .edit-post-visual-editor {
 	background: url('data:image/svg+xml,<svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 100 100" xml:space="preserve"><path d="M0 0h50v50H0zM50.5 49.5h50v50h-50z" fill="%23fafafa"/></svg>')
 		white !important;
 	background-repeat: repeat;
 	background-size: 25px !important;
 }
-.post-type-newsletter_form .edit-post-visual-editor__content-area > div,
+.post-type-mailster-form .edit-post-visual-editor__content-area > div,
 .block-editor-page.post-content-style-boxed .editor-styles-wrapper:before {
 	background: none !important;
 }
-.post-type-newsletter_form
+.post-type-mailster-form
 	.edit-post-visual-editor__content-area
 	.editor-styles-wrapper {
 	background-color: transparent;
 }
-.post-type-newsletter_form
+.post-type-mailster-form
 	.edit-post-visual-editor__content-area
 	.editor-styles-wrapper
 	.is-root-container
@@ -45,7 +45,7 @@
 	margin-left: auto;
 	margin-right: auto;
 }
-.post-type-newsletter_form
+.post-type-mailster-form
 	.edit-post-visual-editor__content-area
 	.editor-styles-wrapper
 	.is-root-container {
@@ -208,7 +208,7 @@
 	color: #fff;
 }
 
-.post-type-newsletter_form
+.post-type-mailster-form
 	.editor-styles-wrapper
 	.wp-block.editor-post-title__block
 	.editor-post-title__input {

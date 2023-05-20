@@ -19,34 +19,13 @@ import {
 	ColorPaletteControl,
 } from '@wordpress/block-editor';
 import {
-	Panel,
-	PanelBody,
 	PanelRow,
 	CheckboxControl,
-	RadioControl,
-	TextControl,
-	CardMedia,
-	Card,
-	CardHeader,
-	CardBody,
-	CardDivider,
-	CardFooter,
-	Button,
-	Modal,
-	Icon,
-	RangeControl,
-	FormTokenField,
-	Flex,
-	FlexItem,
-	FlexBlock,
-	BaseControl,
-	SelectControl,
-	Spinner,
-	Notice,
-	useCopyToClipboard,
 	__experimentalNumberControl as NumberControl,
 	__experimentalBoxControl as BoxControl,
 	__experimentalFormGroup as FormGroup,
+	__experimentalItemGroup as ItemGroup,
+	__experimentalItem as Item,
 } from '@wordpress/components';
 import { Fragment, Component, useState, useEffect } from '@wordpress/element';
 
@@ -55,11 +34,6 @@ import apiFetch from '@wordpress/api-fetch';
 import { useDebounce } from '@wordpress/compose';
 import { useEntityProp } from '@wordpress/core-data';
 import { select, useSelect, dispatch, subscribe } from '@wordpress/data';
-
-import {
-	__experimentalItemGroup as ItemGroup,
-	__experimentalItem as Item,
-} from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -77,7 +51,7 @@ export default function PostTypeFields(props) {
 			: result.filter((type) => {
 					return (
 						type.viewable &&
-						!['attachment', 'custom-post-type_', 'post_'].includes(
+						!['attachment', 'mailster-form', 'mailster-workflow'].includes(
 							type.slug
 						)
 					);
@@ -103,17 +77,10 @@ export default function PostTypeFields(props) {
 			{postTypes.map((postType) => {
 				return (
 					<PanelRow key={postType.slug}>
-						<ItemGroup
-							isBordered={true}
-							className="widefat"
-							size="medium"
-						>
+						<ItemGroup isBordered={true} className="widefat" size="medium">
 							<Item>
 								<CheckboxControl
-									label={__(
-										'Display on all ' + postType.name,
-										'mailster'
-									)}
+									label={__('Display on all ' + postType.name, 'mailster')}
 									checked={alls.includes(postType.slug)}
 									onChange={(val) => {
 										setAll(postType.slug, val);

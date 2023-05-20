@@ -27,7 +27,15 @@ window.mailster_fields &&
 
 		let description = field.name + ' Description';
 
+		let selector = 'input';
+
 		switch (field.id) {
+			case 'dropdown':
+				selector = 'select';
+				break;
+			case 'textarea':
+				selector = 'textarea';
+				break;
 			case 'submit':
 				label = {
 					...label,
@@ -115,14 +123,14 @@ window.mailster_fields &&
 				id: {
 					type: 'string',
 					source: 'attribute',
-					selector: field.id == 'dropdown' ? 'select' : 'input',
+					selector: selector,
 					attribute: 'id',
 				},
 				required: {
 					type: 'boolean',
 					default: field.id == 'email',
 					source: 'attribute',
-					selector: '.input',
+					selector: selector,
 					attribute: 'required',
 				},
 				errorMessage: {
@@ -159,6 +167,7 @@ window.mailster_fields &&
 					type: 'object',
 					default: {
 						width: undefined,
+						height: undefined,
 						inputColor: undefined,
 						backgroundColor: undefined,
 						labelColor: undefined,

@@ -29,11 +29,7 @@ export default function Options(props) {
 	const { meta, setMeta } = props;
 	const { redirect, overwrite, gdpr, doubleoptin } = meta;
 
-	const [title, setTitle] = useEntityProp(
-		'postType',
-		'newsletter_form',
-		'title'
-	);
+	const [title, setTitle] = useEntityProp('postType', 'mailster-form', 'title');
 
 	const editMessages = () => {
 		const mblock = searchBlock('mailster/messages');

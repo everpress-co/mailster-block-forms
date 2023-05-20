@@ -13,13 +13,14 @@
 		"reusable": false,
 		"multiple": false,
 		"inserter": false,
-		"spacing": {
-			"margin": true,
-			"padding": true
-		},
+
 		"typography": {
 			"fontSize": true,
-			"lineHeight": true
+			"lineHeight": true,
+			"__experimentalFontStyle": true,
+			"__experimentalFontWeight": true,
+			"__experimentalLetterSpacing": true,
+			"__experimentalTextTransform": true
 		}
 	},
 	"attributes": {

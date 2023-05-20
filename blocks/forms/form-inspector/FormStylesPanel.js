@@ -37,8 +37,13 @@ export const FormStylesPanel = (props) => {
 		bottom: '50px',
 	});
 
-	const { color, backgroundColor, borderRadius, background, style } =
-		attributes;
+	const {
+		color,
+		backgroundColor,
+		borderRadius,
+		background = {},
+		style,
+	} = attributes;
 	const { image, position, opacity, scale, size, fixed, repeat, fullscreen } =
 		background;
 

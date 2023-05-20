@@ -29,7 +29,7 @@ export default function Edit(props) {
 
 	if (align) className.push('mailster-wrapper-label-align-' + align);
 
-	const [meta, setMeta] = useEntityProp('postType', 'newsletter_form', 'meta');
+	const [meta, setMeta] = useEntityProp('postType', 'mailster-form', 'meta');
 
 	useEffect(() => {
 		if (!attributes.id)

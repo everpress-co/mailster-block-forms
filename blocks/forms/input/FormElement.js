@@ -162,6 +162,28 @@ export default function FormElement(props) {
 					className="wp-block-button__link submit-button"
 				/>
 			);
+		case 'textarea':
+			return (
+				<textarea
+					name={name}
+					id={id}
+					aria-required={required}
+					aria-label={label}
+					spellCheck={false}
+					required={required}
+					rows={style.height}
+					value={
+						isSelected && !inline
+							? sprintf(__('Sample text for %s'), label)
+							: ''
+					}
+					onChange={() => {}}
+					className="input"
+					autoComplete={autoComplete}
+					style={inputStyle}
+					placeholder=" "
+				/>
+			);
 		default:
 			const sample =
 				'date' == type

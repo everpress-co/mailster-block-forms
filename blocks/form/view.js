@@ -121,6 +121,7 @@ import apiFetch from '@wordpress/api-fetch';
 					openForm();
 				}
 			}
+
 			function _trigger_exit(event) {
 				if (!event.toElement && !event.relatedTarget) {
 					if (!show()) return;
@@ -128,82 +129,7 @@ import apiFetch from '@wordpress/api-fetch';
 				}
 			}
 
-			if (form) {
-				if (form.triggers) {
-					form.triggers.forEach((trigger) => {
-						triggerMethods[trigger] && triggerMethods[trigger].call(this);
-					});
-					wrap.classList.add(
-						rgb2Contrast(
-							windowObj
-								.getComputedStyle(wrap, '')
-								.getPropertyValue('background-color')
-						)
-					);
-				} else {
-					const observer = new IntersectionObserver(
-						(entries) => {
-							if (entries[0].isIntersecting) {
-								countImpression();
-								observer.unobserve(entries[0].target);
-							}
-						},
-						{ threshold: 1 }
-					);
-					observer.observe(formEl);
-					triggerEvent('load');
-				}
-				if (!isSubmission) {
-					formEl.classList.add('loading', 'silent');
-					formEl.setAttribute('disabled', true);
-
-					apiFetch({
-						path: 'mailster/v1/forms/' + form.id + '/data',
-						method: 'GET',
-					})
-						.then((response) => {
-							for (const property in response.data) {
-								const el = querySelector(formEl, '[name="' + property + '"]');
-								const val = response.data[property];
-								if (el && val) {
-									switch (el.type) {
-										case 'checkbox':
-											el.checked = !!val;
-											break;
-										case 'radio':
-											const rel = querySelectorAll(
-												formEl,
-												'[name="' + property + '"]'
-											);
-											for (let i = 0; i < rel.length; i++) {
-												rel[i].checked = rel[i].value == val;
-											}
-											break;
-
-										default:
-											el.value = val;
-											break;
-									}
-								}
-							}
-
-							if (response.lists) {
-								const lists = querySelectorAll(formEl, '[name="_lists[]"]');
-								for (let i = 0; i < lists.length; i++) {
-									lists[i].checked = response.lists.includes(lists[i].value);
-								}
-							}
-						})
-						.catch((error) => {})
-						.finally(() => {
-							formEl.classList.remove('loading', 'silent');
-							formEl.removeAttribute('disabled');
-							info.setAttribute('aria-hidden', 'false');
-						});
-				}
-			}
-
-			addEvent(formEl, SUBMIT, (event) => {
+			function formSubmit(event) {
 				event.preventDefault();
 
 				let formData = new FormData(formEl),
@@ -216,7 +142,7 @@ import apiFetch from '@wordpress/api-fetch';
 					),
 					infoError = querySelector(info, '.mailster-block-form-info-error');
 
-				formEl.classList.remove('has-errors');
+				//formEl.classList.remove('has-errors');
 				formEl.classList.remove('completed');
 				querySelectorAll(formEl, '.is-error').forEach((wrapper) => {
 					wrapper.classList.remove('is-error');
@@ -266,6 +192,7 @@ import apiFetch from '@wordpress/api-fetch';
 						});
 
 						info.classList.remove('is-error');
+						formEl.classList.remove('has-errors');
 
 						if (isSubmission && response.data.redirect) {
 							setTimeout(() => (location.href = response.data.redirect), 150);
@@ -300,17 +227,16 @@ import apiFetch from '@wordpress/api-fetch';
 						if (error.data.fields) {
 							formEl.classList.add('has-errors');
 							Object.keys(error.data.fields).map((fieldid) => {
-								let field = querySelector(
-										formEl,
+								const selector =
 										'.wp-block-mailster-' +
-											fieldid +
-											', .wp-block-mailster-field-' +
-											fieldid
-									),
-									hintid = 'h-' + form.identifier + '-' + fieldid,
-									input;
+										fieldid +
+										', .wp-block-mailster-field-' +
+										fieldid,
+									field = querySelector(formEl, selector),
+									hintid = 'hint-' + form.identifier + '-' + fieldid;
+
 								if (field) {
-									input = querySelector(field, 'input');
+									const input = querySelector(field, 'input, select, textarea');
 									input.setAttribute('aria-invalid', 'true');
 									input.setAttribute('aria-describedby', hintid);
 									field.classList.add('is-error');
@@ -339,7 +265,7 @@ import apiFetch from '@wordpress/api-fetch';
 						submit.removeAttribute('disabled');
 						info.setAttribute('aria-hidden', 'false');
 					});
-			});
+			}
 
 			function show() {
 				//always show on preview
@@ -373,7 +299,7 @@ import apiFetch from '@wordpress/api-fetch';
 					removeEventListeners();
 
 					addEvent(document, KEYUP, closeOnEsc);
-					addEvent(document, KEYDOWN, handleTab);
+					addEvent(document, KEYDOWN, handleKeyEvents);
 					setTimeout(() => addEvent(wrap, CLICK, closeFormExplicit), 1500);
 
 					closeButtons.forEach((btn) =>
@@ -411,7 +337,7 @@ import apiFetch from '@wordpress/api-fetch';
 
 			function closeForm() {
 				removeEvent(document, KEYUP, closeOnEsc);
-				removeEvent(document, KEYDOWN, handleTab);
+				removeEvent(document, KEYDOWN, handleKeyEvents);
 				removeEvent(wrap, CLICK, closeForm);
 				removeEvent(wrap, CLICK, closeFormExplicit);
 				closeButtons.forEach((btn) =>
@@ -443,7 +369,7 @@ import apiFetch from '@wordpress/api-fetch';
 				}
 			}
 
-			function handleTab(event) {
+			function handleKeyEvents(event) {
 				if (event.key === 'Tab' || event.keyCode === 9) {
 					// select close button when using tab navigation on the first element
 					if (firstFocusable === event.target && event.shiftKey) {
@@ -455,6 +381,14 @@ import apiFetch from '@wordpress/api-fetch';
 						firstFocusable.focus();
 						event.preventDefault();
 					}
+				}
+				//prevent close buttons from submitting the form
+				if (event.key === 'Enter' || event.keyCode == 13) {
+					//manually triggered if there's no subvmit button
+					if (!querySelector(formEl, '.submit-button')) {
+						formSubmit(event);
+					}
+					event.preventDefault();
 				}
 			}
 
@@ -512,6 +446,84 @@ import apiFetch from '@wordpress/api-fetch';
 
 				return formEl.dispatchEvent(event);
 			}
+
+			if (form) {
+				if (form.triggers) {
+					form.triggers.forEach((trigger) => {
+						triggerMethods[trigger] && triggerMethods[trigger].call(this);
+					});
+					wrap.classList.add(
+						rgb2Contrast(
+							windowObj
+								.getComputedStyle(wrap, '')
+								.getPropertyValue('background-color')
+						)
+					);
+				} else {
+					const observer = new IntersectionObserver(
+						(entries) => {
+							if (entries[0].isIntersecting) {
+								countImpression();
+								observer.unobserve(entries[0].target);
+							}
+						},
+						{ threshold: 1 }
+					);
+					observer.observe(formEl);
+					triggerEvent('load');
+				}
+
+				if (!isSubmission) {
+					formEl.classList.add('loading', 'silent');
+					formEl.setAttribute('disabled', true);
+
+					apiFetch({
+						path: 'mailster/v1/forms/' + form.id + '/data',
+						method: 'GET',
+					})
+						.then((response) => {
+							for (const property in response.data) {
+								const el = querySelector(formEl, '[name="' + property + '"]');
+								const val = response.data[property];
+								if (el && val) {
+									switch (el.type) {
+										case 'checkbox':
+											el.checked = !!val;
+											break;
+										case 'radio':
+											const rel = querySelectorAll(
+												formEl,
+												'[name="' + property + '"]'
+											);
+											for (let i = 0; i < rel.length; i++) {
+												rel[i].checked = rel[i].value == val;
+											}
+											break;
+
+										default:
+											el.value = val;
+											break;
+									}
+								}
+							}
+
+							if (response.lists) {
+								const lists = querySelectorAll(formEl, '[name="_lists[]"]');
+								for (let i = 0; i < lists.length; i++) {
+									lists[i].checked = response.lists.includes(lists[i].value);
+								}
+							}
+						})
+						.catch((error) => {})
+						.finally(() => {
+							formEl.classList.remove('loading', 'silent');
+							formEl.removeAttribute('disabled');
+							info.setAttribute('aria-hidden', 'false');
+						});
+				}
+			}
+
+			addEvent(formEl, SUBMIT, formSubmit);
 		});
 	}
 

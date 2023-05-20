@@ -18,18 +18,21 @@ import { useEntityProp } from '@wordpress/core-data';
  */
 
 const SAMPLEFORM = (
-	<form className="mailster-block-form">
-		<label className="mailster-label">This is my Label</label>
-		<select className="input">
-			<option>This is a select</option>
-		</select>
-		<input type="checkbox" />
-		<input type="radio" />
-		<input type="text" className="input" />
-		<input type="email" className="input" />
-		<input type="date" className="input" />
-		<input type="submit" className="wp-block-button__link" />
-	</form>
+	<>
+		<p>asd</p>
+		<form className="mailster-block-form" id="theform">
+			<label className="mailster-label">This is my Label</label>
+			<select className="input">
+				<option>This is a select</option>
+			</select>
+			<input type="checkbox" />
+			<input type="radio" />
+			<input type="text" className="input" />
+			<input type="email" className="input" />
+			<input type="date" className="input" />
+			<input type="submit" className="wp-block-button__link" />
+		</form>
+	</>
 );
 
 const convertRestArgsIntoStylesArr = ([...args]) => {
@@ -50,26 +53,33 @@ const getStyles = function () {
 	const styles = window.getComputedStyle(element);
 	stylesProps.reduce((acc, v) => {
 		const x = styles.getPropertyValue(v);
-		if (x) s += v + ': ' + x + ';';
+		if (x) s += v + ':' + x + ';';
 	}, {});
 
 	return s;
 };
-const getInlineStyles = () => {
-	const iframe = document.getElementById('inlineStylesIframe');
+const injectForm = (doc) => {
+	//get one of the most common body container
+	const el =
+		doc.getElementsByClassName('entry-content')[0] ||
+		doc.getElementById('page') ||
+		doc.getElementById('site-content') ||
+		doc.getElementById('content') ||
+		doc.getElementsByClassName('wp-site-blocks')[0] ||
+		doc.getElementsByTagName('body')[0];
 
-	if (!iframe) return;
+	if (el.classList.contains('mailster-inline-styles')) return false;
 
-	const doc = iframe.contentWindow.document,
-		//get a couple of possible DOM elements
-		el =
-			doc.getElementsByClassName('entry-content')[0] ||
-			doc.getElementById('page') ||
-			doc.getElementById('site-content') ||
-			doc.getElementById('content') ||
-			doc.getElementsByClassName('wp-site-blocks')[0] ||
-			doc.getElementsByTagName('body')[0],
-		properties = [
+	const root = createRoot(el);
+	root.render(SAMPLEFORM);
+
+	el.classList.add('mailster-inline-styles');
+
+	return el;
+};
+
+const getInlineStyles = (el) => {
+	const properties = [
 			'padding',
 			'border',
 			'font',
@@ -85,7 +95,7 @@ const getInlineStyles = () => {
 		selectors = {
 			'input[type="text"]': [],
 			'input[type="email"]': [],
-			'input[type="date"]': [],
+			'input[type="date"]': ['height'],
 			'input[type="checkbox"]': ['width', 'height'],
 			'input[type="radio"]': ['width', 'height'],
 			'input[type="submit"]': ['border', 'outline', 'color'],
@@ -93,23 +103,18 @@ const getInlineStyles = () => {
 			'label.mailster-label': [],
 		};
 
-	const root = createRoot(el);
-	root.render(SAMPLEFORM);
-
 	return Object.keys(selectors)
 		.map((selector, i) => {
-			const style = getStyles(
-				doc.querySelector('.mailster-block-form ' + selector),
-				[...properties, ...selectors[selector]]
-			);
-			return '.mailster-block-form ' + selector + '{' + style + '}';
+			const style = getStyles(el.querySelector(selector), [
+				...properties,
+				...selectors[selector],
+			]);
+			return selector + '{' + style + '}';
 		})
 		.join('');
 };
 
-export default function InlineStyles(props) {
-	const { meta, setMeta } = props;
-
+export default function InlineStyles() {
 	const can = useSelect((select) =>
 		select('core').canUser('update', 'settings')
 	);
@@ -119,7 +124,6 @@ export default function InlineStyles(props) {
 		'site',
 		'mailster_inline_styles'
 	);
-
 	const [render, setRender] = useState(true);
 
 	const posts = useSelect((select) => {
@@ -130,8 +134,6 @@ export default function InlineStyles(props) {
 
 	const [siteUrl] = useEntityProp('root', 'site', 'url');
 
-	const [title, setTitle] = useEntityProp('root', 'site', 'title');
-
 	if (!can || !posts || !siteUrl) {
 		return null;
 	}
@@ -139,38 +141,53 @@ export default function InlineStyles(props) {
 	const link = posts.length > 0 ? posts[0].link : siteUrl;
 
 	const updateStyles = () => {
-		const styles = getInlineStyles();
-		if (styles != inlineStyles) {
-			setInlineStyles(styles);
-			dispatch('core').saveEditedEntityRecord('root', 'site');
-			dispatch('core/notices').createNotice(
-				'success',
-				__('Input field styles have been updated.', 'mailster'),
-				{
-					type: 'snackbar',
-					isDismissible: true,
+		const iframe = document.getElementById('inlineStylesIframe');
+		if (!iframe) return;
+
+		const formEl = injectForm(iframe.contentWindow.document);
+		formEl &&
+			setTimeout(() => {
+				const styles = getInlineStyles(formEl);
+				if (styles != inlineStyles) {
+					setInlineStyles(styles);
+					dispatch('core').saveEditedEntityRecord('root', 'site');
+					!inlineStyles &&
+						dispatch('core/notices').createNotice(
+							'success',
+							__('Mailster Inline styles have been updated.', 'mailster'),
+							{
+								id: 'mailster-inline-styles-updated',
+								type: 'snackbar',
+								isDismissible: true,
+							}
+						);
 				}
-			);
-		}
-		setRender(false);
+				setRender(false);
+			}, 1);
 	};
 
 	if (!render) {
-		return null;
+		//return null;
 	}
-
 	return (
-		<iframe
-			src={link}
-			id="inlineStylesIframe"
-			style={{
-				pointerEvents: 'none',
-				width: screen.width,
-				zIndex: -1,
-				position: 'absolute',
-				visibility: 'hidden',
-			}}
-			onLoad={updateStyles}
-		></iframe>
+		<div
+			className="mailster-editor-inlinestyles"
+			style={{ position: 'absolute', left: 0 }}
+			hidden
+		>
+			<iframe
+				src={link}
+				id="inlineStylesIframe"
+				style={{
+					pointerEvents: 'none',
+					width: screen.width,
+					zIndex: -1,
+					position: 'absolute',
+					visibility: 'hidden',
+				}}
+				onLoad={updateStyles}
+				loading="eager"
+			></iframe>
+		</div>
 	);
 }

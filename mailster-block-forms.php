@@ -47,8 +47,8 @@ function mailster_block_forms_add_admin_css() {
 	wp_add_inline_style(
 		'admin-menu',
 		"#menu-posts-newsletter
-			a[href='edit.php?post_type=newsletter_form']::after {
-				content: 'Beta';
+			a[href='edit.php?post_type=mailster-form']::after {
+				content: 'RC 1';
 				display: inline-block;
 				vertical-align: top;
 				box-sizing: border-box;
@@ -124,6 +124,13 @@ function mailster_block_forms_verify_subscriber( $entry ) {
 add_filter( 'mailster_verify_subscriber', 'mailster_block_forms_verify_subscriber' );
 
 
+function mailster_block_forms_change_post_type_name() {
+	global $wpdb;
+
+	// change the post type of the forms
+	$wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->posts} SET `post_type` = %s WHERE post_type = %s", 'mailster-form', 'newsletter_form' ) );
+}
+
 function mailster_block_forms_filter( $content, $template, $subscriber, $options ) {
 
 	if ( $template != 'confirmation' ) {
@@ -133,7 +140,7 @@ function mailster_block_forms_filter( $content, $template, $subscriber, $options
 	$form_id = mailster( 'subscribers' )->meta( $subscriber->ID, 'form' );
 	$form    = get_post( $form_id );
 
-	if ( ! $form || $form->post_type != 'newsletter_form' ) {
+	if ( ! $form || $form->post_type != 'mailster-form' ) {
 		return $content;
 	}
 
@@ -178,7 +185,7 @@ function mailster_block_forms_confirm_target( $target, $subscriber_id ) {
 	$form_id = mailster( 'subscribers' )->meta( $subscriber_id, 'form' );
 	$form    = get_post( $form_id );
 
-	if ( $form->post_type != 'newsletter_form' ) {
+	if ( $form->post_type != 'mailster-form' ) {
 		return $target;
 	}
 
@@ -197,7 +204,7 @@ function mailster_block_forms_subscriber_subscribed( $subscriber_id ) {
 
 	$form = get_post( $form_id );
 
-	if ( $form && $form->post_type === 'newsletter_form' ) {
+	if ( $form && $form->post_type === 'mailster-form' ) {
 		mailster( 'block-forms' )->conversion( $form_id, $subscriber_id );
 	}
 
@@ -214,10 +221,10 @@ function mailster_block_forms_shortcode( $atts, $content ) {
 add_shortcode( 'newsletter_block_form', 'mailster_block_forms_shortcode' );
 
 function mailster_block_forms_enable_on_classic_editor( $settings ) {
-	if ( ! $settings && isset( $_GET['post'] ) && get_post_type( (int) $_GET['post'] ) === 'newsletter_form' ) {
+	if ( ! $settings && isset( $_GET['post'] ) && get_post_type( (int) $_GET['post'] ) === 'mailster-form' ) {
 		$settings = array( 'editor' => 'block' );
 	}
-	if ( ! $settings && isset( $_GET['post_type'] ) && $_GET['post_type'] === 'newsletter_form' ) {
+	if ( ! $settings && isset( $_GET['post_type'] ) && $_GET['post_type'] === 'mailster-form' ) {
 		$settings = array( 'editor' => 'block' );
 	}
 

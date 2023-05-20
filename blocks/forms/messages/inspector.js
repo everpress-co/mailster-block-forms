@@ -24,61 +24,65 @@ export default function InputFieldInspectorControls({
 		attributes;
 
 	return (
-		<InspectorControls>
-			<PanelColorSettings
-				title={__('Success Message', 'mailster')}
-				initialOpen={false}
-				//opened={displayMessages}
-				onToggle={() => {
-					//setDisplayMessages(!displayMessages);
-				}}
-				colorSettings={[
-					{
-						value: successBackground,
-						onChange: (value) => setAttributes({ successBackground: value }),
-						label: __('Background Color', 'mailster'),
-					},
-					{
-						value: success,
-						onChange: (value) => setAttributes({ success: value }),
-						label: __('Text Color', 'mailster'),
-					},
-				]}
-			></PanelColorSettings>
-			<PanelColorSettings
-				title={__('Error Messages', 'mailster')}
-				initialOpen={false}
-				//opened={displayMessages}
-				onToggle={() => {
-					//setDisplayMessages(!displayMessages);
-				}}
-				colorSettings={[
-					{
-						value: errorBackground,
-						onChange: (value) => setAttributes({ errorBackground: value }),
-						label: __('Background Color', 'mailster'),
-					},
-					{
-						value: error,
-						onChange: (value) => setAttributes({ error: value }),
-						label: __('Text Color', 'mailster'),
-					},
-				]}
-			></PanelColorSettings>
-			<PanelBody title={__('Field Settings', 'mailster')} initialOpen={true}>
-				<PanelRow>
-					<RangeControl
-						className="widefat"
-						label="Width"
-						value={width}
-						allowReset={true}
-						initialPosition={100}
-						onChange={(value) => setAttributes({ width: value })}
-						min={10}
-						max={100}
-					/>
-				</PanelRow>
-			</PanelBody>
-		</InspectorControls>
+		<>
+			<InspectorControls group="styles">
+				<PanelColorSettings
+					title={__('Success Message', 'mailster')}
+					initialOpen={false}
+					//opened={displayMessages}
+					onToggle={() => {
+						//setDisplayMessages(!displayMessages);
+					}}
+					colorSettings={[
+						{
+							value: successBackground,
+							onChange: (value) => setAttributes({ successBackground: value }),
+							label: __('Background Color', 'mailster'),
+						},
+						{
+							value: success,
+							onChange: (value) => setAttributes({ success: value }),
+							label: __('Text Color', 'mailster'),
+						},
+					]}
+				></PanelColorSettings>
+				<PanelColorSettings
+					title={__('Error Messages', 'mailster')}
+					initialOpen={false}
+					//opened={displayMessages}
+					onToggle={() => {
+						//setDisplayMessages(!displayMessages);
+					}}
+					colorSettings={[
+						{
+							value: errorBackground,
+							onChange: (value) => setAttributes({ errorBackground: value }),
+							label: __('Background Color', 'mailster'),
+						},
+						{
+							value: error,
+							onChange: (value) => setAttributes({ error: value }),
+							label: __('Text Color', 'mailster'),
+						},
+					]}
+				></PanelColorSettings>
+			</InspectorControls>
+			<InspectorControls>
+				<PanelBody title={__('Field Settings', 'mailster')} initialOpen={true}>
+					<PanelRow>
+						<RangeControl
+							className="widefat"
+							label="Width"
+							value={width}
+							allowReset={true}
+							initialPosition={100}
+							onChange={(value) => setAttributes({ width: value })}
+							min={10}
+							max={100}
+						/>
+					</PanelRow>
+				</PanelBody>
+			</InspectorControls>
+		</>
 	);
 }
