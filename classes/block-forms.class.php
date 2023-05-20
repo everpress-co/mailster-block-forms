@@ -113,9 +113,9 @@ class MailsterBlockForms {
 	public function beta_notice() {
 		$msg  = '<h2>Welcome to the new Block Forms page.</h2>';
 		$msg .= '<p>Creating forms for Mailster gets easier and more flexible. Utilize the WordPress Block Editor (Gutenberg) to create you custom, feature rich forms.</p>';
-		$msg .= '<p><strong>Block forms are currently in beta version. Some features are subject to change before the stable release.</strong></p>';
-		$msg .= '<p><a href="' . admin_url( 'post-new.php?post_type=newsletter_form' ) . '" class="button button-primary">' . esc_html__( 'Create new Form' ) . '</a> <a href="https://docs.mailster.co/#/block-forms-overview" class="button button-secondary external">Check out our guide</a> or <a href="https://github.com/everpress-co/mailster-block-forms/issues" class="button button-link external">Submit feedback on Github</a></p>';
-		mailster_notice( $msg, 'info', true, 'newsletter_form_beta_notice', true, 'edit-newsletter_form' );
+		$msg .= '<p><strong>Block forms are currently in <del>beta version</del> in release state. Some features are still subject to change before the stable release.</strong></p>';
+		$msg .= '<p><a href="' . admin_url( 'post-new.php?post_type=mailster-form' ) . '" class="button button-primary">' . esc_html__( 'Create new Form' ) . '</a> <a href="https://docs.mailster.co/#/block-forms-overview" class="button button-secondary external">Check out our guide</a> or <a href="https://github.com/everpress-co/mailster-block-forms/issues" class="button button-link external">Submit feedback on Github</a></p>';
+		mailster_notice( $msg, 'info', true, 'newsletter_form_beta_notice', true, 'edit-mailster-form' );
 	}
 
 	public function maybe_preview() {

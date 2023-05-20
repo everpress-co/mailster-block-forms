@@ -169,7 +169,7 @@ export default function InlineStyles() {
 	};
 
 	if (!render) {
-		//return null;
+		return null;
 	}
 	return (
 		<div
