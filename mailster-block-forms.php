@@ -28,16 +28,25 @@ add_action(
 			return;
 		}
 
+		function mailster_block_forms_change_post_type_name() {
+			global $wpdb;
+
+			// change the post type of the forms
+			$wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->posts} SET `post_type` = %s WHERE post_type = %s", 'mailster-form', 'newsletter_form' ) );
+		}
+
 		if ( version_compare( MAILSTER_VERSION, '4.0.0' ) >= 0 ) {
 
-			// mailster_block_forms_change_post_type_name();
-			// deactivate this plugin
-			deactivate_plugins( plugin_basename( __FILE__ ) );
+			mailster_block_forms_change_post_type_name();
 			$msg  = '<h2>Thanks for testing Mailster Block Forms!</h2>';
 			$msg .= '<p>This addon has been merged into the core plugin and is no longer needed and is now disabled.</p>';
 			$msg .= '<p>Enjoy building forms with your favorite newsletter plugin.</p>';
-			$msg .= '<p><a href="' . admin_url( 'edit.php?post_type=mailster-form' ) . '" class="button button-primary">' . esc_html__( 'Browse your forms' ) . '</a> <a href="' . admin_url( 'post-new.php?post_type=mailster-form' ) . '" class="button button-secondary external">Create new form</a></p>';
+			$msg .= '<p><a href="' . admin_url( 'edit.php?post_type=mailster-form' ) . '" class="button button-primary">' . esc_html__( 'Browse your forms' ) . '</a> <a href="' . admin_url( 'post-new.php?post_type=mailster-form' ) . '" class="button button-secondary">Create new form</a></p>';
 			mailster_notice( $msg, 'info', false, 'mailster-form_disable_notice', true );
+
+			// deactivate this plugin
+			deactivate_plugins( plugin_basename( __FILE__ ) );
+
 			return;
 		}
 
@@ -83,37 +92,6 @@ add_action(
 		}
 		add_action( 'admin_enqueue_scripts', 'mailster_block_forms_add_admin_css' );
 
-		function mailster_block_forms_change_menu_position() {
-			global $submenu;
-			if ( ! isset( $submenu['edit.php?post_type=newsletter'] ) ) {
-				return;
-			}
-			$entry = $submenu['edit.php?post_type=newsletter'][12];
-			unset( $submenu['edit.php?post_type=newsletter'][12] );
-			$submenu['edit.php?post_type=newsletter'][] = $entry;
-		}
-		// add_action( 'admin_menu', 'mailster_block_forms_change_menu_position', 30 );
-
-		function mailster_block_forms_activate() {
-			if ( ! function_exists( 'mailster' ) ) {
-				die( 'Please enable the <a href="https://mailster.co" target="_blank">Mailster Newsletter Plugin</a> to use this plugin!' );
-			}
-
-			if ( version_compare( MAILSTER_VERSION, '3.2' ) < 0 ) {
-				die( 'Mailster Block Forms require Mailster version 3.2.0 or above. Please update Mailster first!' );
-			}
-
-			update_option( 'mailster_inline_styles', '', 'no' );
-			mailster()->dbstructure();
-
-		}
-		register_activation_hook( __FILE__, 'mailster_block_forms_activate' );
-
-		function mailster_block_forms_deactivate() {
-			delete_option( 'mailster_inline_styles' );
-		}
-		register_deactivation_hook( __FILE__, 'mailster_block_forms_deactivate' );
-
 		function mailster_block_forms_register_settings() {
 
 			register_setting(
@@ -133,13 +111,6 @@ add_action(
 			return $entry;
 		}
 		add_filter( 'mailster_verify_subscriber', 'mailster_block_forms_verify_subscriber' );
-
-		function mailster_block_forms_change_post_type_name() {
-			global $wpdb;
-
-			// change the post type of the forms
-			$wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->posts} SET `post_type` = %s WHERE post_type = %s", 'mailster-form', 'newsletter_form' ) );
-		}
 
 		function mailster_block_forms_filter( $content, $template, $subscriber, $options ) {
 
@@ -272,3 +243,19 @@ function mailster_block_forms_add_class( $classes ) {
 	return $classes;
 }
 add_filter( 'mailster_classes', 'mailster_block_forms_add_class' );
+
+function mailster_block_forms_activate() {
+	if ( ! function_exists( 'mailster' ) ) {
+		die( 'Please enable the <a href="https://mailster.co" target="_blank">Mailster Newsletter Plugin</a> to use this plugin!' );
+	}
+
+	if ( version_compare( MAILSTER_VERSION, '3.2' ) < 0 ) {
+		die( 'Mailster Block Forms require Mailster version 3.2.0 or above. Please update Mailster first!' );
+	}
+
+	update_option( 'mailster_inline_styles', '', 'no' );
+	mailster()->dbstructure();
+
+}
+register_activation_hook( __FILE__, 'mailster_block_forms_activate' );
+
