@@ -111,7 +111,7 @@ const getInlineStyles = (el) => {
 				...properties,
 				...selectors[selector],
 			]);
-			return selector + '{' + style + '}';
+			return '.mailster-block-form ' + selector + '{' + style + '}';
 		})
 		.join('');
 };
