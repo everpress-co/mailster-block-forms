@@ -749,8 +749,8 @@ body.single-mailster-form {
 	transition: transform 0.1s;
 }
 .mailster-block-form.wp-block-mailster-form-wrapper.loading:not(.silent) {
-	transform: scale(0.98);
-	opacity: 0.8;
+	__transform: scale(0.98);
+	_opacity: 0.8;
 }
 .mailster-block-form.wp-block-mailster-form-wrapper.loading
 	.wp-block-mailster-field-submit::before {
