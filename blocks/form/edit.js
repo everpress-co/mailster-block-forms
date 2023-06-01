@@ -175,7 +175,7 @@ export default function Edit(props) {
 		setDisplayForm(false);
 		dispatch('core').receiveEntityRecords(
 			'postType',
-			'mailster-',
+			'mailster-form',
 			[],
 			{},
 			true
@@ -276,7 +276,7 @@ export default function Edit(props) {
 							<Button
 								variant="secondary"
 								icon={plus}
-								href={'post-new.php?post_type=mailster-'}
+								href={'post-new.php?post_type=mailster-form'}
 								target={'edit_form_new'}
 								text={__('Create new form', 'mailster')}
 							/>

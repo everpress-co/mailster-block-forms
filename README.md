@@ -4,7 +4,7 @@ Contributors: everpress, xaverb
 Tags: mailster, blocks, forms, mailsterblockforms  
 Requires at least: 6.0  
 Tested up to: 6.2
-Stable tag: 0.2.2
+Stable tag: 0.3.0
 Requires PHP: 7.2.5+  
 License: GPLv2 or later  
 Author: EverPress  
@@ -43,6 +43,19 @@ No, Mailster 3.2.0 or above is required to use this plugin. Get it [here](https:
 
 ## Changelog
 
+## 0.3.0
+
+- RC 1: We'll soon merge this into the core plugin!
+- change: changed the post type from `newsletter_form` to `mailster-form`
+- improved: performance in the editor by preventing unnecessary re-renders
+- new: 2 patterns added
+- improved: updated existing patterns
+- added: support for textareas from custom fields
+- change: move styling options to styling section in the inspector if feasible
+- improved: inline styles are now also updated if form is used on other pages
+- improved: forms can now get submitted if no submit button is present
+- improved: removed some CSS effects for accessibility
+
 ## 0.2.2
 
 - fixed: invalid method in shortcode callback
@@ -50,7 +63,7 @@ No, Mailster 3.2.0 or above is required to use this plugin. Get it [here](https:
 ## 0.2.1
 
 - new: 6 new form patterns
-- new: option for fullsreen background image
+- new: option for fullscreen background image
 - new: support for Elementor with a dedicate widget
 - fixed: user choice of lists were disabled if switching from code view back to editor view
 - improved storing of block attributes
