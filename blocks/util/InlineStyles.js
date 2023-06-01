@@ -18,22 +18,19 @@ import { useEntityProp } from '@wordpress/core-data';
  */
 
 const SAMPLEFORM = (
-	<>
-		<p>asd</p>
-		<form className="mailster-block-form" id="theform">
-			<label className="mailster-label">This is my Label</label>
-			<select className="input">
-				<option>This is a select</option>
-			</select>
-			<input type="checkbox" />
-			<input type="radio" />
-			<input type="text" className="input" />
-			<input type="email" className="input" />
-			<input type="date" className="input" />
-			<input type="submit" className="wp-block-button__link" />
-			<textarea>Sample Content</textarea>
-		</form>
-	</>
+	<form className="mailster-block-form">
+		<label className="mailster-label">This is my Label</label>
+		<select className="input">
+			<option>This is a select</option>
+		</select>
+		<input type="checkbox" />
+		<input type="radio" />
+		<input type="text" className="input" />
+		<input type="email" className="input" />
+		<input type="date" className="input" />
+		<input type="submit" className="wp-block-button__link" />
+		<textarea>Sample Content</textarea>
+	</form>
 );
 
 const convertRestArgsIntoStylesArr = ([...args]) => {
@@ -94,13 +91,13 @@ const getInlineStyles = (el) => {
 			'letter-spacing',
 		],
 		selectors = {
-			'input[type="text"]': [],
-			'input[type="email"]': [],
+			'input[type="text"]': ['height'],
+			'input[type="email"]': ['height'],
 			'input[type="date"]': ['height'],
 			'input[type="checkbox"]': ['width', 'height'],
 			'input[type="radio"]': ['width', 'height'],
 			'input[type="submit"]': ['border', 'outline', 'color'],
-			select: [],
+			select: ['height'],
 			'label.mailster-label': [],
 			textarea: [],
 		};
