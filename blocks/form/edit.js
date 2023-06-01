@@ -45,18 +45,19 @@ import './editor.scss';
 import HomepageInspectorControls from '../homepage/inspector';
 import { searchBlock, searchBlocks } from '../util';
 import { TABS } from '../homepage/constants';
+import InlineStyles from '../util/InlineStyles';
 
 function MailsterFormSelector(props) {
 	const { attributes, setAttributes, isSelected, selectForm, formId } = props;
 
 	const forms = useSelect((select) => {
-		return select('core').getEntityRecords('postType', 'newsletter_form');
+		return select('core').getEntityRecords('postType', 'mailster-form');
 	});
 
 	const isLoading = useSelect((select) => {
 		return select('core/data').isResolving('core', 'getEntityRecords', [
 			'postType',
-			'newsletter_form',
+			'mailster-form',
 		]);
 	});
 
@@ -113,7 +114,7 @@ export default function Edit(props) {
 	const blockRef = useRef();
 
 	useEffect(() => {
-		contextAlign && setAttributes({ align: contextAlign });
+		setAttributes({ align: contextAlign });
 	}, [contextAlign]);
 
 	const selectForm = (id) => {
@@ -174,7 +175,7 @@ export default function Edit(props) {
 		setDisplayForm(false);
 		dispatch('core').receiveEntityRecords(
 			'postType',
-			'newsletter_form',
+			'mailster-form',
 			[],
 			{},
 			true
@@ -275,7 +276,7 @@ export default function Edit(props) {
 							<Button
 								variant="secondary"
 								icon={plus}
-								href={'post-new.php?post_type=newsletter_form'}
+								href={'post-new.php?post_type=mailster-form'}
 								target={'edit_form_new'}
 								text={__('Create new form', 'mailster')}
 							/>
@@ -323,6 +324,7 @@ export default function Edit(props) {
 					</Panel>
 				</InspectorControls>
 			)}
+			<InlineStyles />
 		</>
 	);
 }

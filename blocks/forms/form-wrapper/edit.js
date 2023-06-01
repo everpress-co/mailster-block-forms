@@ -96,15 +96,13 @@ const prefixCss = (css, className, type) => {
 export default function Edit(props) {
 	const { attributes, setAttributes, toggleSelection, isSelected, clientId } =
 		props;
-	const { css, style, background, inputs } = attributes;
+	const { css, style, background, inputs, isPreview } = attributes;
 
-	const [meta, setMeta] = useEntityProp('postType', 'newsletter_form', 'meta');
+	const [meta, setMeta] = useEntityProp('postType', 'mailster-form', 'meta');
 
 	const borderProps = useBorderProps(attributes);
 	const colorProps = useColorProps(attributes);
 	const spacingProps = useSpacingProps(attributes);
-
-	const inEditor = searchBlock('mailster/form-wrapper');
 
 	const formClasses = classnames(
 		'mailster-block-form',
@@ -199,119 +197,6 @@ export default function Edit(props) {
 		});
 	}, [css]);
 
-	// enter the root wrapper or replace it with a new one
-	inEditor &&
-		useEffect(() => {
-			const all = select('core/block-editor').getBlocks(),
-				count = all.length;
-
-			if (count > 1) {
-				console.warn('enter the root wrapper or replace it with a new one');
-				const inserted = select('core/block-editor').getBlock(clientId);
-				const current = all.find(
-					(block) =>
-						block.name == 'mailster/form-wrapper' && block.clientId != clientId
-				);
-				if (
-					confirm(
-						'This will replace your current form with the selected one. Continue?'
-					)
-				) {
-					dispatch('core/block-editor').removeBlock(current.clientId);
-				} else {
-					dispatch('core/block-editor').removeBlock(inserted.clientId);
-				}
-			}
-		}, []);
-
-	inEditor &&
-		useEffect(() => {
-			const messagesBlock = searchBlock('mailster/messages', clientId);
-
-			if (!messagesBlock) {
-				console.warn('Add message block');
-				const block = wp.blocks.createBlock('mailster/messages');
-				const referenceBlock = searchBlock(/^mailster\/field-/);
-				const pos = referenceBlock
-					? select('core/block-editor').getBlockIndex(
-							referenceBlock.clientId,
-							referenceBlock.rootClientId
-					  )
-					: 0;
-
-				dispatch('core/block-editor').insertBlock(
-					block,
-					pos,
-					referenceBlock.rootClientId,
-					false
-				);
-
-				// clear any selected block
-				dispatch('core/block-editor').clearSelectedBlock();
-				// select "Form" in side panel
-				dispatch('core/edit-post').openGeneralSidebar('edit-post/document');
-			}
-		});
-
-	inEditor &&
-		useEffect(() => {
-			const block = searchBlock('mailster/gdpr', clientId);
-
-			if (block && !meta.gdpr) {
-				console.warn('Remove gdpr block');
-				//remove lock
-				block.attributes.lock.remove = false;
-
-				dispatch('core/block-editor').removeBlock(block.clientId);
-				dispatch('core/edit-post').openGeneralSidebar('edit-post/document');
-			} else if (!block && meta.gdpr) {
-				console.warn('Add gdpr block');
-				const block = wp.blocks.createBlock('mailster/gdpr');
-				const referenceBlock = searchBlock('mailster/field-submit');
-
-				const pos = referenceBlock
-					? select('core/block-editor').getBlockIndex(
-							referenceBlock.clientId,
-							referenceBlock.rootClientId
-					  )
-					: all.length;
-
-				dispatch('core/block-editor').insertBlock(
-					block,
-					pos,
-					referenceBlock.rootClientId
-				);
-			}
-		}, [meta.gdpr]);
-
-	inEditor &&
-		useEffect(() => {
-			const block = searchBlock('mailster/lists', clientId);
-
-			if (block && !meta.userschoice) {
-				//remove lock
-				block.attributes.lock.remove = false;
-				dispatch('core/block-editor').removeBlock(block.clientId);
-				dispatch('core/edit-post').openGeneralSidebar('edit-post/document');
-			} else if (!block && meta.userschoice) {
-				console.warn('Add lists block');
-				const block = wp.blocks.createBlock('mailster/lists');
-				const referenceBlock = searchBlock('mailster/field-submit');
-				const pos = referenceBlock
-					? select('core/block-editor').getBlockIndex(
-							referenceBlock.clientId,
-							referenceBlock.rootClientId
-					  )
-					: all.length;
-
-				dispatch('core/block-editor').insertBlock(
-					block,
-					pos,
-					referenceBlock.rootClientId
-				);
-			}
-		}, [meta.userschoice]);
-
 	const [inlineStyles, setInlineStyles] = useEntityProp(
 		'root',
 		'site',
@@ -327,12 +212,6 @@ export default function Edit(props) {
 				hidden // overwritten via CSS
 				style={cleanedFormStyle}
 			>
-				{window.mailster_inline_styles && !inlineStyles && (
-					<style className="mailster-custom-styles">
-						{window.mailster_inline_styles}
-					</style>
-				)}
-
 				{inlineStyles && (
 					<style className="mailster-custom-styles">{inlineStyles}</style>
 				)}
@@ -351,21 +230,21 @@ export default function Edit(props) {
 					<InnerBlocks renderAppender={null} />
 				</div>
 			</div>
-			<div
-				className="mailster-editor-info"
-				hidden // overwritten via CSS
-			>
-				{__(
-					'Forms may look different in the editor. Please check the final result on your website.',
-					'mailster'
-				)}
-			</div>
-			{inEditor && (
-				<div className="mailster-editor-inlinestyles" hidden>
+			{!isPreview && (
+				<>
+					<div
+						className="mailster-editor-info"
+						hidden // overwritten via CSS
+					>
+						{__(
+							'Forms may look different in the editor. Please check the final result on your website.',
+							'mailster'
+						)}
+					</div>
 					<InlineStyles />
-				</div>
+					<BlockRecovery {...props} />
+				</>
 			)}
-			<BlockRecovery {...props} />
 		</>
 	);
 }

@@ -17,9 +17,10 @@ import {
 	CardFooter,
 	Modal,
 	__experimentalGrid as Grid,
+	Button,
 } from '@wordpress/components';
 
-import { useState, useEffect, useRef } from '@wordpress/element';
+import { useState, useEffect, useRef, useMemo } from '@wordpress/element';
 import { useSelect, select, dispatch, subscribe } from '@wordpress/data';
 import { useEntityProp } from '@wordpress/core-data';
 
@@ -28,6 +29,7 @@ import { useEntityProp } from '@wordpress/core-data';
  */
 
 import InlineStyles from '../../util/InlineStyles';
+import { PluginPostStatusInfo } from '@wordpress/edit-post';
 
 const editor = select('core/editor');
 
@@ -47,64 +49,74 @@ const EmptyEditor = () => {
 	return true;
 };
 
+const FormTitle = ({ blockRef, title }) => {
+	const [tempTitle, setTitle] = useState(title);
+
+	return (
+		<TextControl
+			label={__('Form Name', 'mailster')}
+			className="form-title"
+			value={tempTitle}
+			onChange={(value) => setTitle(value)}
+			help={__('Define a name for your form.', 'mailster')}
+			placeholder={__('Add title', 'mailster')}
+			ref={blockRef}
+		/>
+	);
+};
+
 const ModalContent = (props) => {
 	const { setOpen, patterns } = props;
 	if (!patterns) {
 		return <></>;
 	}
 
-	const [title, setTitle] = useEntityProp(
-		'postType',
-		'newsletter_form',
-		'title'
-	);
+	const [meta, setMeta] = useEntityProp('postType', 'mailster-form', 'meta');
+
+	const blockRef = useRef(null);
+
+	const [title, setTitle] = useEntityProp('postType', 'mailster-form', 'title');
+
+	const onPatternSelect = (pattern, block) => {
+		if (blockRef.current.value) {
+			setTitle(blockRef.current.value);
+		} else {
+			setTitle(pattern.title);
+		}
+		block.attributes.isPreview = undefined;
+
+		dispatch('core/block-editor').resetBlocks([block]);
+		setOpen(false);
+	};
 
 	return (
 		<>
-			<TextControl
-				label={__('Form Name', 'mailster')}
-				className="form-title"
-				value={title}
-				onChange={(value) => setTitle(value)}
-				help={__('Define a name for your form.', 'mailster')}
-				placeholder={__('Add title', 'mailster')}
-			/>
+			<FormTitle blockRef={blockRef} title={title} />
 
 			<Grid columns={3}>
 				{patterns.map((pattern, i) => {
-					return <FormPattern key={i} pattern={pattern} {...props} />;
+					return (
+						<FormPattern
+							key={i}
+							pattern={pattern}
+							onPatternSelect={onPatternSelect}
+							{...props}
+						/>
+					);
 				})}
 			</Grid>
+
 			<InlineStyles />
 		</>
 	);
 };
 
-function FormPattern({ pattern, setOpen }) {
+function FormPattern({ pattern, setOpen, onPatternSelect }) {
 	const { content } = pattern;
-	const block = wp.blocks.parse(content);
-
-	const [title, setTitle] = useEntityProp(
-		'postType',
-		'newsletter_form',
-		'title'
-	);
-
-	const attributes = block[0].attributes;
-
-	const { background } = attributes;
-
-	const setPattern = (pattern, block) => {
-		if (!title) {
-			setTitle(pattern.title);
-		}
-		dispatch('core/block-editor').resetBlocks(block);
-		setOpen(false);
-	};
-
-	const ref = useRef(null);
 
 	const [visible, setVisible] = useState(false);
+
+	const ref = useRef(null);
 
 	useEffect(() => {
 		if (!ref.current) return;
@@ -120,12 +132,17 @@ function FormPattern({ pattern, setOpen }) {
 		observer.observe(ref.current);
 	}, [ref.current]);
 
+	const block = useMemo(() => {
+		let blocks = wp.blocks.parse(content).pop();
+		blocks.attributes.isPreview = true;
+		return blocks;
+	}, [content]);
+
 	return (
 		<Card
 			ref={ref}
-			onClick={() => setPattern(pattern, block)}
+			onClick={() => onPatternSelect(pattern, block)}
 			className="form-pattern-card"
-			style={{ displays: 'flex' }}
 			isRounded={false}
 			//isBorderless
 			size="xSmall"
@@ -133,7 +150,10 @@ function FormPattern({ pattern, setOpen }) {
 		>
 			<CardBody size="large">
 				{visible && (
-					<BlockPreview blocks={block} viewportWidth={pattern.viewportWidth} />
+					<BlockPreview
+						blocks={[block]}
+						viewportWidth={pattern.viewportWidth}
+					/>
 				)}
 			</CardBody>
 			<CardFooter className="form-pattern-title">{pattern.title}</CardFooter>
@@ -145,12 +165,14 @@ export default function FormModal(props) {
 	const { meta, setMeta } = props;
 
 	const [isOpen, setOpen] = useState(false);
-	const [isEmpty, setEmpty] = useState(EmptyEditor());
+	//const [isEmpty, setEmpty] = useState(EmptyEditor());
 
 	const openModal = () => setOpen(true);
 
+	const { isCleanNewPost } = useSelect('core/editor');
+
 	const closeModal = () => {
-		if (isEmpty) {
+		if (isCleanNewPost()) {
 			const insertedBlock = wp.blocks.createBlock(
 				'mailster/form-wrapper',
 				{},
@@ -167,30 +189,39 @@ export default function FormModal(props) {
 		setOpen(false);
 	};
 
-	subscribe(() => {
-		const newRequireModal = EmptyEditor();
-		if (newRequireModal !== isEmpty) {
-			setEmpty(newRequireModal);
+	useEffect(() => {
+		if (isCleanNewPost()) {
+			setOpen(true);
 		}
-	});
+	}, []);
 
 	// const { __experimentalGetAllowedPatterns, getSettings } =
 	// 	select('core/block-editor');
 
 	// const patterns = __experimentalGetAllowedPatterns();
 
-	const patterns = useSelect((select) => {
-		return select('core')
-			.getBlockPatterns()
-			.filter((pattern) => pattern.categories?.includes('mailster-forms'));
-	});
+	const { allPatterns } = useSelect(
+		(select) => ({
+			allPatterns: select('core').getBlockPatterns(),
+		}),
+		[]
+	);
 
-	useEffect(() => {
-		setOpen(isEmpty);
-	}, [isEmpty]);
+	const patterns = useMemo(
+		() =>
+			[...(allPatterns || [])].filter(({ categories }) =>
+				categories?.includes('mailster-forms')
+			),
+		[allPatterns]
+	);
 
 	return (
 		<>
+			<PluginPostStatusInfo className="mailster-block-forms-post-status-info">
+				<Button variant="secondary" className="widefat" onClick={openModal}>
+					Select Template
+				</Button>
+			</PluginPostStatusInfo>
 			{isOpen && (
 				<Modal
 					title={__('Select a template to get started', 'mailster')}

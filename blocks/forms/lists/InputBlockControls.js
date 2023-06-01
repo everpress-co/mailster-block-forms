@@ -18,9 +18,7 @@ import { arrowRight, arrowDown } from '@wordpress/icons';
 
 export default function InputBlockControls(props) {
 	const { attributes, setAttributes } = props;
-	const { vertical, dropdown } = attributes;
-
-	if (dropdown) return null;
+	const { vertical } = attributes;
 
 	return (
 		<BlockControls group="block">

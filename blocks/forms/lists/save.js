@@ -17,10 +17,11 @@ import { useBlockProps, RichText } from '@wordpress/block-editor';
 
 export default function save(props) {
 	const { attributes, setAttributes, isSelected } = props;
-	const { lists, vertical } = attributes;
+	const { lists, vertical, showLabel, label } = attributes;
 	const className = ['mailster-wrapper mailster-wrapper-_lists'];
 
 	if (vertical) className.push('mailster-wrapper-is-vertical');
+	if (showLabel) className.push('mailster-show-label');
 
 	const blockProps = useBlockProps.save({
 		className: classnames({}, className),
@@ -29,7 +30,10 @@ export default function save(props) {
 	return (
 		<div {...blockProps}>
 			<fieldset>
-				<legend>{__('Lists', 'mailster')}</legend>
+				<RichText.Content
+					tagName="legend"
+					value={label || __('Lists', 'mailster')}
+				/>
 				{lists.map((list, i) => {
 					const fieldid = attributes.id + (i ? '-' + i : '');
 					return (

@@ -8,7 +8,11 @@
 
 import { __ } from '@wordpress/i18n';
 
-import { InspectorControls } from '@wordpress/block-editor';
+import {
+	InspectorControls,
+	ColorPaletteControl,
+	PanelColorGradientSettings,
+} from '@wordpress/block-editor';
 import {
 	Panel,
 	PanelBody,
@@ -82,112 +86,149 @@ export default function InputFieldInspectorControls(props) {
 			},
 		});
 	}
+
 	return (
-		<InspectorControls>
-			<InputStylesPanel {...props}>
-				{type !== 'submit' && (
-					<PanelRow>
-						<Button onClick={applyStyle} variant="primary" icon={external}>
-							{__('Apply to all input fields', 'mailster')}
-						</Button>
-					</PanelRow>
-				)}
-			</InputStylesPanel>
-			<Panel>
-				<PanelBody title={__('Field Settings', 'mailster')} initialOpen={true}>
-					<PanelRow>
-						<TextControl
-							label={__('Label', 'mailster')}
-							help={__('Define a label for your field', 'mailster')}
-							value={label}
-							onChange={(val) => setAttributes({ label: val })}
-						/>
-					</PanelRow>
-					{typeof type !== 'undefined' &&
-						hasLabel &&
-						'checkbox' != type &&
-						'radio' != type && (
+		<>
+			<InspectorControls group="styles">
+				<Panel>
+					<PanelBody
+						title={__('Colors & Borders', 'mailster')}
+						initialOpen={true}
+					>
+						<InputStylesPanel {...props}>
+							{type !== 'submit' && (
+								<PanelRow>
+									<Button
+										onClick={applyStyle}
+										variant="primary"
+										icon={external}
+									>
+										{__('Apply to all input fields', 'mailster')}
+									</Button>
+								</PanelRow>
+							)}
+						</InputStylesPanel>
+					</PanelBody>
+				</Panel>
+			</InspectorControls>
+			<InspectorControls>
+				<Panel>
+					<PanelBody
+						title={__('Field Settings', 'mailster')}
+						initialOpen={true}
+					>
+						<PanelRow>
+							<TextControl
+								className="widefat"
+								label={__('Label', 'mailster')}
+								help={__('Define a label for your field', 'mailster')}
+								value={label}
+								onChange={(val) => setAttributes({ label: val })}
+							/>
+						</PanelRow>
+						{typeof type !== 'undefined' &&
+							hasLabel &&
+							'checkbox' != type &&
+							'radio' != type && (
+								<PanelRow>
+									<CheckboxControl
+										label={__('Inline Labels', 'mailster')}
+										help={__(
+											'Place the label inside the input field to save some space.',
+											'mailster'
+										)}
+										checked={inline}
+										onChange={() => setAttributes({ inline: !inline })}
+									/>
+								</PanelRow>
+							)}
+						{typeof required !== 'undefined' && 'submit' != type && (
 							<PanelRow>
 								<CheckboxControl
-									label={__('Inline Labels', 'mailster')}
+									label={__('Required Field', 'mailster')}
 									help={__(
-										'Place the label inside the input field to save some space.',
+										'Make this field mandatory so people cannot submit the form without entering data.',
 										'mailster'
 									)}
-									checked={inline}
-									onChange={() => setAttributes({ inline: !inline })}
+									checked={required || name == 'email'}
+									disabled={name == 'email'}
+									onChange={() => setAttributes({ required: !required })}
 								/>
 							</PanelRow>
 						)}
-					{typeof required !== 'undefined' && 'submit' != type && (
+						{required && (
+							<PanelRow>
+								<CheckboxControl
+									label={__('Show asterisk', 'mailster')}
+									help={__(
+										'Enable an asterisk (*) after the label on required fields.',
+										'mailster'
+									)}
+									checked={asterisk}
+									onChange={() => setAttributes({ asterisk: !asterisk })}
+								/>
+							</PanelRow>
+						)}
+						{(type == 'email' || type == 'date') && (
+							<PanelRow>
+								<CheckboxControl
+									label={__('Use native form element', 'mailster')}
+									help={__(
+										'Native form elements provide a better user experience but often miss some styling.',
+										'mailster'
+									)}
+									checked={native}
+									onChange={() => setAttributes({ native: !native })}
+								/>
+							</PanelRow>
+						)}
 						<PanelRow>
-							<CheckboxControl
-								label={__('Required Field', 'mailster')}
-								help={__(
-									'Make this field mandatory so people cannot submit the form without entering data.',
-									'mailster'
-								)}
-								checked={required || name == 'email'}
-								disabled={name == 'email'}
-								onChange={() => setAttributes({ required: !required })}
+							<RangeControl
+								className="widefat"
+								label={__('Width', 'mailster')}
+								value={style?.width}
+								allowReset={true}
+								initialPosition={100}
+								__nextHasNoMarginBottom={true}
+								onChange={(value) => setStyle('width', value)}
+								help={__('Set the width of the input field.', 'mailster')}
+								min={10}
+								max={100}
 							/>
 						</PanelRow>
-					)}
-					{required && (
-						<PanelRow>
-							<CheckboxControl
-								label={__('Show asterisk', 'mailster')}
-								help={__(
-									'Enable an asterisk (*) after the label on required fields',
-									'mailster'
-								)}
-								checked={asterisk}
-								onChange={() => setAttributes({ asterisk: !asterisk })}
-							/>
-						</PanelRow>
-					)}
-					{(type == 'email' || type == 'date') && (
-						<PanelRow>
-							<CheckboxControl
-								label={__('Use native form element', 'mailster')}
-								help={__(
-									'Native form elements provide a better user experience but often miss some styling.',
-									'mailster'
-								)}
-								checked={native}
-								onChange={() => setAttributes({ native: !native })}
-							/>
-						</PanelRow>
-					)}
-					<PanelRow>
-						<RangeControl
-							className="widefat"
-							label="Width"
-							value={style?.width}
-							allowReset={true}
-							initialPosition={100}
-							onChange={(value) => setStyle('width', value)}
-							help={__('Set the width of the input field', 'mailster')}
-							min={10}
-							max={100}
-						/>
-					</PanelRow>
-					{type != 'submit' && (
-						<PanelRow>
-							<TextControl
-								label={__('Error Message (optional)', 'mailster')}
-								help={__(
-									'Define the text for this field if an error occurs.',
-									'mailster'
-								)}
-								value={errorMessage}
-								onChange={(val) => setAttributes({ errorMessage: val })}
-							/>
-						</PanelRow>
-					)}
-					<Values {...props} />
-				</PanelBody>
-			</Panel>
-		</InspectorControls>
+						{type == 'textarea' && (
+							<PanelRow>
+								<RangeControl
+									className="widefat"
+									label={__('Height', 'mailster')}
+									value={style?.height}
+									allowReset={true}
+									initialPosition={20}
+									__nextHasNoMarginBottom={true}
+									onChange={(value) => setStyle('height', value)}
+									help={__('Set the height of the textarea.', 'mailster')}
+									min={1}
+									max={20}
+								/>
+							</PanelRow>
+						)}
+						{type != 'submit' && (
+							<PanelRow>
+								<TextControl
+									label={__('Error Message (optional)', 'mailster')}
+									help={__(
+										'Define the text for this field if an error occurs.',
+										'mailster'
+									)}
+									value={errorMessage}
+									onChange={(val) => setAttributes({ errorMessage: val })}
+								/>
+							</PanelRow>
+						)}
+						<Values {...props} />
+					</PanelBody>
+				</Panel>
+			</InspectorControls>
+		</>
 	);
 }

@@ -2,7 +2,7 @@
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 2,
 	"name": "mailster/gdpr",
-	"version": "0.2.0",
+	"version": "0.3.0",
 	"title": "GDPR Field",
 	"category": "mailster-form-fields",
 	"keywords": ["container", "wrapper", "row", "section"],
@@ -15,6 +15,10 @@
 		"multiple": false,
 		"inserter": false,
 		"color": true,
+		"spacing": {
+			"margin": true,
+			"padding": true
+		},
 		"typography": {
 			"fontSize": true,
 			"lineHeight": true,

@@ -29,12 +29,13 @@ import InputBlockControls from './InputBlockControls';
 
 export default function Edit(props) {
 	const { attributes, setAttributes, isSelected, clientId } = props;
-	const { lists, vertical } = attributes;
+	const { lists, vertical, showLabel, label } = attributes;
 	const className = ['mailster-wrapper mailster-wrapper-_lists'];
 
-	const [meta, setMeta] = useEntityProp('postType', 'newsletter_form', 'meta');
+	const [meta, setMeta] = useEntityProp('postType', 'mailster-form', 'meta');
 
 	if (vertical) className.push('mailster-wrapper-is-vertical');
+	if (showLabel) className.push('mailster-show-label');
 
 	const blockProps = useBlockProps({
 		className: classnames({}, className),
@@ -98,7 +99,12 @@ export default function Edit(props) {
 	return (
 		<div {...blockProps}>
 			<fieldset>
-				<legend>{__('Lists', 'mailster')}</legend>
+				<RichText
+					tagName="legend"
+					value={label || __('Lists', 'mailster')}
+					onChange={(val) => setAttributes({ label: val })}
+					placeholder={__('Enter Label', 'mailster')}
+				/>
 				{lists.map((list, i) => {
 					return (
 						<div key={i} className="mailster-group mailster-group-checkbox">

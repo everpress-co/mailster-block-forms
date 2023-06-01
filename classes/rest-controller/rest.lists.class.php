@@ -46,7 +46,7 @@ class Mailster_REST_List_Controller extends WP_REST_Controller {
 		);
 
 	}
-	
+
 	/**
 	 * Check permissions for the read.
 	 *

@@ -4,15 +4,15 @@ html.mailster-form-active {
 		overflow: hidden;
 	}
 }
-body.single-newsletter_form * {
+body.single-mailster-form * {
 	visibility: hidden;
 }
-body.single-newsletter_form::after,
-body.single-newsletter_form::before {
+body.single-mailster-form::after,
+body.single-mailster-form::before {
 	display: none;
 }
 
-body.single-newsletter_form {
+body.single-mailster-form {
 	overflow: hidden;
 	.mailster-block-form-type-content:not(.foo) {
 		position: absolute;
@@ -229,10 +229,11 @@ body.single-newsletter_form {
 	.mailster-block-form-inner {
 		max-height: 98vh;
 		max-width: 98vw;
-		_overflow: auto;
 		overflow-y: auto;
-		_-ms-overflow-style: none;
 		scrollbar-width: none;
+	}
+	.wp-block-mailster-form-wrapper.loading .mailster-block-form-inner {
+		overflow: unset;
 	}
 	.mailster-block-form-inner::-webkit-scrollbar {
 		display: none;
@@ -271,6 +272,12 @@ body.single-newsletter_form {
 		legend {
 			display: none;
 		}
+	}
+	.wp-block-spacer {
+		min-width: 1px;
+	}
+	.mailster-show-label legend {
+		display: block;
 	}
 	.wp-block.wp-block.wp-block.wp-block.wp-block:not(.mailster-wrapper) {
 		margin-top: 0;
@@ -498,13 +505,27 @@ body.single-newsletter_form {
 	.mailster-wrapper-required.mailster-wrapper-asterisk
 		.mailster-group-radio
 		label.mailster-label::after {
-		content: '';
+		_content: '';
+		display: none;
 	}
 
 	label.mailster-label {
 		display: flex;
 		align-items: center;
 		margin: initial;
+	}
+	.mailster-wrapper-inline.mailster-wrapper-type-textarea {
+		label.mailster-label {
+			align-items: baseline;
+			top: 0.6em;
+		}
+	}
+	.mailster-wrapper.mailster-wrapper-type-textarea {
+		textarea {
+			resize: vertical;
+			min-height: 4em;
+			max-height: 100vh;
+		}
 	}
 	.mailster-wrapper-inline {
 		label.mailster-label {
@@ -522,14 +543,17 @@ body.single-newsletter_form {
 			text-overflow: ellipsis;
 		}
 		input.input:focus + label.mailster-label,
-		input.input:not(:placeholder-shown) + label.mailster-label {
+		input.input:not(:placeholder-shown) + label.mailster-label,
+		textarea.input:focus + label.mailster-label,
+		textarea.input:not(:placeholder-shown) + label.mailster-label {
 			display: none;
 		}
-
-		input.input::placeholder {
+		textarea.input input.input::placeholder,
+		textarea.input::placeholder {
 			visibility: hidden;
 		}
-		input.input::placeholder {
+		input.input::placeholder,
+		textarea.input::placeholder {
 			/* Chrome/Opera/Safari */
 			color: transparent;
 		}
@@ -559,6 +583,7 @@ body.single-newsletter_form {
 		display: initial;
 		vertical-align: baseline;
 		margin: 0;
+		cursor: pointer;
 	}
 	.mailster-label + .mailster-group {
 		_padding-left: 1rem;
@@ -566,11 +591,17 @@ body.single-newsletter_form {
 	}
 	.mailster-wrapper .mailster-group {
 		_padding-right: 0.5em;
-		display: block;
+		_display: block;
+		align-items: center;
+		input {
+			flex-shrink: 0;
+		}
 	}
+
 	.mailster-wrapper-is-vertical .mailster-group {
 		padding-left: inherit;
 		padding-right: inherit;
+		align-items: center;
 		_width: 100%;
 	}
 	.mailster-wrapper-is-vertical > fieldset {
@@ -718,8 +749,8 @@ body.single-newsletter_form {
 	transition: transform 0.1s;
 }
 .mailster-block-form.wp-block-mailster-form-wrapper.loading:not(.silent) {
-	transform: scale(0.98);
-	opacity: 0.8;
+	__transform: scale(0.98);
+	_opacity: 0.8;
 }
 .mailster-block-form.wp-block-mailster-form-wrapper.loading
 	.wp-block-mailster-field-submit::before {

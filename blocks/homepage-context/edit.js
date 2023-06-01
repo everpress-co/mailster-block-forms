@@ -63,7 +63,7 @@ export default function Edit(props) {
 
 	return (
 		<>
-			<div {...blockProps} data-align="full">
+			<div {...blockProps}>
 				<InnerBlocks templateLock={false} template={template} />
 			</div>
 			<InspectorControls></InspectorControls>
