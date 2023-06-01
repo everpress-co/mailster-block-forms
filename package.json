@@ -1,6 +1,6 @@
 {
 	"name": "mailster-block-forms",
-	"version": "0.2.2",
+	"version": "0.3.0",
 	"author": "Xaver <xaver@everpress.co>",
 	"license": "GPL-2.0",
 	"private": true,
@@ -51,11 +51,7 @@
 		"*.php",
 		"build",
 		"classes",
-		"includes",
-		"licensing",
-		"templates",
-		"vendor",
-		"views",
+		"patterns",
 		"assets"
 	],
 	"scripts": {
