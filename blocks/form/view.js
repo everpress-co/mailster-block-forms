@@ -34,7 +34,6 @@ import apiFetch from '@wordpress/api-fetch';
 	const document = windowObj.document;
 	const setTimeout = windowObj.setTimeout;
 	const clearTimeout = windowObj.clearTimeout;
-	const localStorage = windowObj.localStorage;
 
 	const CLICK = 'click';
 	const SUBMIT = 'submit';
@@ -384,10 +383,7 @@ import apiFetch from '@wordpress/api-fetch';
 				}
 				//prevent close buttons from submitting the form
 				if (event.key === 'Enter' || event.keyCode == 13) {
-					//manually triggered if there's no subvmit button
-					if (!querySelector(formEl, '.submit-button')) {
-						formSubmit(event);
-					}
+					formSubmit(event);
 					event.preventDefault();
 				}
 			}
@@ -582,9 +578,9 @@ import apiFetch from '@wordpress/api-fetch';
 		if (typeof value !== 'undefined') {
 			const data = storageWithLocalStorage(identifier) || {};
 			data[key] = value;
-			localStorage.setItem(global_key, JSON.stringify(data));
+			windowObj.localStorage.setItem(global_key, JSON.stringify(data));
 		} else {
-			const store = JSON.parse(localStorage.getItem(global_key));
+			const store = JSON.parse(windowObj.localStorage.getItem(global_key));
 			if (!key) {
 				return store;
 			}
@@ -611,8 +607,8 @@ import apiFetch from '@wordpress/api-fetch';
 		try {
 			const test = '__test__';
 			// Try to access localStorage to see if it's available
-			localStorage.setItem(test, test);
-			localStorage.removeItem(test);
+			windowObj.localStorage.setItem(test, test);
+			windowObj.localStorage.removeItem(test);
 			// throw new Error('localStorage is available');
 			storage = storageWithLocalStorage;
 		} catch (e) {
