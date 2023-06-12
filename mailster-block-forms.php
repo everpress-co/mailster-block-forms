@@ -50,6 +50,9 @@ add_action(
 			return;
 		}
 
+		// make sure the post type change at some time.
+		add_action( 'mailster_cron', 'mailster_block_forms_change_post_type_name' );
+
 		function mailster_block_forms_table_structure( $structure, $collate ) {
 
 			global $wpdb;
