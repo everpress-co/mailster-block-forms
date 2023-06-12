@@ -3,7 +3,7 @@
 Plugin Name: Mailster Block Forms
 Plugin URI: https://mailster.co/?utm_campaign=wporg&utm_source=wordpress.org&utm_medium=plugin&utm_term=Mailster+Block+Forms
 Description: Create Mailster forms with the block editor
-Version: 0.3.0
+Version: 0.3.1
 Author: EverPress
 Author URI: https://mailster.co
 Text Domain: mailster-block-forms
@@ -49,6 +49,9 @@ add_action(
 
 			return;
 		}
+
+		// make sure the post type change at some time.
+		add_action( 'mailster_cron', 'mailster_block_forms_change_post_type_name' );
 
 		function mailster_block_forms_table_structure( $structure, $collate ) {
 

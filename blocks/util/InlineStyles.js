@@ -98,7 +98,7 @@ const getInlineStyles = (el) => {
 			'input[type="radio"]': ['width', 'height'],
 			'input[type="submit"]': ['border', 'outline', 'color'],
 			select: ['height'],
-			'label.mailster-label': [],
+			label: [],
 			textarea: [],
 		};
 
