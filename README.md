@@ -4,7 +4,7 @@ Contributors: everpress, xaverb
 Tags: mailster, blocks, forms, mailsterblockforms  
 Requires at least: 6.0  
 Tested up to: 6.2
-Stable tag: 0.3.0
+Stable tag: 0.3.1
 Requires PHP: 7.2.5+  
 License: GPLv2 or later  
 Author: EverPress  
@@ -42,6 +42,12 @@ Create newsletter signup forms for [Mailster](https://mailster.co/?utm_campaign=
 No, Mailster 3.2.0 or above is required to use this plugin. Get it [here](https://mailster.co/?utm_campaign=wporg&utm_source=wordpress.org&utm_medium=readme&utm_term=Mailster+Block+Forms).
 
 ## Changelog
+
+## 0.3.1
+
+- fixed: form submission works again by using return key
+- fixed: error when localStorage is not avialable
+- improved: inline style mechanism
 
 ## 0.3.0
 
