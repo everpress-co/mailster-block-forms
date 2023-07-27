@@ -21,11 +21,15 @@
 	max-width: 800px;
 	height: auto;
 }
-.post-type-mailster-form .edit-post-visual-editor {
+.editor-styles-wrapper {
 	background: url('data:image/svg+xml,<svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 100 100" xml:space="preserve"><path d="M0 0h50v50H0zM50.5 49.5h50v50h-50z" fill="%23fafafa"/></svg>')
 		white !important;
 	background-repeat: repeat;
 	background-size: 25px !important;
+	padding-top: 10% !important;
+}
+.block-editor-block-preview__content-iframe .editor-styles-wrapper {
+	padding-top: 0% !important;
 }
 .post-type-mailster-form .edit-post-visual-editor__content-area > div,
 .block-editor-page.post-content-style-boxed .editor-styles-wrapper:before {
@@ -45,11 +49,8 @@
 	margin-left: auto;
 	margin-right: auto;
 }
-.post-type-mailster-form
-	.edit-post-visual-editor__content-area
-	.editor-styles-wrapper
-	.is-root-container {
-	margin: 10% 0 0;
+.post-type-mailster-form.editor-styles-wrapper .is-root-container {
+	margin: 0;
 	background-color: transparent;
 	max-width: 100%;
 	_width: 100%;
@@ -214,4 +215,7 @@
 	.editor-post-title__input {
 	all: unset !important;
 	font-size: 30px !important;
+}
+.mailster-block-forms-post-status-info-select-template button {
+	justify-content: center;
 }

@@ -3,7 +3,7 @@
 Plugin Name: Mailster Block Forms
 Plugin URI: https://mailster.co/?utm_campaign=wporg&utm_source=wordpress.org&utm_medium=plugin&utm_term=Mailster+Block+Forms
 Description: Create Mailster forms with the block editor
-Version: 0.3.1
+Version: 0.4.0
 Author: EverPress
 Author URI: https://mailster.co
 Text Domain: mailster-block-forms
@@ -50,6 +50,15 @@ add_action(
 			return;
 		}
 
+		add_action( 'admin_print_scripts-edit.php', 'mailster_block_forms_beta_notice' );
+		function mailster_block_forms_beta_notice() {
+			$msg  = '<h2>Welcome to the new Block Forms page.</h2>';
+			$msg .= '<p>Creating forms for Mailster gets easier and more flexible. Utilize the WordPress Block Editor (Gutenberg) to create you custom, feature rich forms.</p>';
+			$msg .= '<p><strong>Block forms are currently in <del>beta version</del> in release state. Some features are still subject to change before the stable release.</strong></p>';
+			$msg .= '<p><a href="' . admin_url( 'post-new.php?post_type=mailster-form' ) . '" class="button button-primary">' . esc_html__( 'Create new Form' ) . '</a> <a href="https://docs.mailster.co/#/block-forms-overview" class="button button-secondary external">Check out our guide</a> or <a href="https://github.com/everpress-co/mailster-block-forms/issues" class="button button-link external">Submit feedback on Github</a></p>';
+			mailster_notice( $msg, 'info', true, 'mailster_form_beta_notice', true, 'edit-mailster-form' );
+		}
+
 		// make sure the post type change at some time.
 		add_action( 'mailster_cron', 'mailster_block_forms_change_post_type_name' );
 
@@ -75,7 +84,7 @@ add_action(
 				'admin-menu',
 				"#menu-posts-newsletter
 			a[href='edit.php?post_type=mailster-form']::after {
-				content: 'RC 1';
+				content: 'RC 2';
 				display: inline-block;
 				vertical-align: top;
 				box-sizing: border-box;
@@ -86,8 +95,8 @@ add_action(
 				border-radius: 9px;
 				background-color: #d63638;
 				color: #fff;
-				font-size: 11px;
-				line-height: 1.6;
+				font-size: 10px;
+				line-height: 18px;
 				text-align: center;
 				z-index: 26;
             }"

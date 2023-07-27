@@ -217,9 +217,9 @@ export default function FormModal(props) {
 
 	return (
 		<>
-			<PluginPostStatusInfo className="mailster-block-forms-post-status-info">
+			<PluginPostStatusInfo className="mailster-block-forms-post-status-info-select-template">
 				<Button variant="secondary" className="widefat" onClick={openModal}>
-					Select Template
+					{__('Select Template', 'mailster')}
 				</Button>
 			</PluginPostStatusInfo>
 			{isOpen && (

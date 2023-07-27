@@ -220,7 +220,7 @@ class Mailster_REST_Form_Controller extends WP_REST_Controller {
 
 		// check honeypot, only if all fields are correct.
 		if ( empty( $fields_errors ) && apply_filters( 'mailster_honeypot', mailster_option( 'check_honeypot' ), $form_id ) ) {
-			$honeypot = $request->get_param( 'n_' . $form_id . '_email' );
+			$honeypot = $request->get_param( 'n_' . $form_id . '_mail' );
 
 			if ( ! empty( $honeypot ) ) {
 				$fields_errors['_honeypot'] = esc_html__( 'Honeypot is for bears only!', 'mailster' );

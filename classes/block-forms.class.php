@@ -23,9 +23,8 @@ class MailsterBlockForms {
 		add_action( 'rest_api_init', array( &$this, 'register_settings' ) );
 
 		add_action( 'admin_print_scripts-edit.php', array( &$this, 'overview_script_styles' ), 1 );
-		add_action( 'admin_print_scripts-edit.php', array( &$this, 'beta_notice' ) );
 
-		add_action( 'enqueue_block_editor_assets', array( &$this, 'block_script_styles' ), 1 );
+		add_action( 'enqueue_block_assets', array( &$this, 'block_script_styles' ), 1 );
 
 		add_filter( 'allowed_block_types_all', array( &$this, 'allowed_block_types' ), 9999, 2 );
 		add_filter( 'block_editor_settings_all', array( &$this, 'block_editor_settings' ), PHP_INT_MAX, 2 );
@@ -110,13 +109,6 @@ class MailsterBlockForms {
 
 	}
 
-	public function beta_notice() {
-		$msg  = '<h2>Welcome to the new Block Forms page.</h2>';
-		$msg .= '<p>Creating forms for Mailster gets easier and more flexible. Utilize the WordPress Block Editor (Gutenberg) to create you custom, feature rich forms.</p>';
-		$msg .= '<p><strong>Block forms are currently in <del>beta version</del> in release state. Some features are still subject to change before the stable release.</strong></p>';
-		$msg .= '<p><a href="' . admin_url( 'post-new.php?post_type=mailster-form' ) . '" class="button button-primary">' . esc_html__( 'Create new Form' ) . '</a> <a href="https://docs.mailster.co/#/block-forms-overview" class="button button-secondary external">Check out our guide</a> or <a href="https://github.com/everpress-co/mailster-block-forms/issues" class="button button-link external">Submit feedback on Github</a></p>';
-		mailster_notice( $msg, 'info', true, 'newsletter_form_beta_notice', true, 'edit-mailster-form' );
-	}
 
 	public function maybe_preview() {
 
@@ -474,7 +466,7 @@ class MailsterBlockForms {
 		$args['post_status'] = 'publish';
 
 		if ( ! is_user_logged_in() ) {
-			$args['post_status'] = 'publish';
+			// $args['post_status'] = 'publish';
 		}
 
 		$query = new WP_Query( $args );
@@ -486,12 +478,14 @@ class MailsterBlockForms {
 
 	public function register_post_type() {
 
+		$name = _x( 'Block Forms', 'Post Type General Name', 'mailster' );
+
 		$labels = array(
-			'name'                     => _x( 'Block Forms', 'Post Type General Name', 'mailster' ),
+			'name'                     => $name,
 			'singular_name'            => _x( 'Form', 'Post Type Singular Name', 'mailster' ),
-			'menu_name'                => __( 'Block Forms', 'mailster' ),
+			'menu_name'                => $name,
 			'attributes'               => __( 'Form Attributes', 'mailster' ),
-			'all_items'                => __( 'Block Forms', 'mailster' ),
+			'all_items'                => $name,
 			'add_new_item'             => __( 'Add New Form', 'mailster' ),
 			'add_new'                  => __( 'Add New', 'mailster' ),
 			'new_item'                 => __( 'New Form', 'mailster' ),
@@ -541,7 +535,7 @@ class MailsterBlockForms {
 			'rewrite'             => array(
 				'with_front' => false,
 				'feeds'      => false,
-				'slug'       => 'newsletter-form',
+				'slug'       => 'mailster-form',
 			),
 			// 'capabilities'        => $capabilities,
 			'show_in_rest'        => true,
@@ -939,9 +933,6 @@ class MailsterBlockForms {
 
 		do_action( 'mailster_admin_header' );
 
-		// change post type
-		mailster_block_forms_change_post_type_name();
-
 		wp_enqueue_style( 'mailster-block-forms-overview', MAILSTER_FORM_BLOCK_URI . 'assets/css/block-form-overview' . $suffix . '.css', array(), MAILSTER_VERSION );
 	}
 
@@ -955,7 +946,7 @@ class MailsterBlockForms {
 
 		do_action( 'mailster_admin_header' );
 
-		wp_enqueue_style( 'mailster-form-block-editor', MAILSTER_FORM_BLOCK_URI . 'assets/css/blocks-editor' . $suffix . '.css', array(), MAILSTER_VERSION );
+		wp_enqueue_style( 'mailster-form-block-editor', MAILSTER_FORM_BLOCK_URI . 'assets/css/forms-blocks-editor' . $suffix . '.css', array(), MAILSTER_VERSION );
 		wp_add_inline_style( 'mailster-form-block-editor', $this->get_theme_styles() );
 		wp_add_inline_script( 'wp-blocks', 'var mailster_fields = ' . json_encode( array_values( $this->get_fields() ) ) . ';' );
 	}
@@ -1418,7 +1409,7 @@ class MailsterBlockForms {
 				if ( $background['fixed'] ) {
 					$custom_styles['::before'][] = 'background-attachment:fixed';
 				}
-				if ( $background['fullscreen'] ) {
+				if ( isset( $background['fullscreen'] ) && $background['fullscreen'] ) {
 					$args['classes'][]           = 'mailster-form-is-fullscreen';
 					$custom_styles['::before'][] = 'position:fixed';
 					$custom_styles['::before'][] = 'background-size:cover';
@@ -1605,7 +1596,7 @@ class MailsterBlockForms {
 
 		// add honeypot field
 		if ( ! $is_backend && apply_filters( 'mailster_honeypot', mailster_option( 'check_honeypot' ), $form->ID ) ) {
-			$inject .= '<div style="position:absolute;top:-99999px;' . ( is_rtl() ? 'right' : 'left' ) . ':-99999px;z-index:-99;"><input name="n_' . $form->ID . '_email" type="email" tabindex="-1" autocomplete="noton" autofill="off"></div>';
+			$inject .= '<div style="position:absolute;top:-99999px;' . ( is_rtl() ? 'right' : 'left' ) . ':-99999px;z-index:-99;"><input name="n_' . $form->ID . '_mail" type="text" tabindex="-1" autocomplete="noton" autofill="off" aria-hidden="true"></div>';
 		}
 		$output = str_replace( '</form>', $inject . '</form>', $output );
 
@@ -1623,8 +1614,6 @@ class MailsterBlockForms {
 		if ( preg_match_all( '/<(input|select|textarea)(.*?)name="(.*?)"(.*?)(aria-required="true")(.*?)>/', $form->post_content, $matches, PREG_SET_ORDER, 0 ) ) {
 
 			$fields = array_values( array_unique( wp_list_pluck( $matches, 3 ) ) );
-
-			error_log( print_r( $fields, true ) );
 
 			return $fields;
 
