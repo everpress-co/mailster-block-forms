@@ -8,7 +8,7 @@
 
 import { __ } from '@wordpress/i18n';
 
-import { useState, createRoot } from '@wordpress/element';
+import { useState, createRoot, useRef } from '@wordpress/element';
 import { dispatch, useSelect } from '@wordpress/data';
 
 import { useEntityProp } from '@wordpress/core-data';
@@ -29,7 +29,7 @@ const SAMPLEFORM = (
 		<input type="email" className="input" />
 		<input type="date" className="input" />
 		<input type="submit" className="wp-block-button__link" />
-		<textarea>Sample Content</textarea>
+		<textarea defaultValue="Sample Content" />
 	</form>
 );
 
@@ -125,6 +125,8 @@ export default function InlineStyles() {
 	);
 	const [render, setRender] = useState(true);
 
+	const ref = useRef();
+
 	const posts = useSelect((select) => {
 		return select('core').getEntityRecords('postType', 'post', {
 			per_page: 1,
@@ -140,10 +142,9 @@ export default function InlineStyles() {
 	const link = posts.length > 0 ? posts[0].link : siteUrl;
 
 	const updateStyles = () => {
-		const iframe = document.getElementById('inlineStylesIframe');
-		if (!iframe) return;
+		if (!ref.current) return;
 
-		const formEl = injectForm(iframe.contentWindow.document);
+		const formEl = injectForm(ref.current.contentWindow.document);
 		formEl &&
 			setTimeout(() => {
 				const styles = getInlineStyles(formEl);
@@ -175,8 +176,8 @@ export default function InlineStyles() {
 			hidden
 		>
 			<iframe
+				ref={ref}
 				src={link}
-				id="inlineStylesIframe"
 				style={{
 					pointerEvents: 'none',
 					width: screen.width,
