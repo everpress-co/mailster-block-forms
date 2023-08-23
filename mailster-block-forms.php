@@ -35,7 +35,7 @@ add_action(
 			$wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->posts} SET `post_type` = %s WHERE post_type = %s", 'mailster-form', 'newsletter_form' ) );
 		}
 
-		if ( version_compare( MAILSTER_VERSION, '4.0.0' ) >= 0 ) {
+		if ( version_compare( MAILSTER_VERSION, '4.0.0-beta' ) >= 0 ) {
 
 			mailster_block_forms_change_post_type_name();
 			$msg  = '<h2>Thanks for testing Mailster Block Forms!</h2>';
@@ -244,7 +244,7 @@ add_action(
 
 function mailster_block_forms_add_class( $classes ) {
 
-	if ( version_compare( MAILSTER_VERSION, '4.0.0' ) >= 0 ) {
+	if ( version_compare( MAILSTER_VERSION, '4.0.0-beta' ) >= 0 ) {
 		return $classes;
 	}
 

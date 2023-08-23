@@ -24,6 +24,7 @@ class MailsterBlockForms {
 
 		add_action( 'admin_print_scripts-edit.php', array( &$this, 'overview_script_styles' ), 1 );
 
+		// add_action( 'enqueue_block_editor_assets', array( &$this, 'block_script_styles' ), 1 );
 		add_action( 'enqueue_block_assets', array( &$this, 'block_script_styles' ), 1 );
 
 		add_filter( 'allowed_block_types_all', array( &$this, 'allowed_block_types' ), 9999, 2 );
@@ -276,17 +277,7 @@ class MailsterBlockForms {
 		} elseif ( get_post_type() == 'mailster-form' ) {
 			add_filter( 'the_content', array( &$this, 'render_form_in_content' ) );
 		} elseif ( $forms = $this->query_forms() ) {
-
-			foreach ( $forms as $form_id ) {
-				$placements = (array) get_post_meta( $form_id, 'placements', false );
-				// TODO check for A/B Test
-				foreach ( $placements as $placement ) {
-					$placement_options = get_post_meta( $form_id, 'placement_' . $placement, true );
-					if ( $placement_options ) {
-						$this->forms[ $placement ][ $form_id ] = $placement_options;
-					}
-				}
-			}
+			$this->forms = $forms;
 		}
 
 		if ( isset( $this->forms['popup'] ) || isset( $this->forms['bar'] ) || isset( $this->forms['side'] ) ) {
@@ -428,6 +419,8 @@ class MailsterBlockForms {
 			}
 		}
 
+		return;
+
 		if ( isset( $this->forms['bar'] ) ) {
 			foreach ( $this->forms['bar'] as $form_id => $options ) {
 				$options['classes'] = array( 'mailster-block-form-type-bar' );
@@ -448,30 +441,37 @@ class MailsterBlockForms {
 
 	}
 
+	private function query_forms( $force = false ) {
 
-	private function query_forms( $for = array() ) {
+		if ( $force || ! ( $forms = get_transient( 'mailster_forms' ) ) ) {
 
-		$args = array(
-			'post_type'              => 'mailster-form',
-			'no_found_rows'          => true,
-			'update_post_meta_cache' => false,
-			'update_post_term_cache' => false,
-			'fields'                 => 'ids',
-		);
+			$args = array(
+				'post_type'     => 'mailster-form',
+				'post_status'   => 'publish',
+				'no_found_rows' => true,
+				'fields'        => 'ids',
+			);
 
-		if ( ! empty( $for ) ) {
-			$args['meta_key']   = 'placements';
-			$args['meta_value'] = (array) $for;
+			$query = new WP_Query( $args );
+
+			$forms = array();
+
+			foreach ( $query->posts as $form_id ) {
+				$placements = (array) get_post_meta( $form_id, 'placements', false );
+				// TODO check for A/B Test
+				foreach ( $placements as $placement ) {
+					$placement_options = get_post_meta( $form_id, 'placement_' . $placement, true );
+					if ( $placement_options ) {
+						$forms[ $placement ][ $form_id ] = $placement_options;
+					}
+				}
+			}
+
+			set_transient( 'mailster_forms', $forms );
+
 		}
-		$args['post_status'] = 'publish';
 
-		if ( ! is_user_logged_in() ) {
-			// $args['post_status'] = 'publish';
-		}
-
-		$query = new WP_Query( $args );
-
-		return $query->posts;
+		return $forms;
 
 	}
 
@@ -1305,7 +1305,8 @@ class MailsterBlockForms {
 		);
 
 		$blockattributes = $block->attributes;
-		$uniqid          = substr( uniqid(), 8, 5 );
+		// $uniqid          = substr( uniqid(), 8, 5 );
+		$uniqid = $identifier;
 
 		// in preview mode check for content here
 		$request_body = file_get_contents( 'php://input' );
@@ -1560,7 +1561,6 @@ class MailsterBlockForms {
 			// save to cache
 			if ( $use_cache ) {
 				// update_post_meta( $form->ID, $cache_key, $output );
-				// set_transient( $cache_key, $output, 10 );
 			}
 		}
 
@@ -1714,6 +1714,7 @@ class MailsterBlockForms {
 	public function clear_cache( $post_id ) {
 
 		delete_post_meta( $post_id, '_cached' );
+		set_transient( 'mailster_forms', '' );
 
 	}
 
@@ -1862,7 +1863,7 @@ class MailsterBlockForms {
 	}
 
 
-	public function on_activate( $new = false ) {
+	public function on_install( $new = false ) {
 
 		if ( $new ) {
 
