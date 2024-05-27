@@ -12,7 +12,7 @@
 <!-- /wp:mailster/field-email -->
 
 <!-- wp:mailster/field-firstname {"style":{"width":49},"className":"mailster-wrapper-asterisk"} -->
-<div class="wp-block-mailster-field-firstname mailster-wrapper mailster-wrapper-type-text mailster-wrapper-asterisk" style="width:49%"><label for="mailster-id-855229" class="mailster-label">First Name</label><input name="firstname" id="mailster-id-855229" type="text" aria-required="false" aria-label="First Name" spellcheck="false" value="" class="input" autocomplete="name" placeholder=" "/></div>
+<div class="wp-block-mailster-field-firstname mailster-wrapper mailster-wrapper-type-text mailster-wrapper-asterisk" style="width:49%"><label for="mailster-id-855229" class="mailster-label">First Name</label><input name="firstname" id="mailster-id-855229" type="text" aria-required="false" aria-label="First Name" spellcheck="false" value="" class="input" autocomplete="given-name" placeholder=" "/></div>
 <!-- /wp:mailster/field-firstname -->
 
 <!-- wp:mailster/field-lastname {"style":{"width":49}} -->

@@ -23,7 +23,7 @@
 <footer class="wp-block-group has-background" style="background-color:#24a878">
 
 <!-- wp:mailster/field-firstname {"inline":true,"style":{"width":35}} -->
-<div class="wp-block-mailster-field-firstname mailster-wrapper mailster-wrapper-type-text mailster-wrapper-inline" style="width:35%"><input name="firstname" id="mailster-id-57ec81" type="text" aria-required="false" aria-label="Name" spellcheck="false" value="" class="input" autocomplete="name" placeholder=" "/><label for="mailster-id-57ec81" class="mailster-label">Name</label></div>
+<div class="wp-block-mailster-field-firstname mailster-wrapper mailster-wrapper-type-text mailster-wrapper-inline" style="width:35%"><input name="firstname" id="mailster-id-57ec81" type="text" aria-required="false" aria-label="Name" spellcheck="false" value="" class="input" autocomplete="given-name" placeholder=" "/><label for="mailster-id-57ec81" class="mailster-label">Name</label></div>
 <!-- /wp:mailster/field-firstname -->
 
 <!-- wp:mailster/field-email {"inline":true,"style":{"width":35}} -->

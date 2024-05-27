@@ -16,7 +16,7 @@
 <!-- /wp:spacer -->
 
 <!-- wp:mailster/field-firstname {"inline":true} -->
-<div class="wp-block-mailster-field-firstname mailster-wrapper mailster-wrapper-type-text mailster-wrapper-inline"><input name="firstname" id="mailster-id-8c89d5" type="text" aria-required="false" aria-label="Name" spellcheck="false" value="" class="input" autocomplete="name" placeholder=" "/><label for="mailster-id-8c89d5" class="mailster-label">Name</label></div>
+<div class="wp-block-mailster-field-firstname mailster-wrapper mailster-wrapper-type-text mailster-wrapper-inline"><input name="firstname" id="mailster-id-8c89d5" type="text" aria-required="false" aria-label="Name" spellcheck="false" value="" class="input" autocomplete="given-name" placeholder=" "/><label for="mailster-id-8c89d5" class="mailster-label">Name</label></div>
 <!-- /wp:mailster/field-firstname -->
 
 <!-- wp:mailster/field-email {"inline":true} -->

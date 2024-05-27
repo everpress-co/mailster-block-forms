@@ -1,14 +1,14 @@
 # Mailster Block Forms
 
-Contributors: everpress, xaverb  
+Contributors: everpress, mailster, xaverb  
 Tags: mailster, blocks, forms, mailsterblockforms  
 Requires at least: 6.0  
-Tested up to: 6.3
+Tested up to: 6.5  
 Stable tag: 0.4.1
 Requires PHP: 7.2.5+  
 License: GPLv2 or later  
 Author: EverPress  
-Author URI: https://mailster.co
+Author URI: <https://mailster.co>
 
 ## Description
 
@@ -89,7 +89,7 @@ No, Mailster 3.2.0 or above is required to use this plugin. Get it [here](https:
 
 ## 0.2.0
 
-- new: newsletter homepage block (https://kb.mailster.co/convert-your-newsletter-homepage/)
+- new: newsletter homepage block (<https://kb.mailster.co/convert-your-newsletter-homepage/>)
 - fixed: proper removing of GDPR block
 - change: endpoint for form submission
 - improved: renamed internal methods

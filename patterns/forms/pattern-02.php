@@ -2,7 +2,7 @@
 <form method="post" novalidate class="wp-block-mailster-form-wrapper mailster-block-form"><div class="mailster-block-form-inner">
 
 <!-- wp:mailster/field-firstname {"inline":true,"style":{"width":49}} -->
-<div class="wp-block-mailster-field-firstname mailster-wrapper mailster-wrapper-type-text mailster-wrapper-inline" style="width:49%"><input name="firstname" id="mailster-id-2c4fa9" type="text" aria-required="false" aria-label="First Name" spellcheck="false" value="" class="input" autocomplete="name" placeholder=" "/><label for="mailster-id-2c4fa9" class="mailster-label">First Name</label></div>
+<div class="wp-block-mailster-field-firstname mailster-wrapper mailster-wrapper-type-text mailster-wrapper-inline" style="width:49%"><input name="firstname" id="mailster-id-2c4fa9" type="text" aria-required="false" aria-label="First Name" spellcheck="false" value="" class="input" autocomplete="given-name" placeholder=" "/><label for="mailster-id-2c4fa9" class="mailster-label">First Name</label></div>
 <!-- /wp:mailster/field-firstname -->
 
 <!-- wp:mailster/field-lastname {"inline":true,"style":{"width":49}} -->
