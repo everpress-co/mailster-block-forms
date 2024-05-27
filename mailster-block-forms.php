@@ -1,6 +1,7 @@
 <?php
 /**
 Plugin Name: Mailster Block Forms
+Requires Plugins: mailster
 Plugin URI: https://mailster.co/?utm_campaign=wporg&utm_source=wordpress.org&utm_medium=plugin&utm_term=Mailster+Block+Forms
 Description: Create Mailster forms with the block editor
 Version: 0.4.1
@@ -21,7 +22,7 @@ define( 'MAILSTER_FORM_BLOCK_URI', plugin_dir_url( __FILE__ ) );
 
 add_action(
 	'plugins_loaded',
-	function() {
+	function () {
 
 		// require Mailster
 		if ( ! defined( 'MAILSTER_VERSION' ) ) {
@@ -43,6 +44,10 @@ add_action(
 			$msg .= '<p>Enjoy building forms with your favorite newsletter plugin.</p>';
 			$msg .= '<p><a href="' . admin_url( 'edit.php?post_type=mailster-form' ) . '" class="button button-primary">' . esc_html__( 'Browse your forms' ) . '</a> <a href="' . admin_url( 'post-new.php?post_type=mailster-form' ) . '" class="button button-secondary">Create new form</a></p>';
 			mailster_notice( $msg, 'info', false, 'mailster-form_disable_notice', true );
+
+			if ( ! function_exists( 'deactivate_plugins' ) ) {
+				require_once ABSPATH . 'wp-admin/includes/plugin.php';
+			}
 
 			// deactivate this plugin
 			deactivate_plugins( plugin_basename( __FILE__ ) );
@@ -75,7 +80,6 @@ add_action(
                 PRIMARY KEY  (`ID`)
             ) $collate;";
 			return $structure;
-
 		}
 		add_action( 'mailster_table_structure', 'mailster_block_forms_table_structure', 10, 2 );
 
@@ -115,7 +119,6 @@ add_action(
 					'type'         => 'string',
 				)
 			);
-
 		}
 		add_action( 'rest_api_init', 'mailster_block_forms_register_settings' );
 
@@ -198,14 +201,12 @@ add_action(
 			if ( $form && $form->post_type === 'mailster-form' ) {
 				mailster( 'block-forms' )->conversion( $form_id, $subscriber_id );
 			}
-
 		}
 		add_action( 'mailster_subscriber_subscribed', 'mailster_block_forms_subscriber_subscribed' );
 
 		function mailster_block_forms_shortcode( $atts, $content ) {
 
 			return mailster( 'block-forms' )->render_form( $atts['id'], array(), false );
-
 		}
 		add_shortcode( 'newsletter_block_form', 'mailster_block_forms_shortcode' );
 
@@ -235,10 +236,8 @@ add_action(
 			require_once __DIR__ . '/classes/elementor.class.php';
 
 			$widgets_manager->register( new Elementor_Mailster_Form() );
-
 		}
 		add_action( 'elementor/widgets/register', 'register_oembed_widget' );
-
 	}
 );
 
@@ -267,7 +266,5 @@ function mailster_block_forms_activate() {
 
 	update_option( 'mailster_inline_styles', '', 'no' );
 	mailster()->dbstructure();
-
 }
 register_activation_hook( __FILE__, 'mailster_block_forms_activate' );
-

@@ -4,7 +4,7 @@
 <!-- /wp:mailster/messages -->
 
 <!-- wp:mailster/field-firstname {"style":{"width":49}} -->
-<div class="wp-block-mailster-field-firstname mailster-wrapper mailster-wrapper-type-text" style="width:49%"><label for="mailster-id-2c4fa9" class="mailster-label">First Name</label><input name="firstname" id="mailster-id-2c4fa9" type="text" aria-required="false" aria-label="First Name" spellcheck="false" value="" class="input" autocomplete="name" placeholder=" "/></div>
+<div class="wp-block-mailster-field-firstname mailster-wrapper mailster-wrapper-type-text" style="width:49%"><label for="mailster-id-2c4fa9" class="mailster-label">First Name</label><input name="firstname" id="mailster-id-2c4fa9" type="text" aria-required="false" aria-label="First Name" spellcheck="false" value="" class="input" autocomplete="given-name" placeholder=" "/></div>
 <!-- /wp:mailster/field-firstname -->
 
 <!-- wp:mailster/field-lastname {"style":{"width":49}} -->
